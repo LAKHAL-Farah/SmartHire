@@ -1,0 +1,615 @@
+<div class="dashboard-shell">
+  <header class="admin-header">
+    <div class="header-left">
+      <div class="title-row">
+        <span class="title-icon"><lucide-icon name="layout-grid" [size]="18" [strokeWidth]="2"></lucide-icon></span>
+        <h1>Interview Dashboard</h1>
+      </div>
+      <p class="breadcrumb">Admin / Interview</p>
+    </div>
+
+    <div class="header-right">
+      <span class="updated-at">Last updated: {{ lastUpdated | date: 'shortTime' }}</span>
+      <button class="btn btn-outline" type="button" (click)="refreshAll()" [disabled]="isRefreshing">
+        <lucide-icon name="refresh-cw" [size]="14" [strokeWidth]="2"></lucide-icon>
+        {{ isRefreshing ? 'Refreshing...' : 'Refresh' }}
+      </button>
+      <button class="btn btn-primary" type="button" (click)="openAddDrawer()">
+        <lucide-icon name="plus" [size]="14" [strokeWidth]="2"></lucide-icon>
+        Add Question
+      </button>
+    </div>
+  </header>
+
+  <nav class="section-switcher" aria-label="Dashboard sections">
+    @for (tab of sectionTabs; track tab.key) {
+      <button
+        type="button"
+        class="section-tab"
+        [class.active]="isSectionActive(tab.key)"
+        (click)="setActiveSection(tab.key)">
+        <span class="section-tab-icon"><lucide-icon [name]="tab.icon" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+        <span class="section-tab-copy">
+          <span class="section-tab-label">{{ tab.label }}</span>
+          <span class="section-tab-subtitle">{{ tab.description }}</span>
+        </span>
+      </button>
+    }
+  </nav>
+
+  <main class="admin-content">
+    @if (isLoading) {
+      <section class="stat-grid">
+        @for (card of [1,2,3,4,5,6,7,8]; track card) {
+          <article class="stat-card">
+            <div class="skeleton" style="height: 18px; width: 60%; margin-bottom: 12px;"></div>
+            <div class="skeleton" style="height: 30px; width: 45%; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="height: 12px; width: 75%;"></div>
+          </article>
+        }
+      </section>
+    } @else {
+      @if (isSectionActive('overview')) {
+        <section class="stat-grid">
+          <article class="stat-card blue">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="file-text" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Total Sessions</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.totalSessions || 0">{{ stats?.totalSessions || 0 }}</div>
+            <div class="stat-trend up">↗ + {{ formatNumber(stats?.sessionsToday || 0) }} today</div>
+          </article>
+
+          <article class="stat-card green">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="circle-check" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Completion Rate</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.completionRate || 0">{{ formatNumber(stats?.completionRate || 0, 1) }}%</div>
+            <div class="stat-trend up">↗ vs weekly baseline</div>
+          </article>
+
+          <article class="stat-card purple">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="users" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Total Candidates</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.totalCandidates || 0">{{ stats?.totalCandidates || 0 }}</div>
+            <div class="stat-trend up">↗ {{ formatNumber(stats?.sessionsThisWeek || 0) }} sessions this week</div>
+          </article>
+
+          <article class="stat-card red">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="activity" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Active Now</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.activeCandidatesNow || 0">
+              <span class="pulse-dot"></span>{{ stats?.activeCandidatesNow || 0 }}
+            </div>
+            <div class="stat-trend down">Realtime in-progress interviews</div>
+          </article>
+
+          <article class="stat-card yellow">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="star" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Avg Score</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.avgSessionScore || 0">{{ formatNumber(stats?.avgSessionScore || 0, 1) }}</div>
+            <div class="stat-trend up">↗ across completed sessions</div>
+          </article>
+
+          <article class="stat-card teal">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="circle-question-mark" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Total Questions</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.totalQuestions || 0">{{ stats?.totalQuestions || 0 }}</div>
+            <div class="stat-trend up">{{ formatNumber(stats?.activeQuestions || 0) }} active</div>
+          </article>
+
+          <article class="stat-card orange">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="zap" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Top Streak</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.topStreakAllTime || 0">{{ stats?.topStreakAllTime || 0 }}</div>
+            <div class="stat-trend up">Best all-time performance</div>
+          </article>
+
+          <article class="stat-card pink">
+            <div class="stat-top">
+              <span class="stat-icon"><lucide-icon name="message-square" [size]="16" [strokeWidth]="2"></lucide-icon></span>
+              <span class="stat-label">Total Answers</span>
+            </div>
+            <div class="stat-number" [attr.data-count]="stats?.totalAnswers || 0">{{ stats?.totalAnswers || 0 }}</div>
+            <div class="stat-trend up">Answer volume across sessions</div>
+          </article>
+        </section>
+      }
+
+      @if (isSectionActive('analytics')) {
+        <section class="chart-grid-2">
+          <article class="chart-card">
+            <div class="chart-head">
+              <div>
+                <h2 class="section-title">Session Activity - Last {{ currentRangeDays }} Days</h2>
+                <p class="section-subtitle">Total vs completed interview sessions</p>
+              </div>
+              <div class="range-pills">
+                <button [class.active]="currentRangeDays === 7" (click)="onRangeChange(7)">7D</button>
+                <button [class.active]="currentRangeDays === 30" (click)="onRangeChange(30)">30D</button>
+                <button [class.active]="currentRangeDays === 90" (click)="onRangeChange(90)">90D</button>
+              </div>
+            </div>
+            <div class="chart-wrap chart-wrap-lg">
+              <canvas #sessionsLineCanvas></canvas>
+            </div>
+          </article>
+
+          <article class="chart-card">
+            <h2 class="section-title">Session Outcomes</h2>
+            <p class="section-subtitle">Completion balance by status</p>
+            <div class="chart-wrap chart-wrap-md">
+              <canvas #outcomeDonutCanvas></canvas>
+            </div>
+
+            <div class="outcome-legend">
+              <div><span class="dot green"></span>Completed <strong>{{ stats?.completedSessions || 0 }}</strong></div>
+              <div><span class="dot red"></span>Abandoned <strong>{{ stats?.abandonedSessions || 0 }}</strong></div>
+              <div><span class="dot blue"></span>In Progress <strong>{{ stats?.activeCandidatesNow || 0 }}</strong></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="chart-grid-2 two-equal">
+          <article class="chart-card">
+            <h2 class="section-title">Score Distribution</h2>
+            <p class="section-subtitle">How candidates score across all sessions</p>
+            <div class="chart-wrap chart-wrap-md">
+              <canvas #scoreDistributionCanvas></canvas>
+            </div>
+          </article>
+
+          <article class="chart-card">
+            <h2 class="section-title">Role Performance Comparison</h2>
+            <p class="section-subtitle">Avg score, completion, volume, and streak activity</p>
+            <div class="chart-wrap chart-wrap-md">
+              <canvas #roleRadarCanvas></canvas>
+            </div>
+          </article>
+        </section>
+      }
+
+      @if (isSectionActive('intelligence')) {
+        <section class="chart-card intelligence-card">
+          <div class="intel-header">
+            <h2 class="section-title">Question Intelligence</h2>
+            <div class="intel-tabs">
+              <button class="tab-pill" [class.active]="activeIntelligenceTab === 'most-asked'" (click)="onIntelligenceTabChange('most-asked')">Most Asked</button>
+              <button class="tab-pill" [class.active]="activeIntelligenceTab === 'hardest'" (click)="onIntelligenceTabChange('hardest')">Hardest</button>
+              <button class="tab-pill" [class.active]="activeIntelligenceTab === 'longest-answers'" (click)="onIntelligenceTabChange('longest-answers')">Longest Answers</button>
+              <button class="tab-pill" [class.active]="activeIntelligenceTab === 'best-performing'" (click)="onIntelligenceTabChange('best-performing')">Best Performing</button>
+            </div>
+          </div>
+
+          <div class="intel-list">
+            @for (row of intelligenceRows; track row.questionId; let i = $index) {
+              <div class="intel-row" [style.animationDelay.ms]="i * 50">
+                <div class="rank">{{ i + 1 }}</div>
+                <div class="intel-q-wrap">
+                  <div class="intel-q-text" [title]="row.questionText">{{ row.questionText }}</div>
+                  <div class="intel-meta">
+                    <span class="chip role">{{ row.roleType }}</span>
+                    <span class="chip type">{{ row.type }}</span>
+                  </div>
+                </div>
+                <div class="intel-value">{{ intelMetricLabel(row) }}</div>
+                <div class="intel-bar-container">
+                  <div class="intel-bar" [class]="intelBarClass()" [style.width.%]="intelBarWidth(row)"></div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="chart-grid-3">
+          <article class="chart-card">
+            <h2 class="section-title">By Question Type</h2>
+            <p class="section-subtitle">Behavioral, technical, situational, coding</p>
+            <div class="chart-wrap chart-wrap-sm">
+              <canvas #typeBarCanvas></canvas>
+            </div>
+          </article>
+
+          <article class="chart-card">
+            <h2 class="section-title">By Difficulty</h2>
+            <p class="section-subtitle">Score and response time by level</p>
+            <div class="difficulty-stack">
+              @for (item of byDifficulty; track item.difficulty) {
+                <div class="difficulty-row">
+                  <div class="difficulty-label">{{ item.difficulty }}</div>
+                  <div class="difficulty-bar-track">
+                    <div class="difficulty-bar" [style.width.%]="difficultyScorePct(item.avgScore)"></div>
+                  </div>
+                  <div class="difficulty-stats">{{ formatNumber(item.avgScore || 0, 1) }} / {{ formatNumber(item.avgTime || 0) }}s</div>
+                </div>
+              }
+            </div>
+          </article>
+
+          <article class="chart-card">
+            <h2 class="section-title">Question Coverage Heatmap</h2>
+            <p class="section-subtitle">Role x type active/inactive distribution</p>
+            <div class="heatmap-grid">
+              <div class="heatmap-header"></div>
+              @for (head of ['BEHAVIORAL','TECHNICAL','SITUATIONAL','CODING']; track head) {
+                <div class="heatmap-header">{{ head }}</div>
+              }
+
+              @for (row of coverageMatrix; track row.role) {
+                <div class="heatmap-header role">{{ row.role }}</div>
+                @for (cell of row.cells; track cell.type) {
+                  <div
+                    class="heatmap-cell"
+                    [style.opacity]="heatmapCellOpacity(cell.count)"
+                    [title]="heatmapCellTitle(cell)">
+                    {{ cell.count }}
+                  </div>
+                }
+              }
+            </div>
+          </article>
+        </section>
+      }
+
+      @if (isSectionActive('leaderboards')) {
+        <section class="leaderboard-grid">
+          <article class="chart-card">
+            <h2 class="section-title section-title-with-icon">
+              <lucide-icon name="star" [size]="15" [strokeWidth]="2"></lucide-icon>
+              Top Performers
+            </h2>
+            <div class="leaderboard-list">
+              @for (row of leaderboard; track row.userId; let i = $index) {
+                <div class="leaderboard-row" [class]="rankClass(i)">
+                  <div class="lb-rank">#{{ i + 1 }}</div>
+                  <div class="lb-user">User {{ row.userId }}</div>
+                  <div class="lb-score" [class]="badgeScoreClass(row.avgScore)">{{ formatNumber(row.avgScore || 0, 1) }}</div>
+                  <div class="lb-sessions">{{ row.totalSessions }} sessions</div>
+                  <div class="lb-role">{{ row.topRole }}</div>
+                </div>
+              }
+            </div>
+          </article>
+
+          <article class="chart-card">
+            <h2 class="section-title section-title-with-icon">
+              <lucide-icon name="zap" [size]="15" [strokeWidth]="2"></lucide-icon>
+              Streak Champions
+            </h2>
+            <div class="leaderboard-list">
+              @for (row of topStreaks; track row.userId; let i = $index) {
+                <div class="leaderboard-row" [class]="rankClass(i)">
+                  <div class="lb-rank">#{{ i + 1 }}</div>
+                  <div class="lb-user">User {{ row.userId }}</div>
+                  <div class="lb-fire">{{ streakBadge(row.currentStreak) }}</div>
+                  <div class="lb-sessions">{{ row.currentStreak }} day streak</div>
+                  <div class="lb-role">{{ row.totalSessions }} sessions</div>
+                </div>
+              }
+            </div>
+          </article>
+        </section>
+      }
+
+      @if (isSectionActive('questions')) {
+        <section class="chart-card question-bank-section">
+          <div class="qb-head">
+            <div>
+              <h2 class="section-title">Question Bank Management</h2>
+              <p class="section-subtitle">{{ totalQuestionCount }} questions · {{ stats?.activeQuestions || 0 }} active</p>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-left">
+              <label class="search-input">
+                <span class="search-icon"><lucide-icon name="search" [size]="14" [strokeWidth]="2"></lucide-icon></span>
+                <input
+                  type="text"
+                  [ngModel]="questionFilters.search"
+                  (ngModelChange)="onSearchInput($event)"
+                  placeholder="Search questions..." />
+              </label>
+            </div>
+
+            <div class="filter-right">
+              <div class="filters-label">Filters @if (activeFilterCount) { <span class="badge">{{ activeFilterCount }}</span> }</div>
+              <select [ngModel]="questionFilters.role" (ngModelChange)="questionFilters.role = $event; onFilterChange()">
+                <option value="">All Roles</option>
+                <option value="SE">SE</option>
+                <option value="CLOUD">Cloud</option>
+                <option value="AI">AI</option>
+                <option value="ALL">All</option>
+              </select>
+              <select [ngModel]="questionFilters.type" (ngModelChange)="questionFilters.type = $event; onFilterChange()">
+                <option value="">All Types</option>
+                <option value="BEHAVIORAL">Behavioral</option>
+                <option value="TECHNICAL">Technical</option>
+                <option value="SITUATIONAL">Situational</option>
+                <option value="CODING">Coding</option>
+              </select>
+              <select [ngModel]="questionFilters.difficulty" (ngModelChange)="questionFilters.difficulty = $event; onFilterChange()">
+                <option value="">All Difficulty</option>
+                <option value="BEGINNER">Beginner</option>
+                <option value="INTERMEDIATE">Intermediate</option>
+                <option value="ADVANCED">Advanced</option>
+              </select>
+              <select [ngModel]="questionFilters.active" (ngModelChange)="questionFilters.active = $event; onFilterChange()">
+                <option value="">All Status</option>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+              @if (activeFilterCount) {
+                <button type="button" class="link-btn" (click)="clearFilters()">Clear Filters</button>
+              }
+            </div>
+          </div>
+
+          <div class="role-cards-row">
+            @for (card of roleCards; track card.key) {
+              <article class="role-card" [class]="card.className" [class.active]="selectedRoleFilter === card.key" (click)="applyRoleCardFilter(card.key)">
+                <div class="role-icon"><lucide-icon [name]="card.icon" [size]="30" [strokeWidth]="2"></lucide-icon></div>
+                <div>
+                  <h3>{{ card.title }}</h3>
+                  <p>{{ card.subtitle }}</p>
+                </div>
+              </article>
+            }
+          </div>
+
+          <div class="table-wrap">
+            <table class="question-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Question</th>
+                  <th>Role</th>
+                  <th>Type</th>
+                  <th>Difficulty</th>
+                  <th>Asked</th>
+                  <th>Avg Score</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (question of questions; track question.id; let i = $index) {
+                  <tr class="question-row" [class.expanded]="expandedQuestionId === question.id">
+                    <td>{{ (questionPage * questionPageSize) + i + 1 }}</td>
+                    <td>
+                      <div class="q-text" [title]="question.questionText">{{ question.questionText }}</div>
+                    </td>
+                    <td><span class="role-pill">{{ question.roleType }}</span></td>
+                    <td><span class="type-pill">{{ question.type }}</span></td>
+                    <td><span class="dots">{{ difficultyDots(question.difficulty) }}</span></td>
+                    <td>
+                      <div class="asked-wrap">
+                        <span>{{ askedCountForQuestion(question.id) }}</span>
+                        <div class="asked-mini"><div [style.width.%]="askedMiniWidth(question.id)"></div></div>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="score-chip" [class]="badgeScoreClass(avgScoreForQuestion(question.id))">
+                        {{ formatNumber(avgScoreForQuestion(question.id), 1) }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="status-pill" [class.inactive]="!question.active">{{ question.active ? 'Active' : 'Inactive' }}</span>
+                    </td>
+                    <td>
+                      <div class="row-actions">
+                        <button type="button" (click)="openEditDrawer(question)"><lucide-icon name="square-pen" [size]="14" [strokeWidth]="2"></lucide-icon></button>
+                        <button type="button" (click)="toggleQuestionExpand(question.id)"><lucide-icon name="eye" [size]="14" [strokeWidth]="2"></lucide-icon></button>
+                        <button type="button" (click)="toggleQuestionActive(question)"><lucide-icon name="refresh-cw" [size]="14" [strokeWidth]="2"></lucide-icon></button>
+                        <button type="button" (click)="softDeleteQuestion(question)"><lucide-icon name="trash-2" [size]="14" [strokeWidth]="2"></lucide-icon></button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  @if (expandedQuestionId === question.id) {
+                    <tr class="expanded-row">
+                      <td colspan="9">
+                        <div class="expanded-card">
+                          <div class="expanded-grid">
+                            <div>
+                              <h4>Full Question</h4>
+                              <p>{{ question.questionText }}</p>
+                            </div>
+                            <div>
+                              <h4>Expected Points</h4>
+                              <p>{{ question.expectedPoints || '—' }}</p>
+                            </div>
+                            <div>
+                              <h4>Follow-Ups</h4>
+                              <p>{{ question.followUps || '—' }}</p>
+                            </div>
+                            <div>
+                              <h4>Hints</h4>
+                              <p>{{ question.hints || '—' }}</p>
+                            </div>
+                            <div>
+                              <h4>Ideal Answer</h4>
+                              <p>{{ question.idealAnswer || '—' }}</p>
+                            </div>
+                            <div>
+                              <h4>Sample Code</h4>
+                              <pre>{{ question.sampleCode || '—' }}</pre>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }
+
+                @if (!questions.length) {
+                  <tr>
+                    <td colspan="9" class="empty-table">No questions found for current filters.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <div>Showing {{ pageStart }}-{{ pageEnd }} of {{ totalQuestionCount }} questions</div>
+            <div class="pager">
+              <button type="button" [disabled]="questionPage <= 0" (click)="goToPage(questionPage - 1)">Prev</button>
+              @for (p of pageNumbers; track p) {
+                <button type="button" [class.active]="p === questionPage" (click)="goToPage(p)">{{ p + 1 }}</button>
+              }
+              <button type="button" [disabled]="questionPage >= totalQuestionPages - 1" (click)="goToPage(questionPage + 1)">Next</button>
+            </div>
+          </div>
+        </section>
+      }
+    }
+  </main>
+
+  <div class="drawer-overlay" [class.visible]="drawerOpen" (click)="closeDrawer()"></div>
+
+  <aside class="question-drawer" [class.open]="drawerOpen">
+    <div class="drawer-header">
+      <h3>{{ drawerMode === 'add' ? 'Add Question' : 'Edit Question' }}</h3>
+      <button type="button" class="close-btn" (click)="closeDrawer()">✕</button>
+    </div>
+
+    <div class="drawer-content">
+      <label class="form-label">
+        <span>Question Text *</span>
+        <textarea
+          rows="4"
+          [ngModel]="questionForm.questionText"
+          (ngModelChange)="questionForm.questionText = $event"
+          placeholder="Write the interview question here..."></textarea>
+        <small>{{ questionForm.questionText.length }} / 500</small>
+      </label>
+
+      <div class="segmented">
+        <label>Role Type *</label>
+        <div class="seg-pills">
+          @for (role of ['ALL', 'SE', 'CLOUD', 'AI']; track role) {
+            <button type="button" [class.active]="questionForm.roleType === role" (click)="questionForm.roleType = $any(role)">{{ role }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="segmented">
+        <label>Question Type *</label>
+        <div class="seg-pills">
+          @for (type of ['BEHAVIORAL', 'TECHNICAL', 'SITUATIONAL', 'CODING']; track type) {
+            <button type="button" [class.active]="questionForm.type === type" (click)="questionForm.type = $any(type)">{{ type }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="segmented">
+        <label>Difficulty *</label>
+        <div class="seg-pills">
+          @for (difficulty of ['BEGINNER', 'INTERMEDIATE', 'ADVANCED']; track difficulty) {
+            <button type="button" [class.active]="questionForm.difficulty === difficulty" (click)="questionForm.difficulty = $any(difficulty)">{{ difficulty }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="form-grid two-col">
+        <label class="form-label">
+          <span>Career Path ID *</span>
+          <input type="number" [ngModel]="questionForm.careerPathId" (ngModelChange)="questionForm.careerPathId = +$event" />
+        </label>
+
+        <label class="form-label">
+          <span>Domain</span>
+          <input type="text" [ngModel]="questionForm.domain" (ngModelChange)="questionForm.domain = $event" placeholder="algorithms, cloud-aws..." />
+        </label>
+      </div>
+
+      <label class="form-label">
+        <span>Category</span>
+        <input type="text" [ngModel]="questionForm.category" (ngModelChange)="questionForm.category = $event" placeholder="arrays, networking..." />
+      </label>
+
+      <div class="chips-field">
+        <label>Expected Points</label>
+        <div class="chips-wrap">
+          @for (chip of questionForm.expectedPoints; track chip; let i = $index) {
+            <span class="chip-tag">{{ chip }} <button type="button" (click)="removeChip('expectedPoints', i)">×</button></span>
+          }
+        </div>
+        <input type="text" [(ngModel)]="chipDrafts.expectedPoints" (keydown)="onChipInputKeydown($event, 'expectedPoints')" placeholder="Type and press Enter" />
+      </div>
+
+      <div class="chips-field">
+        <label>Follow-Up Questions</label>
+        <div class="chips-wrap">
+          @for (chip of questionForm.followUps; track chip; let i = $index) {
+            <span class="chip-tag">{{ chip }} <button type="button" (click)="removeChip('followUps', i)">×</button></span>
+          }
+        </div>
+        <input type="text" [(ngModel)]="chipDrafts.followUps" (keydown)="onChipInputKeydown($event, 'followUps')" placeholder="Type and press Enter" />
+      </div>
+
+      <div class="chips-field">
+        <label>Hints</label>
+        <div class="chips-wrap">
+          @for (chip of questionForm.hints; track chip; let i = $index) {
+            <span class="chip-tag">{{ chip }} <button type="button" (click)="removeChip('hints', i)">×</button></span>
+          }
+        </div>
+        <input type="text" [(ngModel)]="chipDrafts.hints" (keydown)="onChipInputKeydown($event, 'hints')" placeholder="Type and press Enter" />
+      </div>
+
+      <label class="form-label">
+        <span>Ideal Answer</span>
+        <textarea rows="4" [ngModel]="questionForm.idealAnswer" (ngModelChange)="questionForm.idealAnswer = $event" placeholder="Describe what an ideal answer looks like..."></textarea>
+      </label>
+
+      @if (questionForm.type === 'CODING') {
+        <label class="form-label">
+          <span>Sample Code</span>
+          <textarea rows="6" class="mono" [ngModel]="questionForm.sampleCode" (ngModelChange)="questionForm.sampleCode = $event" placeholder="public class Main { ... }"></textarea>
+        </label>
+      }
+
+      <label class="toggle-row">
+        <input type="checkbox" [checked]="questionForm.isActive" (change)="questionForm.isActive = $any($event.target).checked" />
+        <span>Question is active</span>
+      </label>
+
+      @if (formError) {
+        <p class="form-error">{{ formError }}</p>
+      }
+      @if (formWarning) {
+        <p class="form-warning">{{ formWarning }}</p>
+      }
+      @if (codingNoSampleWarning) {
+        <p class="form-warning">Coding questions work best with starter code.</p>
+      }
+    </div>
+
+    <div class="drawer-footer">
+      <button type="button" class="btn btn-outline" (click)="closeDrawer()">Cancel</button>
+      @if (drawerMode === 'edit') {
+        <button type="button" class="btn btn-danger" (click)="deleteQuestion()">Delete</button>
+      }
+      <button type="button" class="btn btn-primary" [disabled]="isSavingQuestion" (click)="saveQuestion()">
+        {{ isSavingQuestion ? 'Saving...' : (drawerMode === 'edit' ? 'Save Changes' : 'Save Question') }}
+      </button>
+    </div>
+  </aside>
+
+  @if (toastMessage) {
+    <div class="toast">{{ toastMessage }}</div>
+  }
+</div>

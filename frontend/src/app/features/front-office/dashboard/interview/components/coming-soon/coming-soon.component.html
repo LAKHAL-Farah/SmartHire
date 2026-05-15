@@ -1,0 +1,26 @@
+<section class="coming-soon-shell">
+  <article class="coming-soon-card">
+    <div class="hero-icon" [class]="iconClass">{{ icon }}</div>
+
+    <h2 class="title">Coming Soon</h2>
+
+    <span class="role-badge" [class]="roleBadgeClass">{{ role }}</span>
+
+    <p class="feature-text">{{ feature }}</p>
+
+    <div class="progress-wrap">
+      <p class="progress-label">In Development</p>
+      <div class="progress-track">
+        <div class="progress-fill" [class]="progressClass" [style.width.%]="progress"></div>
+      </div>
+    </div>
+
+    <div class="preview-list">
+      @for (item of previewItems; track item) {
+        <div class="preview-item">{{ item }}</div>
+      }
+    </div>
+
+    <p class="bottom-text">Behavioral and Technical questions are fully available</p>
+  </article>
+</section>

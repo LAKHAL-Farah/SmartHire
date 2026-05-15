@@ -1,0 +1,89 @@
+@use '../../../dashboard/profile-optimizer/po-design-tokens' as po;
+
+:host {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.po-toast-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.po-toast {
+  @include po.po-glass;
+  min-width: 280px;
+  border-radius: 12px;
+  padding: 14px 18px;
+  position: relative;
+  overflow: hidden;
+  pointer-events: auto;
+  transform: translateX(0);
+  animation: toast-enter 250ms ease-out;
+}
+
+.po-toast--success {
+  border-left: 4px solid var(--po-score-high);
+}
+
+.po-toast--error {
+  border-left: 4px solid var(--po-score-low);
+}
+
+.po-toast--info {
+  border-left: 4px solid var(--po-accent-teal);
+}
+
+.po-toast__dismiss {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--po-text-muted);
+  cursor: pointer;
+}
+
+.po-toast__body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--po-text-primary);
+  font-size: var(--po-text-sm);
+}
+
+.po-toast__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--po-gradient-primary);
+  transform-origin: left center;
+  animation: toast-progress 3s linear forwards;
+}
+
+@keyframes toast-enter {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}

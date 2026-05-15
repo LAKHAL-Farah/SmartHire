@@ -1,0 +1,42 @@
+<div class="auth-layout">
+  <div class="auth-layout__left">
+    <app-auth-left-panel></app-auth-left-panel>
+  </div>
+
+  <div class="auth-layout__right">
+    <div class="auth-form-card">
+      <div class="auth-form-card__header">
+        <h1 class="auth-form-card__title">Connexion sécurisée</h1>
+        <p class="auth-form-card__subtitle">Veuillez vous authentifier pour continuer — utilisez votre mot de passe ou la méthode MFA configurée.</p>
+      </div>
+
+      <form class="auth-form" (ngSubmit)="onLogin()">
+        <div *ngIf="error" class="auth-error">{{ error }}</div>
+
+        <div class="form-field">
+          <label class="form-field__label">Nom d'utilisateur</label>
+          <input class="form-field__input" [(ngModel)]="username" name="username" required />
+        </div>
+
+        <div class="form-field">
+          
+          <label class="form-field__label">Mot de passe</label>
+          <input class="form-field__input" [(ngModel)]="password" name="password" type="password" required />
+        </div>
+
+        <button class="auth-submit-btn" type="submit" [disabled]="loading">
+          <span *ngIf="loading" class="auth-submit-btn__spinner"></span>
+          Se connecter
+        </button>
+      </form>
+
+      <p class="auth-form-card__footer">
+        <a routerLink="/forgot-password" class="auth-link">Mot de passe oublié?</a>
+        <span style="margin:0 8px;color:var(--muted,#6b7280)">·</span>
+        <br>
+        Vous n'avez pas de compte?
+        <a routerLink="/register" class="auth-link">S'inscrire</a>
+      </p>
+    </div>
+  </div>
+</div>

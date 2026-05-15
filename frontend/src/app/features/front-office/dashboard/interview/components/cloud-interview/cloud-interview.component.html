@@ -1,0 +1,283 @@
+<div class="three-panel">
+  <aside
+    class="left-panel"
+    cdkDropList
+    id="paletteDropList"
+    [cdkDropListData]="paletteComponents"
+    [cdkDropListConnectedTo]="['cloudCanvasDropList']"
+    [cdkDropListSortingDisabled]="true"
+  >
+    <div class="panel-label">SCENARIO</div>
+    <div class="scenario-block">
+      {{ metadata?.scenario || question?.questionText || 'Design your architecture based on the interview prompt.' }}
+    </div>
+
+    <div class="panel-label panel-label--spaced">DRAG TO CANVAS</div>
+
+    <div class="palette-group">
+      <h4 class="palette-group-header palette-group-header--compute">⚡ Compute</h4>
+      @for (component of getGroupComponents('compute'); track component.type) {
+        <div
+          class="palette-item"
+          cdkDrag
+          [cdkDragData]="component"
+          [attr.data-type]="component.type"
+        >
+          <span class="palette-item__icon">{{ component.icon }}</span>
+          <span class="palette-item__label">{{ component.label }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="palette-group">
+      <h4 class="palette-group-header palette-group-header--network">🌐 Network</h4>
+      @for (component of getGroupComponents('network'); track component.type) {
+        <div
+          class="palette-item"
+          cdkDrag
+          [cdkDragData]="component"
+          [attr.data-type]="component.type"
+        >
+          <span class="palette-item__icon">{{ component.icon }}</span>
+          <span class="palette-item__label">{{ component.label }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="palette-group">
+      <h4 class="palette-group-header palette-group-header--storage">💾 Storage</h4>
+      @for (component of getGroupComponents('storage'); track component.type) {
+        <div
+          class="palette-item"
+          cdkDrag
+          [cdkDragData]="component"
+          [attr.data-type]="component.type"
+        >
+          <span class="palette-item__icon">{{ component.icon }}</span>
+          <span class="palette-item__label">{{ component.label }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="palette-group">
+      <h4 class="palette-group-header palette-group-header--devops">🔧 DevOps</h4>
+      @for (component of getGroupComponents('devops'); track component.type) {
+        <div
+          class="palette-item"
+          cdkDrag
+          [cdkDragData]="component"
+          [attr.data-type]="component.type"
+        >
+          <span class="palette-item__icon">{{ component.icon }}</span>
+          <span class="palette-item__label">{{ component.label }}</span>
+        </div>
+      }
+    </div>
+  </aside>
+
+  <section class="center-panel">
+    <header class="canvas-top-bar">
+      <div class="canvas-title">🏗️ Infrastructure Designer</div>
+
+      <div class="canvas-controls">
+        <button type="button" class="canvas-control-btn" (click)="clearCanvas()">Clear Canvas</button>
+        <button type="button" class="canvas-control-btn" (click)="autoLayout()">Auto Layout</button>
+      </div>
+
+      <div class="canvas-count">{{ canvasNodes.length }} components · {{ canvasEdges.length }} connections</div>
+    </header>
+
+    <div
+      #canvasEl
+      class="canvas-drop-zone"
+      cdkDropList
+      id="cloudCanvasDropList"
+      [cdkDropListData]="canvasNodes"
+      [cdkDropListConnectedTo]="['paletteDropList']"
+      [cdkDropListSortingDisabled]="true"
+      [cdkDropListEnterPredicate]="canEnterCanvas"
+      [class.connecting-mode]="!!connectingFrom"
+      (cdkDropListDropped)="onDrop($event)"
+      (mousemove)="onCanvasMouseMove($event)"
+      (click)="onCanvasClick()"
+    >
+      @if (!canvasNodes.length) {
+        <div class="canvas-empty-state">← Drag components here to build your architecture</div>
+      }
+
+      <svg class="canvas-svg" xmlns="http://www.w3.org/2000/svg">
+        @for (edge of canvasEdges; track edge.id) {
+          <path
+            class="edge-path"
+            [class.edge-path--selected]="selectedEdgeId === edge.id"
+            [attr.d]="getEdgePath(edge)"
+          ></path>
+        }
+
+        @if (connectingFrom) {
+          <path class="edge-preview" [attr.d]="previewPath"></path>
+        }
+      </svg>
+
+      @for (node of canvasNodes; track node.id) {
+        <article
+          [ngClass]="['canvas-node', node.group]"
+          [style.left.px]="node.x"
+          [style.top.px]="node.y"
+          cdkDrag
+          cdkDragBoundary=".canvas-drop-zone"
+          (click)="connectToNode(node.id, $event)"
+          (cdkDragEnded)="onNodeDragEnded(node, $event)"
+        >
+          <div class="node-accent"></div>
+          <button class="node-delete" type="button" (click)="removeNode(node.id, $event)">✕</button>
+          <span class="node-icon">{{ node.icon }}</span>
+          <span class="node-label">{{ node.label }}</span>
+
+          <button
+            class="connect-handle connect-handle--right"
+            type="button"
+            title="Start connection"
+            (mousedown)="onHandleMouseDown($event)"
+            (click)="startConnecting(node.id, $event)"
+          ></button>
+          <button
+            class="connect-handle connect-handle--bottom"
+            type="button"
+            title="Start connection"
+            (mousedown)="onHandleMouseDown($event)"
+            (click)="startConnecting(node.id, $event)"
+          ></button>
+        </article>
+      }
+    </div>
+  </section>
+
+  <aside class="right-panel">
+    <section class="panel-section">
+      <h3 class="panel-label">REQUIREMENTS</h3>
+      <p class="panel-subtitle">Your design must include:</p>
+
+      @for (req of requirements; track req.key) {
+        <div class="requirement-row">
+          <span class="req-check" [class.met]="requirementsStatus[req.key]">
+            @if (requirementsStatus[req.key]) {
+              ✓
+            }
+          </span>
+
+          <div class="req-content">
+            <span class="req-label" [class.req-label--met]="requirementsStatus[req.key]">{{ req.label }}</span>
+            @if (req.required) {
+              <span class="req-required">*</span>
+            } @else {
+              <span class="req-bonus">(bonus)</span>
+            }
+          </div>
+        </div>
+      }
+
+      <p [class]="metCountClass">{{ metCount }} of {{ totalCount }} requirements met</p>
+    </section>
+
+    <section class="panel-section">
+      <h3 class="panel-label">ESTIMATED SCORE</h3>
+      <div class="estimated-score" [style.color]="estimatedScoreColor">{{ estimatedScore }}%</div>
+      <p class="score-help">Complete your design and submit for AI evaluation</p>
+    </section>
+
+    <button
+      type="button"
+      class="submit-architecture-btn"
+      [disabled]="canvasNodes.length < 2 || isSubmitting"
+      (click)="submitDiagram()"
+    >
+      @if (isSubmitting) {
+        Submitting...
+      } @else {
+        Submit Architecture
+      }
+    </button>
+
+    @if (canvasNodes.length < 2) {
+      <p class="submit-hint">Add at least 2 components to submit</p>
+    }
+
+    @if (architectureScore) {
+      <section class="panel-section ai-score-panel">
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="score-ring-bg" cx="60" cy="60" [attr.r]="scoreRingRadius"></circle>
+            <circle
+              class="score-ring-progress"
+              cx="60"
+              cy="60"
+              [attr.r]="scoreRingRadius"
+              [attr.stroke]="scoreStrokeColor"
+              [attr.stroke-dasharray]="scoreRingCircumference"
+              [attr.stroke-dashoffset]="scoreRingOffset"
+            ></circle>
+          </svg>
+          <div class="score-ring-value">{{ animatedScorePercent }}%</div>
+        </div>
+
+        <article class="feedback-card feedback-card--strengths">
+          <h4>✓ Strengths</h4>
+          <p>{{ architectureScore.feedback.strengths }}</p>
+        </article>
+
+        <article class="feedback-card feedback-card--weaknesses">
+          <h4>⚠ Weaknesses</h4>
+          <p>{{ architectureScore.feedback.weaknesses }}</p>
+        </article>
+
+        <article class="feedback-card feedback-card--recommendations">
+          <h4>💡 Recommendations</h4>
+          <p>{{ architectureScore.feedback.recommendations }}</p>
+        </article>
+
+        <div class="ai-req-status">
+          <h4 class="panel-subtitle">Requirements Status</h4>
+          @for (req of requirements; track req.key) {
+            <div class="ai-req-row">
+              <span class="ai-req-check" [class.ai-req-check--met]="isRequirementMetByAi(req.key)">
+                {{ isRequirementMetByAi(req.key) ? '✓' : '✗' }}
+              </span>
+              <span>{{ req.label }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    @if (showExplanationPanel) {
+      <section class="panel-section explanation-panel">
+        <h3 class="explanation-title">🎤 Explain Your Design</h3>
+        <p class="score-help">The AI will consider your explanation in the final score</p>
+
+        <textarea
+          class="explanation-textarea"
+          rows="6"
+          placeholder="Describe your architecture decisions, trade-offs, and how this design meets the requirements..."
+          [(ngModel)]="explanation"
+        ></textarea>
+
+        <app-mic-button (audioReady)="onExplanationAudio($event)"></app-mic-button>
+        <p class="mic-hint">or speak your explanation</p>
+
+        <button
+          type="button"
+          class="submit-explanation-btn"
+          [disabled]="!explanation.trim() || isSubmittingExplanation"
+          (click)="submitExplanation()"
+        >
+          @if (isSubmittingExplanation) {
+            Submitting Explanation...
+          } @else {
+            Submit Explanation
+          }
+        </button>
+      </section>
+    }
+  </aside>
+</div>

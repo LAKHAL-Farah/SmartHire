@@ -1,0 +1,83 @@
+<div class="arv">
+  <a routerLink="/dashboard/assessments" class="arv__back">
+    <lucide-icon name="arrow-left" [size]="16"></lucide-icon>
+    Back to skill assessments
+  </a>
+
+  @if (errorMsg(); as err) {
+    <div class="arv__alert" role="alert">{{ err }}</div>
+  }
+
+  @if (loading()) {
+    <p class="arv__loading">Loading your results…</p>
+  }
+
+  @if (result(); as r) {
+    <header class="arv__head">
+      <div class="arv__head-text">
+        <span class="arv__badge">{{ r.session.categoryTitle }}</span>
+        <h1 class="arv__title">Your results</h1>
+        <p class="arv__meta">
+          Completed {{ r.session.completedAt | date: 'medium' }}
+          @if (r.session.topicTag) {
+            <span class="arv__topic">{{ r.session.topicTag }}</span>
+          }
+        </p>
+      </div>
+      @if (r.session.scorePercent != null) {
+        <div class="arv__score-ring" aria-label="Score">
+          <svg viewBox="0 0 120 120" class="arv__ring-svg">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10" />
+            <circle
+              cx="60"
+              cy="60"
+              r="52"
+              fill="none"
+              stroke="var(--arv-accent, #2ee8a5)"
+              stroke-width="10"
+              stroke-linecap="round"
+              [attr.stroke-dasharray]="326.73"
+              [attr.stroke-dashoffset]="326.73 * (1 - r.session.scorePercent / 100)"
+              style="transform: rotate(-90deg); transform-origin: 60px 60px"
+            />
+          </svg>
+          <span class="arv__score-val">{{ r.session.scorePercent }}%</span>
+        </div>
+      }
+    </header>
+
+    @if (r.session.adminFeedback) {
+      <section class="arv__feedback" aria-label="Feedback from reviewer">
+        <h2 class="arv__feedback-title">Feedback from your reviewer</h2>
+        <p class="arv__feedback-text">{{ r.session.adminFeedback }}</p>
+      </section>
+    } @else if (r.session.scorePercent != null && r.session.scoreReleased) {
+      <p class="arv__feedback-none">Your reviewer did not add written feedback for this attempt.</p>
+    }
+
+    <section class="arv__answers" aria-label="Question by question">
+      <h2 class="arv__sub">Review</h2>
+      <ul class="arv__list">
+        @for (a of r.answers; track a.questionId) {
+          <li class="arv-row" [class.arv-row--ok]="a.correct" [class.arv-row--bad]="!a.correct">
+            <div class="arv-row__top">
+              <span class="arv-row__pts">{{ a.pointsEarned }} / {{ a.questionPoints }} pts</span>
+              <span class="arv-row__diff">{{ a.difficulty }}</span>
+            </div>
+            <p class="arv-row__prompt">{{ a.prompt }}</p>
+            <div class="arv-row__pick">
+              <span class="arv-row__lbl">Your answer</span>
+              <span class="arv-row__text">{{ a.selectedLabel }}</span>
+            </div>
+            @if (!a.correct) {
+              <div class="arv-row__correct">
+                <span class="arv-row__lbl">Correct</span>
+                <span class="arv-row__text">{{ a.correctLabel }}</span>
+              </div>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</div>

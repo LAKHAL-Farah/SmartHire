@@ -1,0 +1,12 @@
+<section class="stats" #statsSection>
+  <div class="section-container">
+    <div class="stats__grid">
+      @for (stat of stats; track stat.label) {
+        <div class="stats__item">
+          <span class="stats__value" #statValue [attr.data-target]="stat.value" [attr.data-suffix]="stat.suffix" [attr.data-prefix]="stat.prefix">0{{ stat.suffix }}</span>
+          <span class="stats__label">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</section>

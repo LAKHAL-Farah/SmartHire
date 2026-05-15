@@ -1,0 +1,147 @@
+<div class="step">
+  <h1 class="step__headline">
+    Here's your <span class="step__gradient">AI profile</span>
+  </h1>
+  <p class="step__sub">Based on your answers, here's where you stand and where to go next.</p>
+
+  <div class="result-grid">
+    <!-- LEFT: Radar + Bars -->
+    <div class="result-card result-card--radar">
+      <span class="result-card__label">Skill Breakdown</span>
+
+      <!-- Radar chart SVG -->
+      <div class="radar-wrap">
+        <svg viewBox="0 0 300 260" class="radar-svg">
+          <defs>
+            <linearGradient id="radarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2ee8a5" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#10b981" stop-opacity="0.08"/>
+            </linearGradient>
+            <linearGradient id="radarStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2ee8a5"/>
+              <stop offset="100%" stop-color="#10b981"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Grid rings -->
+          @for (ring of [0.33, 0.66, 1]; track ring) {
+            <polygon
+              [attr.points]="getHexPoints(150, 125, 100 * ring)"
+              fill="none"
+              stroke="rgba(255,255,255,0.05)"
+              stroke-width="1"
+            />
+          }
+
+          <!-- Axis lines -->
+          @for (i of axisIndices; track i) {
+            <line
+              x1="150" y1="125"
+              [attr.x2]="getAxisPoint(i, 100).x"
+              [attr.y2]="getAxisPoint(i, 100).y"
+              stroke="rgba(255,255,255,0.04)"
+              stroke-width="1"
+            />
+          }
+
+          <!-- Data polygon -->
+          <polygon
+            [attr.points]="dataPoints() || ''"
+            fill="url(#radarGrad)"
+            stroke="url(#radarStroke)"
+            stroke-width="1.5"
+          />
+
+          <!-- Data dots -->
+          @for (skill of skills(); track skill.name; let i = $index) {
+            <circle
+              [attr.cx]="getAxisPoint(i, skill.score).x"
+              [attr.cy]="getAxisPoint(i, skill.score).y"
+              r="3.5"
+              fill="#2ee8a5"
+            />
+          }
+
+          <!-- Labels -->
+          @for (skill of skills(); track skill.name; let i = $index) {
+            <text
+              [attr.x]="getAxisPoint(i, 118).x"
+              [attr.y]="getAxisPoint(i, 118).y"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              fill="#6b6b80"
+              font-size="10.5"
+              font-family="Inter, sans-serif"
+            >{{ skill.name }}</text>
+          }
+        </svg>
+      </div>
+
+      <!-- Bar rows -->
+      <div class="skill-bars">
+        @for (skill of skills(); track skill.name) {
+          <div class="skill-bar-row">
+            <span class="skill-bar-row__name">{{ skill.name }}</span>
+            <div class="skill-bar-row__track">
+              <div class="skill-bar-row__fill" [style.width.%]="skill.score"></div>
+            </div>
+            <span class="skill-bar-row__pct">{{ skill.score }}%</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- RIGHT: stacked cards -->
+    <div class="result-right">
+      <!-- Readiness -->
+      <div class="result-card result-card--readiness">
+        <span class="result-card__label">Overall Readiness</span>
+        <span class="readiness-score">{{ readinessPct() }}%</span>
+        <p class="readiness-text">
+          @if (situation(); as sit) {
+            Based on your profile as <strong>{{ sit }}</strong>, SmartHire will adapt quiz and coding difficulty as you progress.
+          } @else {
+            You have a measurable baseline. Complete assessments to refine adaptive difficulty and your development plan.
+          }
+        </p>
+      </div>
+
+      <!-- Best match -->
+      <div class="result-card result-card--match">
+        <div class="match-top-line"></div>
+        <span class="result-card__label result-card__label--teal">Best Career Match</span>
+        <span class="match-title">{{ matchTitle() }}</span>
+        <div class="match-compat">
+          <span class="match-pct">{{ readinessPct() }}%</span>
+          <span class="match-label">compatibility</span>
+        </div>
+        <div class="match-tags">
+          <span class="match-tag">TypeScript</span>
+          <span class="match-tag">React</span>
+          <span class="match-tag">CSS</span>
+          <span class="match-tag">Testing</span>
+          <span class="match-tag">Git</span>
+        </div>
+      </div>
+
+      <!-- Next steps -->
+      <div class="result-card result-card--steps">
+        <span class="result-card__label">Your Next Steps</span>
+        <div class="next-steps-list">
+          @for (ns of nextSteps; track ns.num) {
+            <a class="next-step-item next-step-item--link" [routerLink]="ns.link">
+              <span class="next-step-item__num">{{ ns.num }}</span>
+              <span class="next-step-item__text">{{ ns.text }}</span>
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <a class="cta-btn" routerLink="/dashboard/roadmap">
+        Open roadmap
+        <lucide-icon name="arrow-right" [size]="16"></lucide-icon>
+      </a>
+    </div>
+  </div>
+</div>

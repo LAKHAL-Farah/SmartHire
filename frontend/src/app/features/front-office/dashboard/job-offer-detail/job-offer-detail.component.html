@@ -1,0 +1,184 @@
+<section class="po-job-offer-detail" [ngClass]="themeClass()">
+  <header class="po-header">
+    <div>
+      <p class="po-breadcrumb">Optimizer / Job Offers / {{ offer()?.title || 'Job Offer' }}</p>
+      <button type="button" class="po-link po-link--back" (click)="back()">
+        <lucide-icon name="chevron-left" [size]="14"></lucide-icon>
+        <span>Back to Job Offers</span>
+      </button>
+      <h1><span class="po-dot"></span>{{ offer()?.title || 'Job Offer' }}</h1>
+      <p class="po-company">{{ offer()?.company || 'Unknown company' }}</p>
+      @if (offer()?.sourceUrl) {
+        <a class="po-link" [href]="offer()?.sourceUrl" target="_blank" rel="noreferrer">Source link</a>
+      }
+    </div>
+    <button type="button" class="po-delete" [disabled]="deleting()" (click)="deleteOffer()" title="Delete offer" aria-label="Delete offer">
+      <lucide-icon name="trash-2" [size]="14"></lucide-icon>
+    </button>
+  </header>
+
+  @if (error()) {
+    <p class="po-error">{{ error() }}</p>
+  }
+
+  <section class="po-grid">
+    <main class="po-left">
+      <article class="po-card">
+        <h2><lucide-icon name="file-text" [size]="15"></lucide-icon> Job Description</h2>
+        <p class="po-description">{{ offer()?.rawDescription || '' }}</p>
+      </article>
+
+      <article class="po-card po-card--accent">
+        <h2><lucide-icon name="target" [size]="15"></lucide-icon> Key Requirements</h2>
+        <p class="po-highlight">{{ keywords().length }} keywords extracted</p>
+        @if (!keywords().length) {
+          <p class="po-muted">Keywords not yet extracted</p>
+          <button type="button" class="po-btn po-btn--ghost" (click)="extractKeywords()">Extract now</button>
+        } @else {
+          <div class="po-chip-list">
+            @for (keyword of keywords(); track keyword; let idx = $index) {
+              <span><small>{{ idx + 1 }}</small>{{ keyword }}</span>
+            }
+          </div>
+        }
+      </article>
+    </main>
+
+    <aside class="po-right">
+      <article class="po-card po-card--accent">
+        <h2><lucide-icon name="layers" [size]="15"></lucide-icon> Select CV to Tailor</h2>
+        <p class="po-muted">Choose which CV to optimize for this role</p>
+
+        @if (!parsedCvs().length) {
+          <p class="po-muted">No parsed CVs available</p>
+          <a class="po-link" routerLink="/dashboard/cv-manager">Upload and parse a CV first</a>
+        } @else {
+          <div class="po-cv-list">
+            @for (cv of parsedCvs(); track cv.id) {
+              <button type="button" class="po-cv-row" [class.po-cv-row--selected]="selectedCvId() === cv.id" (click)="selectCv(cv.id)">
+                <div class="po-cv-main">
+                  <strong>{{ cv.originalFileName }}</strong>
+                  <small>{{ cv.uploadedAt | date:'MMM d, y' }}</small>
+                </div>
+                <div class="po-cv-meta">
+                  <span [ngClass]="'po-score-pill po-score-pill--' + scoreTone(cv.atsScore)">{{ scoreDisplay('cv-' + cv.id, cv.atsScore) }}</span>
+                  @if (activeCvService.isActive(cv.id)) {
+                    <span class="po-active-pill">ACTIVE</span>
+                  }
+                </div>
+              </button>
+            }
+          </div>
+        }
+      </article>
+
+      <article class="po-card po-card--ready">
+        @if (tailorState() === 'idle') {
+          <div class="po-ready-box">
+            <h3>Ready to tailor</h3>
+            <p>{{ selectedCvName() }} for {{ offer()?.title || 'this role' }}</p>
+          </div>
+          <button type="button" class="po-btn po-btn--primary po-btn--wide po-btn--shine" [disabled]="!selectedCvId()" (click)="tailor()">
+            <lucide-icon name="wand2" [size]="14"></lucide-icon>
+            <span>Tailor My CV</span>
+          </button>
+        }
+
+        @if (tailorState() === 'processing') {
+          <div class="po-processing">
+            <div class="po-pulse"></div>
+            <p>{{ statusMessage() }}</p>
+            <small>This usually takes 15–30 seconds</small>
+          </div>
+        }
+
+        @if (tailorState() === 'success' && selectedVersion()) {
+          <div class="po-success">
+            <lucide-icon name="check-circle" [size]="34"></lucide-icon>
+            <h3>CV Tailored Successfully!</h3>
+            <div class="po-result-stats">
+              <article>
+                <small>New ATS Score</small>
+                <strong [ngClass]="'po-score-pill--' + scoreTone(selectedVersion()!.atsScore)">{{ scoreDisplay('version-' + selectedVersion()!.id, selectedVersion()!.atsScore) }}</strong>
+              </article>
+              <article>
+                <small>Score delta</small>
+                <strong [class.po-delta-positive]="scoreDelta() >= 0" [class.po-delta-negative]="scoreDelta() < 0">{{ scoreDelta() >= 0 ? '+' : '' }}{{ scoreDelta() }}</strong>
+              </article>
+              <article>
+                <small>Keyword match</small>
+                <strong>{{ selectedVersion()!.keywordMatchRate ?? 0 }}%</strong>
+              </article>
+            </div>
+            <button type="button" class="po-btn po-btn--primary po-btn--wide" [disabled]="downloading()" (click)="downloadVersion(selectedVersion()!.id)">
+              <lucide-icon name="download" [size]="14"></lucide-icon>
+              <span>Download PDF</span>
+            </button>
+            <button type="button" class="po-btn po-btn--ghost po-btn--wide" (click)="viewAnalysis()">
+              <lucide-icon name="eye" [size]="14"></lucide-icon>
+              <span>View Full Analysis</span>
+            </button>
+            <button type="button" class="po-link" (click)="resetTailor()">Tailor again</button>
+          </div>
+        }
+
+        @if (tailorState() === 'error') {
+          <div class="po-failed">
+            <lucide-icon name="alert-circle" [size]="28"></lucide-icon>
+            <h3>Tailoring failed</h3>
+            <p>{{ tailorError() }}</p>
+            <button type="button" class="po-btn po-btn--ghost" (click)="resetTailor()">Try again</button>
+          </div>
+        }
+      </article>
+
+      <article class="po-card po-card--linkedin">
+        <h3><lucide-icon name="linkedin" [size]="14"></lucide-icon> Align LinkedIn Profile</h3>
+        <p class="po-muted">Update your LinkedIn to match this role</p>
+
+        @if (!linkedInProfile() || linkedInProfile()?.analysisStatus !== 'COMPLETED') {
+          <p class="po-muted">No LinkedIn profile analyzed yet</p>
+          <a class="po-link" routerLink="/dashboard/linkedin">Go to LinkedIn Optimizer →</a>
+        } @else {
+          <div class="po-linkedin-score-pill">{{ scoreDisplay('linkedin-global', linkedInProfile()?.globalScore ?? 0) }}/100</div>
+
+          @if (!linkedInAligning()) {
+            <button type="button" class="po-btn po-btn--linkedin po-btn--wide po-btn--shine" (click)="alignLinkedInToThisRole()">
+              @if (linkedInAligned()) {
+                <lucide-icon name="check" [size]="14"></lucide-icon>
+                <span>Aligned!</span>
+              } @else {
+                <lucide-icon name="linkedin" [size]="14"></lucide-icon>
+                <span>Align to This Role</span>
+              }
+            </button>
+          } @else {
+            <button type="button" class="po-btn po-btn--linkedin po-btn--wide" disabled>
+              <span class="po-spinner"></span>
+              <span>Aligning your LinkedIn...</span>
+            </button>
+          }
+        }
+      </article>
+
+      @if (previousVersions().length) {
+        <article class="po-card">
+          <h3><lucide-icon name="clock" [size]="14"></lucide-icon> Previous Versions</h3>
+          <div class="po-prev-list">
+            @for (version of previousVersions(); track version.id) {
+              <div class="po-prev-row">
+                <span>{{ version.generatedAt | date:'MMM d, y' }}</span>
+                <span>{{ version.atsScore ?? 0 }}</span>
+                <button type="button" class="po-link" (click)="downloadVersion(version.id)">
+                  <lucide-icon name="download" [size]="13"></lucide-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </article>
+      }
+    </aside>
+  </section>
+
+  <app-toast></app-toast>
+</section>

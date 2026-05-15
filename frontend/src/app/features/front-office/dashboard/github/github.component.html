@@ -1,0 +1,328 @@
+<section class="gh-page">
+  <header class="gh-header">
+    <div class="gh-header__left">
+      <p class="gh-breadcrumb">Optimizer / GitHub</p>
+      <h1>
+        <span class="gh-title-icon"><lucide-icon name="github" [size]="28"></lucide-icon></span>
+        <span class="gh-title-text"><span>GitHub</span> Auditor</span>
+      </h1>
+      <p class="gh-subtitle">
+        Enter your GitHub profile URL to audit your top public repositories, score README quality, and generate AI assessments.
+      </p>
+    </div>
+
+    @if (profile() && profile()?.auditStatus === 'COMPLETED') {
+      <div class="gh-header__right">
+        <div class="gh-score-pill">
+          <strong>{{ profile()?.overallScore ?? 0 }}/100</strong>
+          <small>Profile Score</small>
+        </div>
+        <button type="button" class="gh-btn gh-btn--outline" [disabled]="loading().audit" (click)="editAuditedProfile()">
+          <lucide-icon name="square-pen" [size]="14"></lucide-icon>
+          Change Profile
+        </button>
+        <button type="button" class="gh-btn gh-btn--outline" [disabled]="loading().audit" (click)="reAudit()">
+          <lucide-icon name="refresh-cw" [size]="14"></lucide-icon>
+          Re-audit
+        </button>
+      </div>
+    }
+  </header>
+
+  @if (error()) {
+    <p class="gh-error"><lucide-icon name="alert-circle" [size]="14"></lucide-icon>{{ error() }}</p>
+  }
+
+  <section [@phaseSwap]="phase()">
+    @if (phase() === 'input') {
+      <section class="gh-input-wrap">
+        <article class="gh-input-card">
+          <div class="gh-input-icon">
+            <lucide-icon name="github" [size]="28"></lucide-icon>
+          </div>
+
+          <h2>Audit Your GitHub Profile</h2>
+          <p>Enter your GitHub profile URL or username</p>
+
+          <label class="gh-label" for="github-url">GitHub Profile URL or Username</label>
+          <div class="gh-input-field">
+            <lucide-icon name="github" [size]="16"></lucide-icon>
+            <input
+              id="github-url"
+              type="text"
+              [value]="githubUrlInput()"
+              (input)="githubUrlInput.set($any($event.target).value)"
+              placeholder="https://github.com/yourusername  or just  yourusername"
+            />
+          </div>
+
+          <button type="button" class="gh-toggle" (click)="toggleAuditInfo()">
+            <span>What will be audited?</span>
+            <lucide-icon [name]="whatAuditOpen() ? 'chevron-up' : 'chevron-down'" [size]="16"></lucide-icon>
+          </button>
+
+          <div class="gh-audit-list" [@accordion]="whatAuditOpen() ? 'open' : 'closed'">
+            <div><lucide-icon name="code" [size]="14"></lucide-icon><span>Top 7 public repositories</span></div>
+            <div><lucide-icon name="file-text" [size]="14"></lucide-icon><span>README quality scored by AI</span></div>
+            <div><lucide-icon name="sparkles" [size]="14"></lucide-icon><span>Per-repository AI quality assessment</span></div>
+            <div><lucide-icon name="star" [size]="14"></lucide-icon><span>Stars, forks, and activity</span></div>
+            <p>⚠️ Auditing many repos may take 2 to 5 minutes. Set GITHUB_TOKEN for faster processing.</p>
+          </div>
+
+          <p class="gh-privacy"><lucide-icon name="info" [size]="12"></lucide-icon>Only public repositories are accessed. No authentication required for public repos.</p>
+
+          @if (!loading().audit) {
+            <button type="button" class="gh-btn gh-btn--primary gh-btn--full" [disabled]="!(githubUrlInput()?.trim())" (click)="startAudit()">
+              <lucide-icon name="search" [size]="16"></lucide-icon>
+              Start Audit
+            </button>
+          } @else {
+            <section class="gh-loading-box">
+              <span class="gh-pulse"></span>
+              <p class="gh-loading-user">&#64;{{ (githubUrlInput()?.trim() ?? '').replace('https://github.com/', '') }}</p>
+              <p class="gh-loading-text">{{ statusMessage() }}</p>
+              <p class="gh-loading-count">{{ repositories().length }} repos processed</p>
+              <div class="gh-loading-shimmer"></div>
+              <small>⏱️ This may take 2 to 5 minutes for large profiles. Please keep this tab open.</small>
+            </section>
+          }
+        </article>
+      </section>
+    } @else {
+      <section class="gh-results-grid">
+        <aside class="gh-col gh-col--left">
+          <article class="gh-card gh-profile-card">
+            <div class="gh-profile-head">
+              <span class="gh-avatar"><lucide-icon name="github" [size]="36"></lucide-icon></span>
+              <button type="button" class="gh-username" (click)="openProfile()">
+                &#64;{{ profile()?.githubUsername }}
+                <lucide-icon name="link" [size]="12"></lucide-icon>
+              </button>
+              <small>{{ profile()?.repoCount ?? repositories().length }} public repos</small>
+            </div>
+
+            <div class="gh-gauge" [style.--gh-progress]="scoreBarWidth(profile()?.overallScore)">
+              <div>
+                <strong>{{ profile()?.overallScore ?? 0 }}</strong>
+                <small>/100</small>
+              </div>
+            </div>
+
+            <div class="gh-breakdown">
+              <div class="gh-breakdown-row">
+                <span><lucide-icon name="file-text" [size]="13"></lucide-icon>README Quality</span>
+                <div class="gh-mini-bar"><span [style.width.%]="avgReadmeScore()"></span></div>
+                <strong>{{ avgReadmeScore() }}/100</strong>
+              </div>
+              <div class="gh-breakdown-row">
+                <span><lucide-icon name="activity" [size]="13"></lucide-icon>Recent Activity</span>
+                <div class="gh-mini-bar"><span [style.width.%]="repositories().length ? (recentRepos() / repositories().length) * 100 : 0"></span></div>
+                <strong>{{ recentRepos() }} active recently</strong>
+              </div>
+            </div>
+
+            <div class="gh-profile-readme" [class.no-readme]="(profile()?.profileReadmeScore ?? 0) === 0">
+              @if ((profile()?.profileReadmeScore ?? 0) > 0) {
+                <p><lucide-icon name="check-circle" [size]="14"></lucide-icon>Profile README detected</p>
+                <span>{{ profile()?.profileReadmeScore }}/100</span>
+              } @else {
+                <p><lucide-icon name="circle-x" [size]="14"></lucide-icon>No profile README</p>
+                <small>Create a {{ profile()?.githubUsername }}/{{ profile()?.githubUsername }} repo with README to personalize your profile page.</small>
+              }
+            </div>
+          </article>
+
+          <article class="gh-card gh-languages-card">
+            <h3><lucide-icon name="code" [size]="14"></lucide-icon>Top Languages</h3>
+            <div class="gh-language-chips">
+              @for (language of topLanguages(); track language) {
+                <span [style.border-color]="languageColor(language)" [style.color]="languageColor(language)">{{ language }}</span>
+              }
+              @if (!topLanguages().length) {
+                <p>No languages detected</p>
+              }
+            </div>
+          </article>
+        </aside>
+
+        <main class="gh-col gh-col--center">
+          <article class="gh-filter-bar">
+            <div class="gh-search-wrap">
+              <lucide-icon name="search" [size]="14"></lucide-icon>
+              <input
+                type="text"
+                placeholder="Search repositories..."
+                [value]="searchQuery()"
+                (input)="searchQuery.set($any($event.target).value)"
+              />
+            </div>
+
+            <div class="gh-chip-row">
+              <button type="button" class="gh-chip" [class.gh-chip--active]="filterForked() === null" (click)="clearFilters()">All</button>
+              <button type="button" class="gh-chip" [class.gh-chip--active]="filterForked() === false" (click)="setForkFilter(filterForked() === false ? null : false)"><lucide-icon name="code" [size]="12"></lucide-icon>Original</button>
+              <button type="button" class="gh-chip" [class.gh-chip--active]="filterForked() === true" (click)="setForkFilter(filterForked() === true ? null : true)"><lucide-icon name="layers" [size]="12"></lucide-icon>Forked</button>
+            </div>
+
+            <div class="gh-sort-row">
+              <small>{{ filteredRepos().length }} repositories</small>
+              <select [value]="sortBy()" (change)="sortBy.set($any($event.target).value)">
+                <option value="score">Best Score</option>
+                <option value="stars">Most Stars</option>
+                <option value="recent">Most Recent</option>
+                <option value="worst">Worst Score</option>
+              </select>
+            </div>
+          </article>
+
+          @if (filteredRepos().length) {
+            <section class="gh-repo-list">
+              @for (repo of filteredRepos(); track repo.id; let index = $index) {
+                <article class="gh-repo-card" [style.--gh-accent]="scoreAccent(repo.overallScore)" [style.animation-delay]="getStaggerDelay(index)">
+                  <button type="button" class="gh-repo-main" (click)="toggleRepoExpand(repo.id)">
+                    <div class="gh-repo-left">
+                      <div class="gh-repo-title">
+                        <h4>{{ repo.repoName }}</h4>
+                        @if (repo.isForked) {
+                          <span class="gh-badge">Fork</span>
+                        }
+                        @if (repo.isArchived) {
+                          <span class="gh-badge">Archived</span>
+                        }
+                        <span class="gh-link" (click)="$event.stopPropagation(); openRepo(repo.repoUrl)"><lucide-icon name="link" [size]="12"></lucide-icon></span>
+                      </div>
+                      <div class="gh-repo-meta">
+                        <span class="gh-lang" [style.color]="languageColor(repo.language)">{{ repo.language || 'Unknown' }}</span>
+                        <span><lucide-icon name="star" [size]="12"></lucide-icon>{{ repo.stars }}</span>
+                        <span><lucide-icon name="layers" [size]="12"></lucide-icon>{{ repo.forksCount }}</span>
+                        <span><lucide-icon name="clock" [size]="12"></lucide-icon>Pushed {{ relativeTime(repo.pushedAt) }}</span>
+                      </div>
+                    </div>
+
+                    <div class="gh-repo-center">
+                      <div class="gh-readme-row">
+                        <span><lucide-icon name="file-text" [size]="12"></lucide-icon>README</span>
+                        <div class="gh-readme-bar"><span [style.width.%]="scoreBarWidth(repo.readmeScore)"></span></div>
+                        @if (repo.readmeScore !== null) {
+                          <strong [style.color]="scoreAccent(repo.readmeScore)">{{ repo.readmeScore }}/100</strong>
+                        } @else {
+                          <small>No README</small>
+                        }
+                      </div>
+                    </div>
+
+                    <div class="gh-repo-right">
+                      <strong [style.color]="scoreAccent(repo.overallScore)">{{ repo.overallScore ?? '—' }}</strong>
+                      <small>/100</small>
+                      <lucide-icon [name]="expandedRepoId() === repo.id ? 'chevron-up' : 'chevron-down'" [size]="14"></lucide-icon>
+                    </div>
+                  </button>
+
+                  <div class="gh-expanded" [@accordion]="expandedRepoId() === repo.id ? 'open' : 'closed'">
+                    <div class="gh-expanded-body">
+                      <p class="gh-assessment"><lucide-icon name="message-square" [size]="12"></lucide-icon><strong>AI Assessment</strong></p>
+                      <p class="gh-assessment-text">{{ repo.auditFeedback || 'AI assessment not available.' }}</p>
+
+                      @if (parseFixSuggestions(repo.fixSuggestions).length) {
+                        <p class="gh-fix-title"><lucide-icon name="settings" [size]="12"></lucide-icon><strong>Fix Suggestions</strong></p>
+                        <ul class="gh-fix-list">
+                          @for (suggestion of parseFixSuggestions(repo.fixSuggestions); track suggestion) {
+                            <li><lucide-icon name="arrow-right" [size]="10"></lucide-icon>{{ suggestion }}</li>
+                          }
+                        </ul>
+                      }
+
+                      @if (repo.description) {
+                        <p class="gh-desc"><lucide-icon name="info" [size]="10"></lucide-icon>{{ repo.description }}</p>
+                      }
+
+                      <button type="button" class="gh-collapse" (click)="toggleRepoExpand(repo.id)">
+                        <lucide-icon name="chevron-up" [size]="10"></lucide-icon>
+                        Collapse
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              }
+            </section>
+          } @else {
+            <section class="gh-empty-state">
+              <lucide-icon name="archive" [size]="48"></lucide-icon>
+              <h3>No repositories found</h3>
+              <p>{{ searchQuery() || filterForked() !== null ? 'Try adjusting your filters' : 'No public repositories found for this profile' }}</p>
+            </section>
+          }
+        </main>
+
+        <aside class="gh-col gh-col--right">
+          <article class="gh-card gh-assessment-card">
+            <h3><lucide-icon name="sparkles" [size]="14"></lucide-icon>AI Assessment</h3>
+
+            @if (feedback(); as fb) {
+              <p class="gh-summary">{{ fb.profileSummary }}</p>
+
+              <div class="gh-recruiter">
+                <p><lucide-icon name="eye" [size]="12"></lucide-icon><strong>Recruiter View</strong></p>
+                <span>{{ fb.recruiterImpression }}</span>
+              </div>
+
+              <div class="gh-list-block">
+                <p><lucide-icon name="trending-up" [size]="12"></lucide-icon><strong>Strengths</strong></p>
+                <ul>
+                  @for (item of fb.strengths; track item) {
+                    <li><lucide-icon name="check-circle" [size]="12"></lucide-icon>{{ item }}</li>
+                  }
+                </ul>
+              </div>
+
+              <div class="gh-list-block">
+                <p><lucide-icon name="triangle-alert" [size]="12"></lucide-icon><strong>Areas to Improve</strong></p>
+                <ul>
+                  @for (item of fb.weaknesses; track item) {
+                    <li><lucide-icon name="circle-x" [size]="12"></lucide-icon>{{ item }}</li>
+                  }
+                </ul>
+              </div>
+            } @else {
+              <p class="gh-null">AI assessment not available</p>
+            }
+          </article>
+
+          <article class="gh-card">
+            <h3><lucide-icon name="lightbulb" [size]="14"></lucide-icon>Top Recommendations</h3>
+            @if (feedback()?.recommendations?.length) {
+              <ol class="gh-recommendations">
+                @for (item of feedback()!.recommendations; track item; let index = $index) {
+                  <li>
+                    <span>{{ index + 1 }}</span>
+                    <p>{{ item }}</p>
+                  </li>
+                }
+              </ol>
+            } @else {
+              <p class="gh-null">No recommendations available</p>
+            }
+          </article>
+
+          <article class="gh-card">
+            <h3><lucide-icon name="lightbulb" [size]="14"></lucide-icon>GitHub Tips</h3>
+            @if (githubTips().length) {
+              <div class="gh-tip-list">
+                @for (tip of githubTips(); track tip.id) {
+                  <article>
+                    <span>{{ tip.priority }}</span>
+                    <p>{{ tip.tipText }}</p>
+                  </article>
+                }
+              </div>
+            } @else {
+              <p class="gh-null">No GitHub tips available yet</p>
+            }
+            <button type="button" class="gh-view-all" (click)="viewAllTips()">View all tips →</button>
+          </article>
+        </aside>
+      </section>
+    }
+  </section>
+
+  <app-toast></app-toast>
+</section>

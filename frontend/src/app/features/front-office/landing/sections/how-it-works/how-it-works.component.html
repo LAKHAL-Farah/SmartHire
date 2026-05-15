@@ -1,0 +1,42 @@
+<section class="hiw" id="how-it-works" #hiwSection>
+  <div class="section-container">
+    <p class="hiw__eyebrow">How It Works</p>
+
+    <!-- GitHub-style scroll reveal statement -->
+    <div class="scroll-text hiw__statement" #scrollText>
+      <span class="word">Four</span>
+      <span class="word">simple</span>
+      <span class="word word--accent">steps.</span>
+      <span class="word">Take</span>
+      <span class="word">your</span>
+      <span class="word">assessment.</span>
+      <span class="word">Follow</span>
+      <span class="word">your</span>
+      <span class="word word--accent">roadmap.</span>
+      <span class="word">Practice</span>
+      <span class="word word--accent">interviews.</span>
+      <span class="word">Land</span>
+      <span class="word">the</span>
+      <span class="word word--accent">job.</span>
+    </div>
+
+    <div class="hiw__steps">
+      @for (step of steps; track step.num; let i = $index; let last = $last) {
+        <div class="hiw__step">
+          <div class="hiw__num-ring">
+            <span>{{ step.num }}</span>
+          </div>
+          <h3 class="hiw__step-title">{{ step.title }}</h3>
+          <p class="hiw__step-desc">{{ step.desc }}</p>
+        </div>
+        @if (!last) {
+          <div class="hiw__connector">
+            <svg width="40" height="2" viewBox="0 0 40 2">
+              <line x1="0" y1="1" x2="40" y2="1" stroke="var(--border-subtle)" stroke-width="2" stroke-dasharray="4 4"/>
+            </svg>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</section>

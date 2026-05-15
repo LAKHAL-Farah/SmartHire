@@ -1,0 +1,156 @@
+<div class="ash">
+  <header class="ash__header">
+    <div>
+      <h1 class="ash__title">Skill assessments</h1>
+      <p class="ash__sub">
+        Your onboarding choices are reviewed by an admin. When categories are assigned, complete them here — scores feed your
+        candidate profile.
+      </p>
+    </div>
+    <button type="button" class="ash__refresh" (click)="refresh()" [disabled]="loading()">
+      <lucide-icon name="refresh-cw" [size]="16"></lucide-icon>
+      Refresh
+    </button>
+  </header>
+
+  @if (errorMsg(); as err) {
+    <div class="ash__alert" role="alert">{{ err }}</div>
+  }
+
+  @if (loading()) {
+    <div class="ash__loading">Loading your assessment plan…</div>
+  } @else {
+    @if (noPlan() && !plan()) {
+      <section class="ash-card ash-card--muted">
+        <div class="ash-card__accent"></div>
+        <div class="ash-card__body">
+          <h2 class="ash-card__title">No assignment record</h2>
+          <p class="ash-card__text">
+            Finish onboarding as a candidate to register your preferences. Legacy accounts may still have open access on the
+            server.
+          </p>
+        </div>
+      </section>
+    }
+
+    @if (plan(); as p) {
+      @if (p.status === 'PENDING') {
+        <section class="ash-card ash-card--wait">
+          <div class="ash-card__accent"></div>
+          <div class="ash-card__body">
+            <div class="ash-wait__icon">
+              <lucide-icon name="clock" [size]="28"></lucide-icon>
+            </div>
+            <h2 class="ash-card__title">Waiting for admin assignment</h2>
+            <p class="ash-card__text">
+              You told us you’re <strong>{{ p.situation || '—' }}</strong> and aiming for
+              <strong>{{ p.careerPath || '—' }}</strong>. An administrator will pick the right assessment categories for you.
+            </p>
+            <p class="ash-card__hint">This page updates automatically after approval — use Refresh or come back later.</p>
+          </div>
+        </section>
+      }
+
+      @if (p.status === 'APPROVED') {
+        <section class="ash-card">
+          <div class="ash-card__accent ash-card__accent--ok"></div>
+          <div class="ash-card__body">
+            <h2 class="ash-card__title">Your assigned assessments</h2>
+            <p class="ash-card__text">
+              Your administrator chose these categories for you. Each category can be taken once — after you complete it,
+              you’ll see your score here when published, and your profile will keep your results.
+            </p>
+
+            <ul class="ash-grid">
+              @for (c of p.assignedCategories; track c.id) {
+                @let act = categoryAction(c.id);
+                <li class="ash-tile">
+                  <div class="ash-tile__head">
+                    <span class="ash-tile__code">{{ c.code }}</span>
+                    <h3 class="ash-tile__title">{{ c.title }}</h3>
+                  </div>
+                  @switch (act.kind) {
+                    @case ('completed') {
+                      <div class="ash-tile__foot">
+                        <span class="ash-tile__status">Completed</span>
+                        @if (sessionIsPublished(act.session!)) {
+                          @if (act.session!.scorePercent != null) {
+                            <span class="ash-tile__score">{{ act.session!.scorePercent }}%</span>
+                          }
+                          <a
+                            class="ash-tile__link"
+                            [routerLink]="['/dashboard/assessments/session', act.session!.id, 'review']"
+                            [queryParams]="{ userId: act.session!.userId }"
+                          >
+                            View results
+                          </a>
+                        } @else {
+                          <span class="ash-tile__pending">Awaiting publish</span>
+                        }
+                      </div>
+                    }
+                    @case ('continue') {
+                      <button type="button" class="ash-tile__btn" (click)="continueSession(act.session!.id)">
+                        Continue attempt
+                      </button>
+                    }
+                    @default {
+                      <button
+                        type="button"
+                        class="ash-tile__btn"
+                        [disabled]="startingCategoryId() === c.id"
+                        (click)="startCategory(c.id)"
+                      >
+                        @if (startingCategoryId() === c.id) {
+                          Starting…
+                        } @else {
+                          Start
+                        }
+                      </button>
+                    }
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+        </section>
+      }
+    }
+
+    @if (history().length > 0) {
+      <section class="ash-history">
+        <h2 class="ash-history__title">Recent attempts</h2>
+        <ul class="ash-history__list">
+          @for (s of history(); track s.id) {
+            <li class="ash-history__row">
+              <div class="ash-history__main">
+                <span class="ash-history__cat">{{ s.categoryTitle }}</span>
+                <span class="ash-history__meta">{{ s.status }} · {{ s.startedAt | date: 'medium' }}</span>
+                @if (sessionIsCompleted(s) && !sessionIsPublished(s)) {
+                  <span class="ash-history__pending">Results pending — your administrator will publish them after review.</span>
+                }
+                @if (sessionIsCompleted(s) && sessionIsPublished(s) && s.adminFeedback) {
+                  <span class="ash-history__hint" title="Also shown on the full results page">Feedback available in results</span>
+                }
+              </div>
+              <div class="ash-history__actions">
+                @if (sessionIsCompleted(s) && sessionIsPublished(s)) {
+                  @if (s.scorePercent != null) {
+                    <span class="ash-history__score">{{ s.scorePercent }}%</span>
+                  }
+                  <a
+                    class="ash-history__link"
+                    [routerLink]="['/dashboard/assessments/session', s.id, 'review']"
+                    [queryParams]="{ userId: s.userId }"
+                  >
+                    View results
+                  </a>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  }
+</div>

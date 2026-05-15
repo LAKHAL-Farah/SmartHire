@@ -1,0 +1,136 @@
+<div class="live-start-screen">
+  <div class="preview-panel">
+    <div class="camera-frame">
+      <video
+        *ngIf="cameraStream"
+        [srcObject]="cameraStream"
+        autoplay
+        playsinline
+        muted
+        class="camera-preview"
+        data-testid="camera-preview"
+      ></video>
+
+      <div *ngIf="cameraPermission === 'denied'" class="no-camera">
+        <mat-icon>videocam_off</mat-icon>
+        <span>Camera unavailable</span>
+        <small>You can still join. Camera is optional.</small>
+      </div>
+
+      <div *ngIf="cameraPermission === 'pending'" class="no-camera">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span>Requesting camera...</span>
+      </div>
+
+      <div class="preview-badge">You</div>
+    </div>
+
+    <div
+      class="perm-status"
+      [class.granted]="cameraPermission === 'granted'"
+      [class.denied]="cameraPermission === 'denied'"
+      data-testid="permissions-badge"
+    >
+      <mat-icon>{{ cameraPermission === 'granted' ? 'check_circle' : 'info' }}</mat-icon>
+      <span>{{ cameraPermission === 'granted' ? 'Camera ready' : 'Camera optional' }}</span>
+    </div>
+  </div>
+
+  <div class="config-panel">
+    <div class="config-header">
+      <h1>Behavioral Interview</h1>
+      <p class="subtitle">Speak naturally. The AI listens and responds like a real interviewer.</p>
+    </div>
+
+    <div class="config-row">
+      <label>Questions</label>
+      <div class="slider-row">
+        <input
+          type="range"
+          min="3"
+          max="15"
+          step="1"
+          [(ngModel)]="questionCount"
+          data-testid="question-count-slider"
+          class="count-slider"
+        />
+        <span class="count-value">{{ questionCount }}</span>
+      </div>
+    </div>
+
+    <div class="config-row">
+      <label>Mode</label>
+      <div class="mode-toggle" data-testid="mode-toggle">
+        <button
+          class="mode-btn"
+          [class.active]="liveSubMode === 'PRACTICE_LIVE'"
+          (click)="liveSubMode = 'PRACTICE_LIVE'"
+          data-testid="mode-practice"
+          type="button"
+        >
+          <mat-icon>school</mat-icon>
+          Practice
+          <small>Feedback after low-scoring answers</small>
+        </button>
+
+        <button
+          class="mode-btn"
+          [class.active]="liveSubMode === 'TEST_LIVE'"
+          (click)="liveSubMode = 'TEST_LIVE'"
+          data-testid="mode-test"
+          type="button"
+        >
+          <mat-icon>timer</mat-icon>
+          Test
+          <small>No interruptions, full session</small>
+        </button>
+      </div>
+    </div>
+
+    <div class="config-row optional">
+      <label>Company name <span class="optional-tag">optional</span></label>
+      <input
+        type="text"
+        placeholder="e.g. Acme Corp"
+        [(ngModel)]="companyName"
+        data-testid="company-input"
+        class="text-input"
+      />
+    </div>
+
+    <div class="config-row optional">
+      <label>Role <span class="optional-tag">optional</span></label>
+      <input
+        type="text"
+        placeholder="e.g. Backend Engineer Intern"
+        [(ngModel)]="targetRole"
+        data-testid="role-input"
+        class="text-input"
+      />
+    </div>
+
+    <div class="error-msg" *ngIf="errorMessage" data-testid="error-msg">
+      <mat-icon>error_outline</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <button
+      class="join-btn"
+      [disabled]="joinDisabled"
+      (click)="onJoin()"
+      data-testid="join-btn"
+      type="button"
+    >
+      <mat-icon>{{ isLoading ? 'hourglass_empty' : 'videocam' }}</mat-icon>
+      {{ joinLabel }}
+    </button>
+  </div>
+
+  <div class="join-overlay" *ngIf="isLoading" aria-live="polite" role="status">
+    <div class="join-card">
+      <div class="join-spinner" aria-hidden="true"></div>
+      <h2>Preparing your interview room</h2>
+      <p>Creating live session, loading questions from backend, and connecting room context...</p>
+    </div>
+  </div>
+</div>

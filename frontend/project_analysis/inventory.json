@@ -1,0 +1,1410 @@
+﻿[
+    {
+        "file":  "src/app/app.component.html",
+        "kind":  "template-html",
+        "lines":  3,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/app.component.scss",
+        "kind":  "style-scss",
+        "lines":  0,
+        "status":  "empty",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/app.component.spec.ts",
+        "kind":  "spec-ts",
+        "lines":  30,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/app.component.ts",
+        "kind":  "component-ts",
+        "lines":  14,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/app.config.ts",
+        "kind":  "ts",
+        "lines":  17,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/app.routes.ts",
+        "kind":  "routes-ts",
+        "lines":  221,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/core/guards/admin.guard.ts",
+        "kind":  "guard-ts",
+        "lines":  22,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/core/guards/auth.guard.ts",
+        "kind":  "guard-ts",
+        "lines":  20,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/core/guards/no-auth.guard.ts",
+        "kind":  "guard-ts",
+        "lines":  27,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/core/guards/onboarding.guard.ts",
+        "kind":  "guard-ts",
+        "lines":  49,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/core/guards/role.guard.ts",
+        "kind":  "guard-ts",
+        "lines":  34,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.html",
+        "kind":  "template-html",
+        "lines":  222,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.scss",
+        "kind":  "style-scss",
+        "lines":  243,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.ts",
+        "kind":  "component-ts",
+        "lines":  183,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/analytics/analytics.component.html",
+        "kind":  "template-html",
+        "lines":  181,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/analytics/analytics.component.scss",
+        "kind":  "style-scss",
+        "lines":  199,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/analytics/analytics.component.ts",
+        "kind":  "component-ts",
+        "lines":  150,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/career-paths/career-paths.component.html",
+        "kind":  "template-html",
+        "lines":  589,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/career-paths/career-paths.component.scss",
+        "kind":  "style-scss",
+        "lines":  616,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/career-paths/career-paths.component.ts",
+        "kind":  "component-ts",
+        "lines":  629,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.html",
+        "kind":  "template-html",
+        "lines":  62,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.scss",
+        "kind":  "style-scss",
+        "lines":  144,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.ts",
+        "kind":  "component-ts",
+        "lines":  50,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.html",
+        "kind":  "template-html",
+        "lines":  59,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.scss",
+        "kind":  "style-scss",
+        "lines":  250,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.ts",
+        "kind":  "component-ts",
+        "lines":  53,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.html",
+        "kind":  "template-html",
+        "lines":  180,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.scss",
+        "kind":  "style-scss",
+        "lines":  124,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.ts",
+        "kind":  "component-ts",
+        "lines":  153,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/jobs/job-management.component.html",
+        "kind":  "template-html",
+        "lines":  195,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/jobs/job-management.component.scss",
+        "kind":  "style-scss",
+        "lines":  207,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/jobs/job-management.component.ts",
+        "kind":  "component-ts",
+        "lines":  157,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/layout/admin-layout.component.html",
+        "kind":  "template-html",
+        "lines":  8,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/layout/admin-layout.component.scss",
+        "kind":  "style-scss",
+        "lines":  13,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/layout/admin-layout.component.ts",
+        "kind":  "component-ts",
+        "lines":  15,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/questions/question-management.component.html",
+        "kind":  "template-html",
+        "lines":  295,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/questions/question-management.component.scss",
+        "kind":  "style-scss",
+        "lines":  376,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/questions/question-management.component.ts",
+        "kind":  "component-ts",
+        "lines":  254,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.html",
+        "kind":  "template-html",
+        "lines":  189,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.scss",
+        "kind":  "style-scss",
+        "lines":  215,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.ts",
+        "kind":  "component-ts",
+        "lines":  162,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/settings/settings.component.html",
+        "kind":  "template-html",
+        "lines":  311,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/settings/settings.component.scss",
+        "kind":  "style-scss",
+        "lines":  380,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/settings/settings.component.ts",
+        "kind":  "component-ts",
+        "lines":  288,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.html",
+        "kind":  "template-html",
+        "lines":  223,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.scss",
+        "kind":  "style-scss",
+        "lines":  526,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.ts",
+        "kind":  "component-ts",
+        "lines":  312,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/back-office/admin/system-health/system-health.component.html",
+        "kind":  "template-html",
+        "lines":  466,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/system-health/system-health.component.scss",
+        "kind":  "style-scss",
+        "lines":  465,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/system-health/system-health.component.ts",
+        "kind":  "component-ts",
+        "lines":  477,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/user-management.component.html",
+        "kind":  "template-html",
+        "lines":  248,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/user-management.component.scss",
+        "kind":  "style-scss",
+        "lines":  939,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/user-management.component.ts",
+        "kind":  "component-ts",
+        "lines":  317,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.html",
+        "kind":  "template-html",
+        "lines":  103,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.scss",
+        "kind":  "style-scss",
+        "lines":  598,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.ts",
+        "kind":  "component-ts",
+        "lines":  86,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/service/assessment-admin-api.service.ts",
+        "kind":  "service-ts",
+        "lines":  133,
+        "status":  "implemented",
+        "hasHttpClient":  true,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/back-office/service/user-management.service.spec.ts",
+        "kind":  "spec-ts",
+        "lines":  20,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/back-office/service/user-management.service.ts",
+        "kind":  "service-ts",
+        "lines":  163,
+        "status":  "implemented",
+        "hasHttpClient":  true,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/front-office/auth/auth.service.ts",
+        "kind":  "service-ts",
+        "lines":  91,
+        "status":  "implemented",
+        "hasHttpClient":  true,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/front-office/auth/authe.service.spec.ts",
+        "kind":  "spec-ts",
+        "lines":  0,
+        "status":  "empty",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/authe.service.ts",
+        "kind":  "service-ts",
+        "lines":  58,
+        "status":  "implemented",
+        "hasHttpClient":  true,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/user.service.spec.ts",
+        "kind":  "spec-ts",
+        "lines":  20,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/user.service.ts",
+        "kind":  "service-ts",
+        "lines":  91,
+        "status":  "implemented",
+        "hasHttpClient":  true,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.html",
+        "kind":  "template-html",
+        "lines":  69,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.scss",
+        "kind":  "style-scss",
+        "lines":  205,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.ts",
+        "kind":  "component-ts",
+        "lines":  36,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/interceptors/auth.interceptor.spec.ts",
+        "kind":  "spec-ts",
+        "lines":  18,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/interceptors/auth.interceptor.ts",
+        "kind":  "ts",
+        "lines":  31,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/login/login.component.html",
+        "kind":  "template-html",
+        "lines":  129,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/login/login.component.scss",
+        "kind":  "style-scss",
+        "lines":  312,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/login/login.component.ts",
+        "kind":  "component-ts",
+        "lines":  70,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/register/register.component.html",
+        "kind":  "template-html",
+        "lines":  350,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/register/register.component.scss",
+        "kind":  "style-scss",
+        "lines":  440,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/register/register.component.ts",
+        "kind":  "component-ts",
+        "lines":  179,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-home.component.html",
+        "kind":  "template-html",
+        "lines":  165,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-home.component.scss",
+        "kind":  "style-scss",
+        "lines":  314,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-home.component.ts",
+        "kind":  "component-ts",
+        "lines":  90,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-layout.component.html",
+        "kind":  "template-html",
+        "lines":  8,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-layout.component.scss",
+        "kind":  "style-scss",
+        "lines":  13,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-layout.component.ts",
+        "kind":  "component-ts",
+        "lines":  26,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.html",
+        "kind":  "template-html",
+        "lines":  64,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.scss",
+        "kind":  "style-scss",
+        "lines":  141,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.ts",
+        "kind":  "component-ts",
+        "lines":  44,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.html",
+        "kind":  "template-html",
+        "lines":  73,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.scss",
+        "kind":  "style-scss",
+        "lines":  233,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.ts",
+        "kind":  "component-ts",
+        "lines":  76,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.html",
+        "kind":  "template-html",
+        "lines":  159,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.scss",
+        "kind":  "style-scss",
+        "lines":  405,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.ts",
+        "kind":  "component-ts",
+        "lines":  96,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/interview.component.html",
+        "kind":  "template-html",
+        "lines":  228,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/interview.component.scss",
+        "kind":  "style-scss",
+        "lines":  685,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/interview.component.ts",
+        "kind":  "component-ts",
+        "lines":  122,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.html",
+        "kind":  "template-html",
+        "lines":  184,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.scss",
+        "kind":  "style-scss",
+        "lines":  542,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.ts",
+        "kind":  "component-ts",
+        "lines":  253,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.html",
+        "kind":  "template-html",
+        "lines":  218,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.scss",
+        "kind":  "style-scss",
+        "lines":  669,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.ts",
+        "kind":  "component-ts",
+        "lines":  199,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/jobs/jobs.component.html",
+        "kind":  "template-html",
+        "lines":  323,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/jobs/jobs.component.scss",
+        "kind":  "style-scss",
+        "lines":  725,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/jobs/jobs.component.ts",
+        "kind":  "component-ts",
+        "lines":  333,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/profile/profile.component.html",
+        "kind":  "template-html",
+        "lines":  289,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/profile/profile.component.scss",
+        "kind":  "style-scss",
+        "lines":  576,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/profile/profile.component.ts",
+        "kind":  "component-ts",
+        "lines":  229,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.html",
+        "kind":  "template-html",
+        "lines":  194,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.scss",
+        "kind":  "style-scss",
+        "lines":  533,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.ts",
+        "kind":  "component-ts",
+        "lines":  194,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/settings/settings.component.html",
+        "kind":  "template-html",
+        "lines":  239,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/settings/settings.component.scss",
+        "kind":  "style-scss",
+        "lines":  413,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/settings/settings.component.ts",
+        "kind":  "component-ts",
+        "lines":  113,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/landing-page.component.html",
+        "kind":  "template-html",
+        "lines":  15,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/landing-page.component.scss",
+        "kind":  "style-scss",
+        "lines":  8,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/landing-page.component.ts",
+        "kind":  "component-ts",
+        "lines":  52,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/cta/cta.component.html",
+        "kind":  "template-html",
+        "lines":  29,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/cta/cta.component.scss",
+        "kind":  "style-scss",
+        "lines":  58,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/cta/cta.component.ts",
+        "kind":  "component-ts",
+        "lines":  24,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/features/features-grid.component.html",
+        "kind":  "template-html",
+        "lines":  36,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/features/features-grid.component.scss",
+        "kind":  "style-scss",
+        "lines":  64,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/features/features-grid.component.ts",
+        "kind":  "component-ts",
+        "lines":  32,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/hero/hero.component.html",
+        "kind":  "template-html",
+        "lines":  248,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/hero/hero.component.scss",
+        "kind":  "style-scss",
+        "lines":  446,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/hero/hero.component.ts",
+        "kind":  "component-ts",
+        "lines":  237,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.html",
+        "kind":  "template-html",
+        "lines":  43,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.scss",
+        "kind":  "style-scss",
+        "lines":  86,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.ts",
+        "kind":  "component-ts",
+        "lines":  30,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/pricing/pricing.component.html",
+        "kind":  "template-html",
+        "lines":  50,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/pricing/pricing.component.scss",
+        "kind":  "style-scss",
+        "lines":  187,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/pricing/pricing.component.ts",
+        "kind":  "component-ts",
+        "lines":  73,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/problem/problem.component.html",
+        "kind":  "template-html",
+        "lines":  37,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/problem/problem.component.scss",
+        "kind":  "style-scss",
+        "lines":  63,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/problem/problem.component.ts",
+        "kind":  "component-ts",
+        "lines":  31,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/solution/solution.component.html",
+        "kind":  "template-html",
+        "lines":  101,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/solution/solution.component.scss",
+        "kind":  "style-scss",
+        "lines":  311,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/solution/solution.component.ts",
+        "kind":  "component-ts",
+        "lines":  72,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/stats/stats.component.html",
+        "kind":  "template-html",
+        "lines":  13,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/stats/stats.component.scss",
+        "kind":  "style-scss",
+        "lines":  47,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/stats/stats.component.ts",
+        "kind":  "component-ts",
+        "lines":  41,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.html",
+        "kind":  "template-html",
+        "lines":  43,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.scss",
+        "kind":  "style-scss",
+        "lines":  91,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.ts",
+        "kind":  "component-ts",
+        "lines":  36,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.html",
+        "kind":  "template-html",
+        "lines":  13,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.scss",
+        "kind":  "style-scss",
+        "lines":  47,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.ts",
+        "kind":  "component-ts",
+        "lines":  30,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/services/scroll-animation.service.ts",
+        "kind":  "service-ts",
+        "lines":  192,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/onboarding-skills.util.ts",
+        "kind":  "ts",
+        "lines":  42,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/onboarding.component.html",
+        "kind":  "template-html",
+        "lines":  116,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/onboarding.component.scss",
+        "kind":  "style-scss",
+        "lines":  269,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/onboarding.component.ts",
+        "kind":  "component-ts",
+        "lines":  107,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.html",
+        "kind":  "template-html",
+        "lines":  23,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.scss",
+        "kind":  "style-scss",
+        "lines":  122,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.ts",
+        "kind":  "component-ts",
+        "lines":  28,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-results.component.html",
+        "kind":  "template-html",
+        "lines":  148,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-results.component.scss",
+        "kind":  "style-scss",
+        "lines":  268,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-results.component.ts",
+        "kind":  "component-ts",
+        "lines":  88,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-situation.component.html",
+        "kind":  "template-html",
+        "lines":  23,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-situation.component.scss",
+        "kind":  "style-scss",
+        "lines":  96,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-situation.component.ts",
+        "kind":  "component-ts",
+        "lines":  26,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.html",
+        "kind":  "template-html",
+        "lines":  51,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.scss",
+        "kind":  "style-scss",
+        "lines":  168,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.ts",
+        "kind":  "component-ts",
+        "lines":  85,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/front-office/profile/profile-api.service.ts",
+        "kind":  "service-ts",
+        "lines":  163,
+        "status":  "partial",
+        "hasHttpClient":  true,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/front-office/profile/profile-user-id.ts",
+        "kind":  "ts",
+        "lines":  30,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/app/features/not-found/access-denied.component.ts",
+        "kind":  "component-ts",
+        "lines":  41,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/not-found/not-found.component.html",
+        "kind":  "template-html",
+        "lines":  67,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/not-found/not-found.component.scss",
+        "kind":  "style-scss",
+        "lines":  208,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/features/not-found/not-found.component.ts",
+        "kind":  "component-ts",
+        "lines":  14,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/shared/lucide-icons.ts",
+        "kind":  "ts",
+        "lines":  118,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/shared/footer/footer.component.html",
+        "kind":  "template-html",
+        "lines":  44,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/shared/footer/footer.component.scss",
+        "kind":  "style-scss",
+        "lines":  134,
+        "status":  "partial",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/shared/footer/footer.component.ts",
+        "kind":  "component-ts",
+        "lines":  34,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/shared/navbar/navbar.component.html",
+        "kind":  "template-html",
+        "lines":  53,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/shared/navbar/navbar.component.scss",
+        "kind":  "style-scss",
+        "lines":  32,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/app/shared/navbar/navbar.component.ts",
+        "kind":  "component-ts",
+        "lines":  25,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  false
+    },
+    {
+        "file":  "src/environments/environment.prod.ts",
+        "kind":  "environment-ts",
+        "lines":  10,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  true
+    },
+    {
+        "file":  "src/environments/environment.ts",
+        "kind":  "environment-ts",
+        "lines":  24,
+        "status":  "implemented",
+        "hasHttpClient":  false,
+        "hasApiUrlRef":  true
+    }
+]

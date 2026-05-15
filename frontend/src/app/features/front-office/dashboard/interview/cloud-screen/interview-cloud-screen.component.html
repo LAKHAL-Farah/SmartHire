@@ -1,0 +1,98 @@
+<div class="cloud-room">
+  <header class="topbar">
+    <span class="topbar__title">Cloud Engineer Screen</span>
+    <span class="topbar__timer">{{ timerDisplay() }}</span>
+  </header>
+
+  <div class="progress-strip">
+    <span>Q{{ currentIndex() + 1 }} of {{ totalQuestions() }}</span>
+    <div class="progress-track"><div class="progress-fill" [style.width.%]="progressPercent()"></div></div>
+    <span class="mode-pill">{{ mode() }}</span>
+  </div>
+
+  <section class="scenario-card">
+    <div class="scenario-card__left-border"></div>
+    <div>
+      <p class="scenario-title">{{ question().domain }} · {{ question().category }}</p>
+      <h2>{{ question().questionText }}</h2>
+      <span class="badge">{{ badgeLabel() }}</span>
+    </div>
+  </section>
+
+  <section class="answer-section">
+    <textarea
+      rows="8"
+      placeholder="Describe your architecture approach..."
+      [value]="answerText()"
+      (input)="answerText.set($any($event.target).value)"
+    ></textarea>
+
+    <div class="answer-actions">
+      <div>
+        <button type="button" class="hint-btn" (click)="toggleHint()">Hint</button>
+      </div>
+      <button type="button" class="submit-btn" (click)="submitAnswer()">Submit</button>
+    </div>
+
+    <div class="live-placeholder">🎙 Live Mode placeholder (Phase 2)</div>
+
+    @if (hintOpen()) {
+      <div class="hint-panel">Hint: include load balancing, cache strategy, autoscaling policy, and DR plan.</div>
+    }
+
+    <button class="builder-toggle" type="button" (click)="toggleBuilder()">🏗 Open Architecture Builder</button>
+  </section>
+
+  @if (builderOpen()) {
+    <aside class="builder-panel">
+      <div class="palette">
+        @for (item of paletteItems; track item) {
+          <div class="palette-item" draggable="true" (dragstart)="onPaletteDragStart($event, item)">{{ item }}</div>
+        }
+      </div>
+
+      <div class="canvas" (dragover)="allowDrop($event)" (drop)="onCanvasDrop($event)">
+        <svg class="edge-layer" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          @for (edge of edges(); track edge.from + '-' + edge.to) {
+            @if (getNodeById(edge.from); as fromNode) {
+              @if (getNodeById(edge.to); as toNode) {
+                <line
+                  [attr.x1]="fromNode.x"
+                  [attr.y1]="fromNode.y"
+                  [attr.x2]="toNode.x"
+                  [attr.y2]="toNode.y"
+                ></line>
+              }
+            }
+          }
+        </svg>
+
+        @for (node of nodes(); track node.id) {
+          <button
+            type="button"
+            class="node"
+            [class.node--selected]="selectedNodeId() === node.id"
+            [style.left.px]="node.x"
+            [style.top.px]="node.y"
+            (click)="selectNode(node.id)"
+          >
+            {{ node.label }}
+          </button>
+        }
+      </div>
+
+      <button type="button" class="export-btn" (click)="exportDiagram()">Export Diagram</button>
+      @if (exportedJson()) {
+        <pre class="export-json">{{ exportedJson() }}</pre>
+      }
+    </aside>
+  }
+
+  @if (submitFeedbackOpen()) {
+    <section class="feedback-panel">
+      <h3>Feedback Panel</h3>
+      <p>{{ submitFeedbackText() }}</p>
+      <p class="design-score">Design Score: {{ designScore() === null ? '--' : (designScore() + '/10') }}</p>
+    </section>
+  }
+</div>

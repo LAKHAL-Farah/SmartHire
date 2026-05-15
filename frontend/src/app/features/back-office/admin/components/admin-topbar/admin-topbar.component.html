@@ -1,0 +1,58 @@
+<header class="topbar">
+  <div class="topbar__left">
+    <span class="topbar__label">Admin Panel</span>
+  </div>
+
+  <div class="topbar__right">
+    <!-- Search -->
+    <div class="topbar__search">
+      <lucide-icon name="search" [size]="16" class="search-icon"></lucide-icon>
+      <input type="text" class="search-input" placeholder="Search users, jobs, logs..." [(ngModel)]="searchQuery" />
+    </div>
+
+    <!-- Notifications -->
+    <div class="topbar__notif-wrap">
+      <button class="topbar__icon-btn" (click)="toggleNotif()">
+        <lucide-icon name="bell" [size]="20" [strokeWidth]="1.8"></lucide-icon>
+        <span class="notif-dot"></span>
+      </button>
+      @if (notifOpen()) {
+        <div class="dropdown notif-dropdown">
+          <div class="dropdown__header">
+            <span class="dropdown__title">System Alerts</span>
+            <span class="dropdown__count">{{ notifications.length }}</span>
+          </div>
+          @for (n of notifications; track n.text) {
+            <div class="notif-item">
+              <span class="notif-item__dot" [style.background]="n.color"></span>
+              <div class="notif-item__body">
+                <span class="notif-item__text">{{ n.text }}</span>
+                <span class="notif-item__time">{{ n.time }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Avatar -->
+    <div class="topbar__avatar-wrap">
+      <button class="topbar__avatar" (click)="toggleAvatar()">
+        <span class="avatar-circle avatar-circle--admin">A</span>
+      </button>
+      @if (avatarOpen()) {
+        <div class="dropdown avatar-dropdown">
+          <div class="dropdown__profile">
+            <span class="avatar-circle avatar-circle--admin avatar-circle--lg">A</span>
+            <div>
+              <span class="dropdown__name">{{userName}}</span>
+              <span class="dropdown__email">{{email}}</span>
+            </div>
+          </div>
+          <div class="dropdown__divider"></div>
+          <button class="dropdown__item" (click)="signOut()">Sign Out</button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

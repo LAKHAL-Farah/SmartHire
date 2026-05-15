@@ -1,0 +1,14 @@
+<section class="po-toast-stack" aria-live="polite" aria-atomic="true">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <article class="po-toast" [ngClass]="'po-toast--' + toast.type">
+      <button type="button" class="po-toast__dismiss" (click)="toastService.dismiss(toast.id)" aria-label="Dismiss toast">
+        <lucide-icon name="x" [size]="14"></lucide-icon>
+      </button>
+      <div class="po-toast__body">
+        <lucide-icon [name]="iconName(toast.type)" [size]="16"></lucide-icon>
+        <span>{{ toast.message }}</span>
+      </div>
+      <div class="po-toast__progress"></div>
+    </article>
+  }
+</section>

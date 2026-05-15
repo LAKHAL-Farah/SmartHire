@@ -1,0 +1,327 @@
+<div class="settings-page">
+  <h1 class="settings-title">Settings</h1>
+  <div class="settings-layout">
+
+    <!-- ═══ LEFT: Settings Nav ═══ -->
+    <nav class="settings-nav">
+      @for (cat of categories; track cat.id) {
+        <button class="nav-item"
+          [class.nav-item--active]="activeCategory() === cat.id"
+          (click)="activeCategory.set(cat.id)">
+          <span class="nav-item__strip"></span>
+          {{ cat.label }}
+        </button>
+      }
+    </nav>
+
+    <!-- ═══ RIGHT: Content ═══ -->
+    <main class="settings-content">
+
+      <!-- ══ APPEARANCE ══ -->
+      @if (activeCategory() === 'appearance') {
+        <section class="section-card">
+          <h2 class="section-card__heading">Appearance & Theme</h2>
+
+          <div class="appearance-group">
+            <h3 class="appearance-label">Mode</h3>
+            <div class="mode-switches">
+              <button class="mode-btn" [class.mode-btn--active]="themeMode() === 'light'" (click)="selectThemeMode('light')">Light</button>
+              <button class="mode-btn" [class.mode-btn--active]="themeMode() === 'dark'" (click)="selectThemeMode('dark')">Dark</button>
+            </div>
+          </div>
+
+          <div class="appearance-group">
+            <h3 class="appearance-label">Palette</h3>
+            <div class="palette-grid">
+              @for (palette of themePalettes; track palette) {
+                <button class="palette-btn"
+                        [class.palette-btn--active]="themePalette() === palette"
+                        (click)="selectThemePalette(palette)">
+                  {{ formatPaletteName(palette) }}
+                </button>
+              }
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- ══ ACCOUNT ══ -->
+      @if (activeCategory() === 'account') {
+        <section class="section-card">
+          <h2 class="section-card__heading">Account</h2>
+
+          <!-- Avatar upload -->
+          <div class="avatar-upload">
+            <div class="avatar-upload__circle">
+              <span class="avatar-upload__initials">{{ accountInitials }}</span>
+              <div class="avatar-upload__overlay">
+                <lucide-icon name="square-pen" [size]="18"></lucide-icon>
+              </div>
+            </div>
+            <span class="avatar-upload__hint">Click to change photo</span>
+          </div>
+
+          <!-- Form -->
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="form-label">First Name</label>
+              <input class="form-input" type="text" [(ngModel)]="firstName"/>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Last Name</label>
+              <input class="form-input" type="text" [(ngModel)]="lastName"/>
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label">
+              Email
+              <a class="form-link" href="javascript:void(0)">Change Email</a>
+            </label>
+            <input class="form-input" type="email" [(ngModel)]="email"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Headline</label>
+            <input class="form-input" type="text" [(ngModel)]="headline"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Location</label>
+            <input class="form-input" type="text" [(ngModel)]="location"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Bio</label>
+            <textarea class="form-textarea" rows="4" [(ngModel)]="bio"></textarea>
+          </div>
+          <button class="btn-save">Save Changes</button>
+        </section>
+      }
+
+      <!-- ══ SECURITY ══ -->
+      @if (activeCategory() === 'security') {
+        <section class="section-card">
+          <h2 class="section-card__heading">Change Password</h2>
+          <div class="form-field">
+            <label class="form-label">Current Password</label>
+            <input class="form-input" type="password" placeholder="Enter current password"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">New Password</label>
+            <input class="form-input" type="password" placeholder="Enter new password"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Confirm New Password</label>
+            <input class="form-input" type="password" placeholder="Confirm new password"/>
+          </div>
+          <button class="btn-save">Update Password</button>
+        </section>
+
+        <section class="section-card">
+          <h2 class="section-card__heading">Multi-Factor Authentication</h2>
+          <div class="mfa-container">
+            <div class="mfa-header">
+              <div class="mfa-info">
+                <h3 class="mfa-title">Face Recognition 2FA</h3>
+                <p class="mfa-description">Secure your account with face recognition as a second factor of authentication</p>
+              </div>
+              <span class="mfa-status" [class.mfa-status--on]="mfaEnabled" [class.mfa-status--off]="!mfaEnabled">
+                {{ mfaEnabled ? '✓ Active' : 'Inactive' }}
+              </span>
+            </div>
+
+            @if (!mfaEnabled) {
+              <div class="mfa-action">
+                <p class="mfa-hint">Face recognition has not been enabled yet. Enable it now to protect your account.</p>
+                <button class="btn-enroll" (click)="openFaceEnrollmentModal()">Enable Face Recognition</button>
+              </div>
+            } @else {
+              <div class="mfa-action">
+                <div class="mfa-enabled-info">
+                  <p class="mfa-enabled-text">✓ Face recognition is active for your account</p>
+                  <span class="mfa-enabled-date">You can disable it anytime below</span>
+                </div>
+                <button class="btn-disable-mfa" (click)="disableFaceRecognition()">Disable Face Recognition</button>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Face Enrollment Modal -->
+        @if (showFaceEnrollmentModal()) {
+          <div class="modal-overlay" (click)="closeFaceEnrollmentModal()">
+            <div class="modal-card" (click)="$event.stopPropagation()">
+              <div class="modal-header">
+                <h2 class="modal-title">Enroll Face Recognition</h2>
+                <button class="modal-close" (click)="closeFaceEnrollmentModal()">✕</button>
+              </div>
+
+              <div class="modal-body">
+                <!-- Camera Step -->
+                @if (enrollmentStep() === 'camera') {
+                  <div class="enrollment-step">
+                    <p class="step-instruction">Position your face in front of the camera and ensure good lighting</p>
+                    <div class="camera-container">
+                      <video #videoElement class="camera-feed" autoplay playsinline></video>
+                      <div class="camera-frame"></div>
+                    </div>
+                    <button class="btn-capture" (click)="captureFromCamera()">Capture Photo</button>
+                  </div>
+                }
+
+                <!-- Preview Step -->
+                @if (enrollmentStep() === 'preview' && capturedImage()) {
+                  <div class="enrollment-step">
+                    <p class="step-instruction">Review your photo and confirm if it's clear</p>
+                    <img [src]="capturedImage()" alt="Captured face" class="preview-image"/>
+                    @if (enrollmentError()) {
+                      <div class="error-message">
+                        <lucide-icon name="alert-circle" [size]="16"></lucide-icon>
+                        {{ enrollmentError() }}
+                      </div>
+                    }
+                    <div class="button-group">
+                      <button class="btn-secondary" (click)="retakeFaceImage()">Retake Photo</button>
+                      <button class="btn-primary" (click)="submitFaceEnrollment()">Continue</button>
+                    </div>
+                  </div>
+                }
+
+                <!-- Processing Step -->
+                @if (enrollmentStep() === 'processing') {
+                  <div class="enrollment-step enrollment-step--processing">
+                    <div class="spinner"></div>
+                    <p class="step-instruction">Processing your face... Please wait</p>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- ══ NOTIFICATIONS ══ -->
+      @if (activeCategory() === 'notifications') {
+        <section class="section-card">
+          <h2 class="section-card__heading">Notifications</h2>
+          @for (notif of notifications; track notif.name) {
+            <div class="notif-row">
+              <div class="notif-info">
+                <span class="notif-name">{{ notif.name }}</span>
+                <span class="notif-desc">{{ notif.description }}</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="notif.enabled"/>
+                <span class="toggle__track">
+                  <span class="toggle__thumb"></span>
+                </span>
+              </label>
+            </div>
+          }
+        </section>
+      }
+
+      <!-- ══ SUBSCRIPTION ══ -->
+      @if (activeCategory() === 'subscription') {
+        <section class="section-card">
+          <h2 class="section-card__heading">Subscription</h2>
+          <div class="plan-card" [class.plan-card--premium]="isPremium">
+            <div class="plan-card__header">
+              <span class="plan-card__name">{{ isPremium ? 'Premium Plan' : 'Free Plan' }}</span>
+              @if (isPremium) {
+                <span class="plan-card__badge">Active</span>
+              }
+            </div>
+            <ul class="plan-card__features">
+              @for (f of (isPremium ? premiumFeatures : freeFeatures); track f) {
+                <li class="plan-feature">
+                  <lucide-icon name="check" [size]="14"></lucide-icon>
+                  {{ f }}
+                </li>
+              }
+            </ul>
+            @if (isPremium) {
+              <div class="plan-card__footer">
+                <span class="plan-card__renewal">Renews on Mar 15, 2026</span>
+                <button class="btn-manage">Manage Billing</button>
+              </div>
+            } @else {
+              <button class="btn-upgrade">Upgrade to Premium</button>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- ══ CONNECTED ACCOUNTS ══ -->
+      @if (activeCategory() === 'connected') {
+        <section class="section-card">
+          <h2 class="section-card__heading">Connected Accounts</h2>
+          @for (acc of connectedAccounts; track acc.provider) {
+            <div class="connected-row">
+              <div class="connected-row__logo" [style.background]="acc.color" [innerHTML]="acc.icon"></div>
+              <div class="connected-row__info">
+                <span class="connected-row__name">{{ acc.provider }}</span>
+                @if (acc.connected) {
+                  <span class="connected-row__status connected-row__status--on">Connected — {{ acc.username }}</span>
+                } @else {
+                  <span class="connected-row__status connected-row__status--off">Not connected</span>
+                }
+              </div>
+              @if (acc.connected) {
+                <a class="connected-row__action connected-row__action--disconnect" href="javascript:void(0)" (click)="acc.connected = false">Disconnect</a>
+              } @else {
+                <button class="connected-row__action connected-row__action--connect" (click)="acc.connected = true">Connect</button>
+              }
+            </div>
+          }
+        </section>
+      }
+
+      <!-- ══ PRIVACY ══ -->
+      @if (activeCategory() === 'privacy') {
+        <section class="section-card">
+          <h2 class="section-card__heading">Privacy</h2>
+          <div class="notif-row">
+            <div class="notif-info">
+              <span class="notif-name">Profile Visibility</span>
+              <span class="notif-desc">Allow recruiters to discover and view your profile</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="profilePublic"/>
+              <span class="toggle__track">
+                <span class="toggle__thumb"></span>
+              </span>
+            </label>
+          </div>
+          <div class="notif-row">
+            <div class="notif-info">
+              <span class="notif-name">Show Assessment Scores</span>
+              <span class="notif-desc">Display your skill assessment results on your public profile</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="showScores"/>
+              <span class="toggle__track">
+                <span class="toggle__thumb"></span>
+              </span>
+            </label>
+          </div>
+          <div class="notif-row">
+            <div class="notif-info">
+              <span class="notif-name">Activity Status</span>
+              <span class="notif-desc">Show when you were last active on the platform</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" [(ngModel)]="showActivity"/>
+              <span class="toggle__track">
+                <span class="toggle__thumb"></span>
+              </span>
+            </label>
+          </div>
+          <div class="privacy-danger">
+            <h3 class="privacy-danger__title">Danger Zone</h3>
+            <p class="privacy-danger__text">Permanently delete your account and all associated data. This action cannot be undone.</p>
+            <button class="btn-danger">Delete Account</button>
+          </div>
+        </section>
+      }
+
+    </main>
+  </div>
+</div>

@@ -1,0 +1,598 @@
+<!-- ═══════ CAREER PATHS MANAGEMENT ═══════ -->
+<div class="cp-page">
+
+  <!-- ╌╌╌ Page Header ╌╌╌ -->
+  <header class="page-hdr">
+    <div>
+      <h1 class="page-hdr__title">Career Paths</h1>
+      <p class="page-hdr__sub">Manage the career paths candidates can follow — each path drives roadmaps, assessments, and job matching.</p>
+    </div>
+    <div class="page-hdr__actions">
+      <button class="btn-ghost">
+        <lucide-icon name="upload" [size]="15"></lucide-icon>
+        Import from JSON
+      </button>
+      <button class="btn-primary" (click)="createNewPath()" [disabled]="isLoading || isSaving">
+        {{ isSaving ? 'Saving...' : 'Create New Path +' }}
+      </button>
+    </div>
+  </header>
+
+  <div class="sync-banner" *ngIf="isLoading || apiError || apiSuccess">
+    <span class="sync-banner__item" *ngIf="isLoading">Syncing career paths from backend...</span>
+    <span class="sync-banner__item sync-banner__item--error" *ngIf="apiError">{{ apiError }}</span>
+    <span class="sync-banner__item sync-banner__item--success" *ngIf="apiSuccess">{{ apiSuccess }}</span>
+  </div>
+
+  <!-- ╌╌╌ Overview Strip ╌╌╌ -->
+  <div class="stat-strip">
+    <div class="stat-card">
+      <span class="stat-card__label">Total Career Paths</span>
+      <span class="stat-card__value">{{ totalActivePaths }} active paths</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-card__label">Most Popular</span>
+      <span class="stat-card__value" *ngIf="mostPopular">{{ mostPopular.name }} — {{ mostPopular.enrolled | number }} users</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-card__label">Highest Completion Rate</span>
+      <span class="stat-card__value" *ngIf="highestCompletion">{{ highestCompletion.name }} — {{ highestCompletion.avgCompletion }}%</span>
+    </div>
+    <div class="stat-card" [class.stat-card--warn]="pendingReviewCount > 0">
+      <span class="stat-card__label">Pending Review</span>
+      <span class="stat-card__value">{{ pendingReviewCount }} draft{{ pendingReviewCount !== 1 ? 's' : '' }}</span>
+    </div>
+  </div>
+
+  <!-- ╌╌╌ Main Two-Column Layout ╌╌╌ -->
+  <div class="cp-body">
+
+    <!-- ══════════ LEFT — Path List ══════════ -->
+    <aside class="cp-list">
+      <div class="list-search">
+        <lucide-icon name="search" [size]="15"></lucide-icon>
+        <input type="text" [(ngModel)]="listSearch" placeholder="Search career paths..." class="list-search__input" />
+      </div>
+
+      <div class="list-filters">
+        <button class="filter-pill" [class.filter-pill--active]="listFilter === 'All'" (click)="listFilter = 'All'">All</button>
+        <button class="filter-pill" [class.filter-pill--active]="listFilter === 'Draft'" (click)="listFilter = 'Draft'">Draft</button>
+      </div>
+
+      <!-- Path cards -->
+      <div class="path-cards">
+        <div *ngFor="let p of filteredPaths"
+             class="path-card"
+             [class.path-card--selected]="selectedPathId === p.id"
+             (click)="selectPath(p.id)">
+          <div class="path-card__top">
+            <span class="path-card__emoji">{{ p.emoji }}</span>
+            <span class="path-card__name">{{ p.name }}</span>
+            <span class="status-badge" [ngClass]="p.status === 'Published' ? 'status-badge--green' : 'status-badge--gray'">{{ p.status }}</span>
+          </div>
+          <div class="path-card__meta">
+            <span>{{ p.enrolled | number }} enrolled</span>
+            <span class="meta-dot">·</span>
+            <span>{{ p.stepsCount }} steps</span>
+            <span class="meta-dot">·</span>
+            <span>{{ p.skillsCount }} skills</span>
+          </div>
+          <div class="path-card__progress">
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="p.avgCompletion"></div>
+            </div>
+            <span class="progress-pct">{{ p.avgCompletion }}%</span>
+          </div>
+        </div>
+
+        <!-- Add new card -->
+        <div class="add-card" (click)="!isLoading && !isSaving && createNewPath()">
+          <lucide-icon name="plus" [size]="24"></lucide-icon>
+          <span>New Career Path</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ══════════ RIGHT — Detail Panel ══════════ -->
+    <section class="cp-detail" *ngIf="selectedPath; else emptyState">
+
+      <!-- Panel Header -->
+      <div class="detail-hdr">
+        <div class="detail-hdr__left">
+          <span class="detail-hdr__emoji" [class.detail-hdr__emoji--edit]="editMode" (click)="editMode && (showEmojiPicker = !showEmojiPicker)">
+            {{ selectedPath.emoji }}
+            <!-- Emoji picker -->
+            <div class="emoji-picker" *ngIf="showEmojiPicker && editMode" (click)="$event.stopPropagation()">
+              <span *ngFor="let e of emojis" class="emoji-opt" (click)="selectEmoji(e)">{{ e }}</span>
+            </div>
+          </span>
+          <div class="detail-hdr__info">
+            <span *ngIf="!editMode" class="detail-hdr__name">{{ selectedPath.name }}</span>
+            <input *ngIf="editMode" [(ngModel)]="selectedPath.name" class="detail-hdr__name-input" />
+            <div class="detail-hdr__sub">
+              <span class="status-badge" [ngClass]="selectedPath.status === 'Published' ? 'status-badge--green' : 'status-badge--gray'">{{ selectedPath.status }}</span>
+              <span class="detail-hdr__enrolled">{{ selectedPath.enrolled | number }} candidates enrolled</span>
+              <span class="detail-hdr__date">Created {{ selectedPath.createdAt }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="detail-hdr__right">
+          <button *ngIf="!editMode" class="btn-ghost btn-ghost--sm" (click)="enterEdit()" [disabled]="isSaving">
+            <lucide-icon name="square-pen" [size]="14"></lucide-icon>
+            Edit
+          </button>
+          <ng-container *ngIf="editMode">
+            <button class="btn-primary btn-primary--sm" (click)="saveChanges()" [disabled]="isSaving">
+              {{ isSaving ? 'Saving...' : 'Save Changes' }}
+            </button>
+            <button class="btn-ghost btn-ghost--sm" (click)="discardEdit()" [disabled]="isSaving">Discard</button>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Tab Row -->
+      <div class="tab-row">
+        <button *ngFor="let t of tabs" class="tab-btn" [class.tab-btn--active]="activeTab === t.toLowerCase().replace(' ', '-')"
+                (click)="activeTab = t.toLowerCase().replace(' ', '-')">{{ t }}</button>
+      </div>
+
+      <!-- ━━━━━━━━━━ TAB: Overview ━━━━━━━━━━ -->
+      <div class="tab-content" *ngIf="activeTab === 'overview'">
+        <!-- Basic Info -->
+        <div class="section">
+          <h4 class="section__title">Basic Info</h4>
+          <div class="info-grid">
+            <div class="info-block">
+              <label class="info-label">Description</label>
+              <p *ngIf="!editMode" class="info-text">{{ selectedPath.description }}</p>
+              <textarea *ngIf="editMode" [(ngModel)]="selectedPath.description" class="form-textarea" rows="4"></textarea>
+            </div>
+            <div class="info-block">
+              <label class="info-label">Target Roles</label>
+              <div *ngIf="!editMode" class="role-pills">
+                <span *ngFor="let r of selectedPath.targetRoles" class="role-pill">{{ r }}</span>
+              </div>
+              <div *ngIf="editMode" class="role-edit">
+                <div class="role-pills role-pills--edit">
+                  <span *ngFor="let r of selectedPath.targetRoles; let i = index" class="role-pill role-pill--edit">
+                    {{ r }}
+                    <button class="role-pill__x" (click)="removeRole(i)">×</button>
+                  </span>
+                </div>
+                <div class="role-add">
+                  <input [(ngModel)]="newRoleInput" placeholder="Add role & press Enter" class="form-input form-input--sm" (keydown.enter)="addRole()" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="info-row">
+            <label class="info-label">Average Salary Range</label>
+            <span *ngIf="!editMode" class="salary-range">€{{ selectedPath.salaryMin | number }} — €{{ selectedPath.salaryMax | number }}</span>
+            <div *ngIf="editMode" class="salary-edit">
+              <span class="salary-prefix">€</span>
+              <input type="number" [(ngModel)]="selectedPath.salaryMin" class="form-input form-input--num" />
+              <span class="salary-dash">—</span>
+              <span class="salary-prefix">€</span>
+              <input type="number" [(ngModel)]="selectedPath.salaryMax" class="form-input form-input--num" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Difficulty & Duration -->
+        <div class="section">
+          <h4 class="section__title">Difficulty &amp; Duration</h4>
+          <div class="dd-grid">
+            <div class="dd-item">
+              <label class="info-label">Overall Difficulty</label>
+              <div class="difficulty-squares">
+                <span *ngFor="let i of [1,2,3,4,5]"
+                      class="diff-sq" [class.diff-sq--filled]="i <= selectedPath.difficulty"
+                      [class.diff-sq--clickable]="editMode"
+                      (click)="editMode && (selectedPath.difficulty = i)"></span>
+              </div>
+              <span class="dd-label">{{ getDifficultyLabel(selectedPath.difficulty) }}</span>
+            </div>
+            <div class="dd-item">
+              <label class="info-label">Estimated Duration</label>
+              <span *ngIf="!editMode" class="dd-big">{{ selectedPath.estimatedWeeks }} weeks</span>
+              <input *ngIf="editMode" type="number" [(ngModel)]="selectedPath.estimatedWeeks" class="form-input form-input--num" />
+              <span class="dd-muted">based on {{ selectedPath.hoursPerWeek }} hours per week</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visibility & Status -->
+        <div class="section">
+          <h4 class="section__title">Visibility &amp; Status</h4>
+          <div class="vis-row">
+            <label class="info-label">Status</label>
+            <span *ngIf="!editMode" class="status-badge" [ngClass]="selectedPath.status === 'Published' ? 'status-badge--green' : 'status-badge--gray'">{{ selectedPath.status }}</span>
+            <div *ngIf="editMode" class="vis-toggle-row">
+              <button class="vis-btn" [class.vis-btn--active]="selectedPath.status === 'Draft'" (click)="selectedPath.status = 'Draft'">Draft</button>
+              <button class="vis-btn vis-btn--pub" [class.vis-btn--active]="selectedPath.status === 'Published'" (click)="selectedPath.status === 'Draft' ? togglePublishConfirm() : null">Published</button>
+            </div>
+          </div>
+          <div class="vis-toggles">
+            <div class="vis-item">
+              <span class="vis-item__label">Show in Onboarding</span>
+              <span *ngIf="!editMode" class="vis-indicator" [class.vis-indicator--on]="selectedPath.showInOnboarding">{{ selectedPath.showInOnboarding ? 'On' : 'Off' }}</span>
+              <label *ngIf="editMode" class="toggle">
+                <input type="checkbox" [(ngModel)]="selectedPath.showInOnboarding" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+            <div class="vis-item">
+              <span class="vis-item__label">Show in Career Explorer</span>
+              <span *ngIf="!editMode" class="vis-indicator" [class.vis-indicator--on]="selectedPath.showInExplorer">{{ selectedPath.showInExplorer ? 'On' : 'Off' }}</span>
+              <label *ngIf="editMode" class="toggle">
+                <input type="checkbox" [(ngModel)]="selectedPath.showInExplorer" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+            <div class="vis-item">
+              <span class="vis-item__label">AI Recommendation Engine</span>
+              <span *ngIf="!editMode" class="vis-indicator" [class.vis-indicator--on]="selectedPath.showInAI">{{ selectedPath.showInAI ? 'On' : 'Off' }}</span>
+              <label *ngIf="editMode" class="toggle">
+                <input type="checkbox" [(ngModel)]="selectedPath.showInAI" />
+                <span class="toggle__track"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ━━━━━━━━━━ TAB: Skills ━━━━━━━━━━ -->
+      <div class="tab-content" *ngIf="activeTab === 'skills'">
+        <!-- Summary chips -->
+        <div class="skill-summary">
+          <span class="sk-chip">{{ selectedPath.skills.length }} total</span>
+          <span class="sk-chip sk-chip--req">{{ requiredSkillsCount }} required</span>
+          <span class="sk-chip sk-chip--pref">{{ preferredSkillsCount }} preferred</span>
+          <span class="sk-chip sk-chip--opt">{{ optionalSkillsCount }} optional</span>
+        </div>
+
+        <div class="skills-layout">
+          <!-- Left: skills list -->
+          <div class="skills-list-col">
+            <div class="list-search list-search--inner">
+              <lucide-icon name="search" [size]="14"></lucide-icon>
+              <input type="text" [(ngModel)]="skillSearch" placeholder="Filter skills..." class="list-search__input" />
+            </div>
+
+            <div *ngFor="let cat of selectedSkillCategories" class="skill-cat">
+              <button class="skill-cat__hdr" (click)="toggleCategory(cat)">
+                <lucide-icon [class.rotated]="!isCategoryCollapsed(cat)" name="chevron-down" [size]="14"></lucide-icon>
+                {{ cat }}
+                <span class="skill-cat__count">{{ filteredSkillsInCategory(cat).length }}</span>
+              </button>
+              <div *ngIf="!isCategoryCollapsed(cat)" class="skill-cat__body">
+                <div *ngFor="let sk of filteredSkillsInCategory(cat)" class="skill-row">
+                  <span class="skill-row__name">{{ sk.name }}</span>
+                  <select *ngIf="editMode" [(ngModel)]="sk.importance" class="imp-select"
+                          [ngClass]="sk.importance === 'Required' ? 'imp--req' : sk.importance === 'Preferred' ? 'imp--pref' : 'imp--opt'">
+                    <option value="Required">Required</option>
+                    <option value="Preferred">Preferred</option>
+                    <option value="Optional">Optional</option>
+                  </select>
+                  <span *ngIf="!editMode" class="imp-badge"
+                        [ngClass]="sk.importance === 'Required' ? 'imp--req' : sk.importance === 'Preferred' ? 'imp--pref' : 'imp--opt'">
+                    {{ sk.importance }}
+                  </span>
+                  <input *ngIf="editMode" type="number" [(ngModel)]="sk.weight" min="1" max="10" class="weight-input" />
+                  <span *ngIf="!editMode" class="weight-display">{{ sk.weight }}/10</span>
+                  <button *ngIf="editMode" class="sk-remove" (click)="removeSkill(sk)">
+                    <lucide-icon name="x" [size]="14"></lucide-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: add skills -->
+          <div class="skills-add-col" *ngIf="editMode">
+            <span class="add-title">ADD SKILLS</span>
+            <div class="list-search list-search--inner">
+              <lucide-icon name="search" [size]="14"></lucide-icon>
+              <input type="text" [(ngModel)]="addSkillSearch" placeholder="Search skill catalog..." class="list-search__input" />
+            </div>
+            <div class="catalog-results" *ngIf="catalogSearchResults.length > 0">
+              <div *ngFor="let s of catalogSearchResults" class="catalog-item" (click)="addSkillFromCatalog(s)">
+                <span class="catalog-item__name">{{ s.name }}</span>
+                <span class="catalog-item__cat">{{ s.category }}</span>
+              </div>
+            </div>
+            <button class="link-btn" (click)="showNewSkillForm = !showNewSkillForm">Create new skill →</button>
+            <div *ngIf="showNewSkillForm" class="new-skill-form">
+              <input [(ngModel)]="newSkillName" placeholder="Skill name" class="form-input form-input--sm" />
+              <select [(ngModel)]="newSkillCategory" class="form-select form-select--sm">
+                <option *ngFor="let c of skillCategories" [value]="c">{{ c }}</option>
+              </select>
+              <textarea [(ngModel)]="newSkillDesc" placeholder="Description (optional)" class="form-textarea form-textarea--sm" rows="2"></textarea>
+              <button class="btn-primary btn-primary--sm" (click)="createNewSkill()">Add Skill</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ━━━━━━━━━━ TAB: Roadmap Steps ━━━━━━━━━━ -->
+      <div class="tab-content" *ngIf="activeTab === 'roadmap-steps'">
+        <div class="rm-header">
+          <span class="rm-count">{{ selectedPath.roadmapSteps.length }} steps · ~{{ getTotalHours() }} hours total</span>
+          <button *ngIf="editMode" class="btn-ghost btn-ghost--sm" (click)="addNewStep()">Add Step +</button>
+        </div>
+
+        <div class="rm-list">
+          <div *ngFor="let step of selectedPath.roadmapSteps; let i = index" class="rm-step" [class.rm-step--expanded]="step.expanded">
+            <!-- Timeline connector -->
+            <div class="rm-timeline">
+              <span *ngIf="editMode" class="rm-grip" title="Drag to reorder">⠿</span>
+              <span class="rm-circle">{{ i + 1 }}</span>
+              <span *ngIf="i < selectedPath.roadmapSteps.length - 1" class="rm-line"></span>
+            </div>
+
+            <div class="rm-content">
+              <div class="rm-row">
+                <span class="rm-title">{{ step.title }}</span>
+                <span class="rm-hours">{{ step.estimatedDays }}d</span>
+                <span class="dbadge" [ngClass]="getDifficultyClass(step.difficulty)">{{ step.difficulty }}</span>
+                <div class="rm-actions" *ngIf="editMode">
+                  <button class="action-btn" (click)="toggleStepEdit(step)" title="Edit">
+                    <lucide-icon name="square-pen" [size]="14"></lucide-icon>
+                  </button>
+                  <button class="action-btn action-btn--danger" (click)="removeStep(step)" title="Delete">
+                    <lucide-icon name="trash-2" [size]="14"></lucide-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Expanded edit form -->
+              <div *ngIf="step.expanded && editMode" class="rm-expand">
+                <div class="form-field"><label class="info-label">Title</label><input [(ngModel)]="step.title" class="form-input" /></div>
+                <div class="form-field"><label class="info-label">Description</label><textarea [(ngModel)]="step.description" class="form-textarea" rows="3"></textarea></div>
+                <div class="rm-expand__row">
+                        <div class="form-field form-field--half"><label class="info-label">Days</label><input type="number" [(ngModel)]="step.estimatedDays" class="form-input form-input--num" /></div>
+                  <div class="form-field form-field--half">
+                    <label class="info-label">Difficulty</label>
+                    <select [(ngModel)]="step.difficulty" class="form-select">
+                      <option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option>
+                      <option value="Advanced">Advanced</option><option value="Expert">Expert</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Resources -->
+                <label class="info-label">Resources</label>
+                <div *ngFor="let res of step.resources; let ri = index" class="res-row">
+                  <input [(ngModel)]="res.title" placeholder="Title" class="form-input form-input--sm" />
+                  <input [(ngModel)]="res.url" placeholder="URL" class="form-input form-input--sm" />
+                  <select [(ngModel)]="res.type" class="form-select form-select--sm">
+                    <option value="Video">Video</option><option value="Article">Article</option>
+                    <option value="Course">Course</option><option value="Docs">Docs</option>
+                  </select>
+                  <label class="toggle toggle--sm"><input type="checkbox" [(ngModel)]="res.free" /><span class="toggle__track"></span></label>
+                  <span class="res-free-label">{{ res.free ? 'Free' : 'Paid' }}</span>
+                  <button class="sk-remove" (click)="removeResource(step, ri)">
+                    <lucide-icon name="x" [size]="13"></lucide-icon>
+                  </button>
+                </div>
+                <button class="link-btn" (click)="addResource(step)">Add Resource +</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add new step card -->
+          <div *ngIf="editMode" class="add-card add-card--inline" (click)="addNewStep()">
+            <lucide-icon name="plus" [size]="20"></lucide-icon>
+            <span>Add Step</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ━━━━━━━━━━ TAB: Interview Questions ━━━━━━━━━━ -->
+      <div class="tab-content" *ngIf="activeTab === 'interview-questions'">
+        <div class="iq-summary">
+          <span class="sk-chip sk-chip--blue">{{ iqTechnical }} Technical</span>
+          <span class="sk-chip sk-chip--purple">{{ iqBehavioral }} Behavioral</span>
+          <span class="sk-chip sk-chip--amber">{{ iqSystemDesign }} System Design</span>
+        </div>
+
+        <div class="iq-toolbar">
+          <div class="list-search list-search--inner">
+            <lucide-icon name="search" [size]="14"></lucide-icon>
+            <input type="text" [(ngModel)]="iqSearch" placeholder="Search questions..." class="list-search__input" />
+          </div>
+          <select [(ngModel)]="iqDiffFilter" class="form-select form-select--sm">
+            <option value="All">All Difficulties</option>
+            <option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option><option value="Expert">Expert</option>
+          </select>
+        </div>
+
+        <table class="iq-table">
+          <thead><tr><th>Question</th><th>Category</th><th>Difficulty</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let q of filteredIQs" class="iq-row">
+              <td class="iq-text" [title]="q.text">{{ q.text }}</td>
+              <td><span class="cbadge" [ngClass]="getCategoryClass(q.category)">{{ q.category }}</span></td>
+              <td><span class="dbadge" [ngClass]="getDifficultyClass(q.difficulty)">{{ q.difficulty }}</span></td>
+              <td class="iq-actions">
+                <button *ngIf="editMode" class="action-btn action-btn--danger" (click)="removeIQ(q)" title="Remove from path">
+                  <lucide-icon name="x" [size]="14"></lucide-icon>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredIQs.length === 0"><td colspan="4" class="empty-row">No questions linked to this path.</td></tr>
+          </tbody>
+        </table>
+
+        <button *ngIf="editMode" class="btn-ghost btn-ghost--sm iq-add-btn" (click)="showAddQuestionsModal = true">Add Questions from Bank +</button>
+      </div>
+
+      <!-- ━━━━━━━━━━ TAB: Job Alignment ━━━━━━━━━━ -->
+      <div class="tab-content" *ngIf="activeTab === 'job-alignment'">
+        <!-- Market Demand -->
+        <div class="section">
+          <h4 class="section__title">Market Demand</h4>
+          <div class="demand-chart">
+            <div *ngFor="let d of selectedPath.marketDemand" class="demand-row">
+              <span class="demand-row__skill">{{ d.skill }}</span>
+              <div class="demand-row__track">
+                <div class="demand-row__bg" [style.width.%]="d.demand"></div>
+                <div class="demand-row__fill" [style.width.%]="d.covered"></div>
+              </div>
+              <span class="demand-row__val">{{ d.demand }}%</span>
+            </div>
+          </div>
+          <div class="demand-legend">
+            <span class="demand-legend__item"><span class="demand-legend__dot demand-legend__dot--bg"></span>Job Demand</span>
+            <span class="demand-legend__item"><span class="demand-legend__dot demand-legend__dot--fill"></span>Path Coverage</span>
+          </div>
+        </div>
+
+        <!-- Skill Gap -->
+        <div class="section">
+          <h4 class="section__title">Skill Gap Analysis</h4>
+          <table class="gap-table">
+            <thead><tr><th>Skill</th><th>Required by Jobs</th><th>Covered</th><th>Priority</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let g of selectedPath.skillGaps" class="gap-row" [class.gap-row--warn]="g.priority === 'High' && !g.covered">
+                <td class="gap-skill">{{ g.skill }}</td>
+                <td>{{ g.requiredByJobs }}%</td>
+                <td>
+                  <lucide-icon *ngIf="g.covered" name="check" [size]="16" color="#2ee8a5"></lucide-icon>
+                  <lucide-icon *ngIf="!g.covered" name="x" [size]="16" color="#f87171"></lucide-icon>
+                </td>
+                <td>
+                  <span class="pri-badge" [ngClass]="'pri--' + g.priority.toLowerCase()">{{ g.priority }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Active Jobs -->
+        <div class="section">
+          <h4 class="section__title">Active Job Offers</h4>
+          <div *ngFor="let j of selectedPath.activeJobs" class="job-row">
+            <span class="job-row__company">{{ j.company }}</span>
+            <span class="job-row__title">{{ j.title }}</span>
+            <button class="link-btn link-btn--sm">View Offer →</button>
+          </div>
+          <p *ngIf="selectedPath.activeJobs.length === 0" class="empty-msg">No matching job offers found.</p>
+        </div>
+      </div>
+
+      <!-- ━━━━━━━━━━ TAB: Analytics ━━━━━━━━━━ -->
+      <div class="tab-content" *ngIf="activeTab === 'analytics'">
+        <!-- Stat cards -->
+        <div class="an-stats">
+          <div class="an-stat"><span class="an-stat__label">Total Enrolled</span><span class="an-stat__value">{{ selectedPath.totalEnrolled | number }}</span></div>
+          <div class="an-stat"><span class="an-stat__label">Active This Month</span><span class="an-stat__value">{{ selectedPath.activeThisMonth | number }}</span></div>
+          <div class="an-stat"><span class="an-stat__label">Avg Completion</span><span class="an-stat__value">{{ selectedPath.avgCompletionRate }}%</span></div>
+          <div class="an-stat">
+            <span class="an-stat__label">Dropout Point</span>
+            <span class="an-stat__value">Step {{ selectedPath.dropoutStep }}</span>
+            <span class="an-stat__muted">{{ selectedPath.dropoutStepName }}</span>
+          </div>
+        </div>
+
+        <!-- Enrollment chart -->
+        <div class="section">
+          <h4 class="section__title">Enrollment Over Time</h4>
+          <div class="enroll-chart">
+            <div *ngFor="let w of selectedPath.enrollmentWeekly" class="enroll-bar"
+                 [style.height.%]="maxEnrollmentWeekly > 0 ? (w / maxEnrollmentWeekly) * 100 : 0"
+                 [title]="w + ' new enrollments'"></div>
+          </div>
+        </div>
+
+        <!-- Step completion breakdown -->
+        <div class="section" *ngIf="selectedPath.stepCompletions.length > 0">
+          <h4 class="section__title">Step Completion Breakdown</h4>
+          <div class="step-bars">
+            <div *ngFor="let sc of selectedPath.stepCompletions" class="step-bar-row">
+              <span class="step-bar-label">{{ sc.step }}</span>
+              <div class="step-bar-track">
+                <div class="step-bar-fill" [class.step-bar-fill--sharp]="sc.sharp" [style.width.%]="sc.pct"></div>
+              </div>
+              <span class="step-bar-pct" [class.step-bar-pct--sharp]="sc.sharp">{{ sc.pct }}%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Score distribution -->
+        <div class="section" *ngIf="selectedPath.scoreDistribution.length > 0">
+          <h4 class="section__title">Assessment Score Distribution</h4>
+          <div class="score-hist">
+            <div *ngFor="let v of selectedPath.scoreDistribution; let i = index" class="score-bar-col">
+              <div class="score-bar" [style.height.%]="maxScoreDist > 0 ? (v / maxScoreDist) * 100 : 0"></div>
+            </div>
+            <div class="score-benchmark" [style.left.%]="selectedPath.scoreBenchmark / 100 * 100">
+              <span class="score-benchmark__tag">Benchmark</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Empty State -->
+    <ng-template #emptyState>
+      <section class="cp-empty">
+        <lucide-icon name="circle-question-mark" [size]="48" color="rgba(255,255,255,.15)"></lucide-icon>
+        <p>Select a career path to view and edit its details.</p>
+      </section>
+    </ng-template>
+
+  </div>
+</div>
+
+<!-- ═══════ ADD QUESTIONS MODAL ═══════ -->
+<div class="modal-overlay" *ngIf="showAddQuestionsModal" (click)="showAddQuestionsModal = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal__header">
+      <h3 class="modal__title">Add Questions from Bank</h3>
+      <button class="modal__close" (click)="showAddQuestionsModal = false">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+    </div>
+    <div class="modal__body">
+      <div class="list-search list-search--inner">
+        <lucide-icon name="search" [size]="14"></lucide-icon>
+        <input type="text" [(ngModel)]="addQSearch" placeholder="Search questions..." class="list-search__input" />
+      </div>
+      <div class="modal-q-list">
+        <label *ngFor="let q of availableQuestionsForModal" class="modal-q-item" (click)="toggleAddQ(q.id)">
+          <span class="modal-q-check" [class.modal-q-check--active]="addQSelected.has(q.id)">
+            <lucide-icon *ngIf="addQSelected.has(q.id)" name="check" [size]="12"></lucide-icon>
+          </span>
+          <div class="modal-q-body">
+            <p class="modal-q-text">{{ q.text }}</p>
+            <div class="modal-q-meta">
+              <span class="cbadge" [ngClass]="getCategoryClass(q.category)">{{ q.category }}</span>
+              <span class="dbadge" [ngClass]="getDifficultyClass(q.difficulty)">{{ q.difficulty }}</span>
+            </div>
+          </div>
+        </label>
+      </div>
+      <button class="btn-primary" [disabled]="addQSelected.size === 0" (click)="addSelectedQuestions()">
+        Add Selected ({{ addQSelected.size }})
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PUBLISH CONFIRM DIALOG ═══════ -->
+<div class="modal-overlay" *ngIf="showPublishConfirm" (click)="showPublishConfirm = false">
+  <div class="modal modal--sm" (click)="$event.stopPropagation()">
+    <div class="modal__header">
+      <h3 class="modal__title">Publish Career Path</h3>
+    </div>
+    <div class="modal__body">
+      <p class="confirm-text">Publishing this path will make it available to all candidates. Any enrolled users will see updates immediately. Are you sure?</p>
+      <div class="confirm-actions">
+        <button class="btn-ghost" (click)="showPublishConfirm = false">Cancel</button>
+        <button class="btn-primary" (click)="confirmPublish()">Publish</button>
+      </div>
+    </div>
+  </div>
+</div>

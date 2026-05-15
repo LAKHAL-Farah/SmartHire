@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-roadmap
+  namespace: smarthire
+spec:
+  selector:
+    app: ms-roadmap
+  ports:
+    - name: http
+      port: 8083
+      targetPort: 8083
+  type: ClusterIP

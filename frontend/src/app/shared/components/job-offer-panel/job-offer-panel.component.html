@@ -1,0 +1,63 @@
+@if (open) {
+  <div class="po-job-panel__backdrop" (click)="close()">
+    <aside class="po-job-panel" (click)="$event.stopPropagation()">
+      <div class="po-job-panel__line"></div>
+      <header class="po-job-panel__header">
+        <h2>New Job Offer</h2>
+        <button type="button" class="po-job-panel__close" (click)="close()" aria-label="Close panel">
+          <lucide-icon name="x" [size]="18"></lucide-icon>
+        </button>
+      </header>
+
+      <section class="po-job-panel__body">
+        <label class="po-field">
+          <span>Job Title</span>
+          <input type="text" [(ngModel)]="jobTitle" [class.po-field--error]="titleError()" placeholder="Senior Full Stack Engineer" />
+          @if (titleError()) {
+            <small>Job title is required.</small>
+          }
+        </label>
+
+        <label class="po-field">
+          <span>Company</span>
+          <input type="text" [(ngModel)]="company" placeholder="Company name" />
+        </label>
+
+        <label class="po-field">
+          <span>Source URL</span>
+          <div class="po-field__icon-wrap">
+            <lucide-icon name="link" [size]="14"></lucide-icon>
+            <input type="text" [(ngModel)]="sourceUrl" placeholder="https://..." />
+          </div>
+        </label>
+
+        <label class="po-field">
+          <span>Job Description</span>
+          <textarea [(ngModel)]="description" [class.po-field--error]="descriptionError()" placeholder="Paste full job description"></textarea>
+          <small class="po-field__count">{{ descriptionChars() }}</small>
+          @if (descriptionError()) {
+            <small>Job description is required.</small>
+          }
+        </label>
+
+        @if (errorMessage) {
+          <p class="po-panel-error">{{ errorMessage }}</p>
+        }
+      </section>
+
+      <footer class="po-job-panel__footer">
+        <div class="po-job-panel__line"></div>
+        <button type="button" class="po-btn po-btn--ghost" (click)="close()">Cancel</button>
+        <button type="button" class="po-btn po-btn--primary" (click)="save()" [disabled]="loading">
+          @if (loading) {
+            <span class="po-spinner"></span>
+            <span>Extracting keywords...</span>
+          } @else {
+            <lucide-icon name="zap" [size]="15"></lucide-icon>
+            <span>Save & Extract Keywords</span>
+          }
+        </button>
+      </footer>
+    </aside>
+  </div>
+}

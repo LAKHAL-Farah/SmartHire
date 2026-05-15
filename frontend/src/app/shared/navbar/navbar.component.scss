@@ -1,0 +1,31 @@
+:host { display: block; }
+
+nav {
+  background: rgba(var(--color-bg-rgb), 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(var(--color-border-rgb), 0.4);
+  transition: all 0.3s ease;
+}
+
+nav.scrolled {
+  background: rgba(var(--color-bg-rgb), 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}

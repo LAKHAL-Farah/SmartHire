@@ -1,0 +1,25 @@
+<div class="controls-bar" data-testid="controls-bar">
+  <button
+    class="ctrl-btn"
+    data-testid="mic-btn"
+    [class.off]="!micEnabled"
+    (click)="toggleMic()"
+    [matTooltip]="micEnabled ? 'Mute mic' : 'Unmute mic'"
+  >
+    <mat-icon>{{ micEnabled ? 'mic' : 'mic_off' }}</mat-icon>
+  </button>
+
+  <button
+    class="ctrl-btn"
+    data-testid="camera-btn"
+    [class.off]="!cameraEnabled"
+    (click)="toggleCamera()"
+    [matTooltip]="cameraEnabled ? 'Turn off camera' : 'Turn on camera'"
+  >
+    <mat-icon>{{ cameraEnabled ? 'videocam' : 'videocam_off' }}</mat-icon>
+  </button>
+
+  <button class="ctrl-btn leave" data-testid="leave-btn" (click)="leaveClicked.emit()" matTooltip="Leave interview">
+    <mat-icon>call_end</mat-icon>
+  </button>
+</div>

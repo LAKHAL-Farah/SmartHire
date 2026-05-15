@@ -1,0 +1,19 @@
+<div class="top-bar" data-testid="top-bar">
+  <div class="top-left">
+    <span class="company-name">{{ companyName }}</span>
+    <span class="sep">·</span>
+    <span class="mode-badge" [class.practice]="liveSubMode === 'PRACTICE_LIVE'" data-testid="mode-badge">
+      LIVE · {{ liveSubMode === 'PRACTICE_LIVE' ? 'PRACTICE' : 'TEST' }}
+    </span>
+  </div>
+
+  <div class="top-center">
+    <span class="timer" data-testid="session-timer">{{ sessionTimerSeconds | timerFormat }}</span>
+  </div>
+
+  <div class="top-right">
+    <span class="q-counter" *ngIf="totalQuestions > 0" data-testid="question-counter">
+      Q{{ currentQuestionIndex + 1 }} / {{ totalQuestions }}
+    </span>
+  </div>
+</div>

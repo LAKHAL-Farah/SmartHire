@@ -1,0 +1,11 @@
+{
+  "type": "LIVE_SESSION_READY",
+  "payload": {
+    "sessionId": 42,
+    "greetingAudioUrl": "/audio/greeting.wav",
+    "firstQuestionId": 1,
+    "firstQuestionText": "Tell me about yourself.",
+    "totalQuestions": 5,
+    "liveSubMode": "PRACTICE_LIVE"
+  }
+}

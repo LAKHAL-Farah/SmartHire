@@ -1,0 +1,39 @@
+<div class="overlay-panel" [@slideUp] data-testid="feedback-overlay">
+  <div class="overlay-header">
+    <div class="score-ring">
+      <svg viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="16" fill="none" stroke="#2a2a3a" stroke-width="3"></circle>
+        <circle
+          cx="20"
+          cy="20"
+          r="16"
+          fill="none"
+          [attr.stroke]="scoreColor"
+          stroke-width="3"
+          stroke-dasharray="100.5"
+          [attr.stroke-dashoffset]="100.5 - (score / 10 * 100.5)"
+          stroke-linecap="round"
+          transform="rotate(-90 20 20)"
+        ></circle>
+      </svg>
+      <span class="score-value" [style.color]="scoreColor" data-testid="score-value">{{ score | number:'1.1-1' }}</span>
+    </div>
+
+    <div class="feedback-body">
+      <p class="feedback-text" data-testid="feedback-text">{{ feedbackText }}</p>
+    </div>
+  </div>
+
+  <div class="overlay-actions">
+    <button class="btn-retry" data-testid="btn-retry" (click)="onRetry()">
+      <mat-icon>replay</mat-icon>
+      Retry this question
+    </button>
+    <button class="btn-continue" data-testid="btn-continue" (click)="onContinue()">
+      Continue
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+
+  <p class="auto-continue" data-testid="auto-continue-countdown">Auto-continuing in {{ autoCountdown }}s...</p>
+</div>

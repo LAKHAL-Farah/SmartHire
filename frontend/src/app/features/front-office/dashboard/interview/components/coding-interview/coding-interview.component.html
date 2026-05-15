@@ -1,0 +1,235 @@
+<section class="coding-shell">
+  <div class="left-panel">
+    <div class="left-header">
+      <span class="difficulty-badge" [class]="difficultyBadgeClass">{{ question?.difficulty }}</span>
+      <select
+        class="language-selector"
+        [ngModel]="selectedLanguage"
+        (ngModelChange)="onLanguageChange($event)"
+      >
+        <option value="java">Java</option>
+        <option value="python">Python</option>
+        <option value="javascript">JavaScript</option>
+      </select>
+    </div>
+
+    <h3 class="question-title">{{ currentQuestion?.questionText }}</h3>
+    <div class="question-description">
+      {{ questionMetadata?.description || currentQuestion?.questionText }}
+    </div>
+
+    <div class="meta-block">
+      <p class="meta-label">CONSTRAINTS</p>
+      <div class="pill-row">
+        @for (constraint of questionMetadata?.constraints || []; track constraint) {
+          <span class="constraint-pill">{{ constraint }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="meta-block">
+      <p class="meta-label">EXAMPLES</p>
+      @for (example of questionMetadata?.examples || []; track $index) {
+        <article class="example-card">
+          <p><span class="sub-label">Input:</span></p>
+          <pre>{{ example.input }}</pre>
+          <p><span class="sub-label">Output:</span></p>
+          <pre>{{ example.output }}</pre>
+          @if (example.explanation) {
+            <p class="example-explanation">Explanation: {{ example.explanation }}</p>
+          }
+        </article>
+      }
+    </div>
+
+    <div class="try-these-section" *ngIf="questionMetadata?.tryThese?.length">
+      <div class="section-label">TRY THESE INPUTS</div>
+      <div class="try-these-hint">
+        Click any card to copy the input - paste it into your code's Scanner
+      </div>
+
+      <div
+        *ngFor="let test of questionMetadata.tryThese; let i = index"
+        class="try-card"
+        [class.copied]="copiedIndex === i"
+        (click)="copyInput(test.input, i)">
+
+        <div class="try-card-header">
+          <span class="try-card-number">{{ i + 1 }}</span>
+          <span class="try-card-label">{{ test.label }}</span>
+          <span class="try-card-copy-hint">
+            {{ copiedIndex === i ? '✓ Copied!' : 'Click to copy' }}
+          </span>
+        </div>
+
+        <div class="try-card-row">
+          <span class="try-row-label">Input:</span>
+          <pre class="try-input-value">{{ test.input }}</pre>
+        </div>
+
+        <div class="try-card-row">
+          <span class="try-row-label">Expected:</span>
+          <pre class="try-expected-value">{{ test.expectedOutput }}</pre>
+        </div>
+
+        <div class="try-explanation">{{ test.explanation }}</div>
+      </div>
+    </div>
+
+    <div class="test-results-container" #testResultsSection *ngIf="hasRunOnce">
+      <div class="section-label">TEST RESULTS</div>
+
+      <div
+        *ngFor="let result of testCaseResults; let i = index"
+        class="test-case-card"
+        [class.passed]="result.passed"
+        [class.failed]="!result.passed"
+      >
+        <div *ngIf="result.isHidden" class="hidden-test-row">
+          <span class="hidden-dot">●</span>
+          <span class="hidden-label">Hidden test {{ i + 1 }}:</span>
+          <span class="hidden-result" [class.pass-text]="result.passed" [class.fail-text]="!result.passed">
+            {{ result.passed ? 'PASSED' : 'FAILED' }}
+          </span>
+        </div>
+
+        <div *ngIf="!result.isHidden">
+          <div class="test-header">
+            <div class="test-header-left">
+              <span class="test-icon">{{ result.passed ? '✓' : '✗' }}</span>
+              <span class="test-label">Test {{ i + 1 }}</span>
+            </div>
+            <span class="test-status-badge" [class.badge-pass]="result.passed" [class.badge-fail]="!result.passed">
+              {{ result.passed ? 'PASSED' : 'FAILED' }}
+            </span>
+          </div>
+
+          <div class="test-detail-row">
+            <span class="detail-label">Input:</span>
+            <pre class="detail-value">{{ result.input }}</pre>
+          </div>
+
+          <div class="test-detail-row">
+            <span class="detail-label">Expected:</span>
+            <pre class="detail-value expected">{{ result.expectedOutput }}</pre>
+          </div>
+
+          <div class="test-detail-row">
+            <span class="detail-label">Your output:</span>
+            <pre class="detail-value" [class.output-wrong]="!result.passed && result.actualOutput">{{ result.actualOutput || '(no output)' }}</pre>
+          </div>
+
+          <div class="test-detail-row error-row" *ngIf="!result.passed && compilationError">
+            <span class="detail-label error-label">Error:</span>
+            <pre class="detail-value error-value">{{ compilationError }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="test-summary"
+        [class.all-pass]="passedCount === totalCount && totalCount > 0"
+        [class.partial]="passedCount > 0 && passedCount < totalCount"
+        [class.all-fail]="passedCount === 0"
+      >
+        {{ passedCount === totalCount && totalCount > 0 ? '✓' : passedCount > 0 ? '◑' : '✗' }}
+        {{ passedCount }}/{{ totalCount }} test cases passed
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="editor-top-bar">
+      <div class="file-label">
+        <span class="code-icon">&#123; &#125;</span>
+        <span>{{ filename }}</span>
+      </div>
+      <span class="quick-difficulty">{{ question?.difficulty }}</span>
+    </div>
+
+    <div class="editor-host" data-testid="code-editor">
+      @if (!showPlainEditor) {
+        <ngx-monaco-editor
+          [options]="editorOptions"
+          [(ngModel)]="editorCode"
+          (onInit)="onEditorInit($event)"
+        ></ngx-monaco-editor>
+      } @else {
+        <div class="fallback-editor-wrap">
+          <p class="fallback-editor-hint">Monaco editor did not initialize. Using safe text editor mode.</p>
+          <textarea
+            class="fallback-editor"
+            [(ngModel)]="editorCode"
+            spellcheck="false"
+            aria-label="Code editor fallback"
+          ></textarea>
+        </div>
+      }
+    </div>
+
+    <div class="action-bar">
+      <div class="action-left">
+        <button class="run-btn" type="button" [disabled]="isRunning" (click)="runCode()">
+          {{ isRunning ? 'Running...' : '▶ Run Code' }}
+        </button>
+
+        @if (hasRunOnce) {
+          <span
+            class="result-pill"
+            [class.result-all-pass]="passedCount === totalCount && totalCount > 0"
+            [class.result-partial]="passedCount > 0 && passedCount < totalCount"
+            [class.result-all-fail]="passedCount === 0"
+          >
+            @if (passedCount === totalCount && totalCount > 0) {
+              ✓ {{ passedCount }}/{{ totalCount }} passed
+            } @else if (passedCount > 0) {
+              ◑ {{ passedCount }}/{{ totalCount }} passed
+            } @else {
+              ✗ 0/{{ totalCount }} passed
+            }
+          </span>
+        }
+      </div>
+
+      <button class="submit-solution-btn" type="button" [disabled]="!hasRunOnce" (click)="openExplanationPanel()">
+        Submit Solution
+      </button>
+    </div>
+
+    <div class="explanation-panel" *ngIf="showExplanationPanel">
+      <div class="explanation-head">
+        <p class="head-title">🎤 Explain Your Approach</p>
+        <p class="head-subtitle">AI considers both your code and explanation</p>
+      </div>
+
+      @if (aiSpeaking) {
+        <div class="ai-avatar-row">
+          <span class="ai-avatar">🤖</span>
+          <span class="ai-pulse"></span>
+        </div>
+      }
+
+      <textarea
+        class="explanation-textarea"
+        placeholder="Describe your approach, data structures used, and the time and space complexity..."
+        [(ngModel)]="explanation"
+      ></textarea>
+
+      <div class="explanation-actions">
+        <div class="mic-wrap">
+          <app-mic-button [disabled]="isSubmitting" (audioReady)="onExplanationAudio($event)"></app-mic-button>
+          <span class="mic-caption">or speak</span>
+        </div>
+
+        <button
+          class="final-submit-btn"
+          type="button"
+          [disabled]="!explanation.trim().length || isSubmitting"
+          (click)="submitFinalAnswer()"
+        >
+          {{ isSubmitting ? 'Submitting...' : 'Submit Final Answer' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

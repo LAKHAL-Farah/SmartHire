@@ -1,0 +1,34 @@
+<div class="debug-toast" *ngIf="visible" data-testid="debug-toast">
+  <div class="debug-title">DEBUG</div>
+  <div class="debug-row" *ngIf="sessionId !== null">
+    <span class="lbl">Session</span>
+    <span class="val">{{ sessionId }}</span>
+  </div>
+  <div class="debug-row">
+    <span class="lbl">Turn</span>
+    <span class="val turn" [attr.data-turn]="turnLabel">{{ turnLabel }}</span>
+  </div>
+  <div class="debug-row">
+    <span class="lbl">Audio</span>
+    <span class="val audio">{{ audioState }}</span>
+  </div>
+  <div class="debug-row">
+    <span class="lbl">Background</span>
+    <span class="val bg">{{ bgTask }}</span>
+  </div>
+  <div class="debug-row">
+    <span class="lbl">Greeting</span>
+    <span class="val url">
+      {{ (greetingUrl | slice:0:34) }}{{ greetingUrl.length > 34 ? '...' : '' }}
+    </span>
+  </div>
+  <div class="debug-row">
+    <span class="lbl">Transcript</span>
+    <span class="val transcript">
+      {{ (lastTranscript | slice:0:40) }}{{ lastTranscript.length > 40 ? '...' : '' }}
+    </span>
+  </div>
+  <div class="debug-dots" *ngIf="bgTask !== 'nothing'">
+    <span></span><span></span><span></span>
+  </div>
+</div>

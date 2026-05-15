@@ -1,0 +1,77 @@
+<div class="mcq">
+  <a routerLink="/dashboard/assessments" class="mcq__back">
+    <lucide-icon name="arrow-left" [size]="16"></lucide-icon>
+    Back to assessments
+  </a>
+
+  @if (errorMsg(); as err) {
+    <div class="mcq__alert" role="alert">{{ err }}</div>
+  }
+
+  @if (loading() && !paper()) {
+    <p class="mcq__loading">Loading questions…</p>
+  }
+
+  @if (submitted()) {
+    <section class="mcq-done">
+      <div class="mcq-done__ring">
+        <lucide-icon name="circle-check" [size]="40"></lucide-icon>
+      </div>
+      <h1 class="mcq-done__title">Assessment submitted</h1>
+      @if (scorePercent() != null) {
+        <p class="mcq-done__score">Score: <strong>{{ scorePercent() }}%</strong></p>
+      } @else {
+        <p class="mcq-done__hint mcq-done__hint--accent">
+          Your answers are scored. An administrator will publish your result — then you’ll see your score, any feedback, and the full question review on
+          <strong>Skill assessments</strong> and your <strong>Profile</strong>.
+        </p>
+      }
+      <p class="mcq-done__hint">Each category allows only one attempt. After your score is published, you can open the results from Skill assessments.</p>
+      <a routerLink="/dashboard/assessments" class="mcq-done__btn">Return to skill assessments</a>
+    </section>
+  } @else {
+    @if (paper(); as doc) {
+      <header class="mcq__head">
+        <h1 class="mcq__title">{{ doc.categoryTitle }}</h1>
+        <p class="mcq__meta">{{ doc.questions.length }} questions</p>
+      </header>
+
+      <ol class="mcq__list">
+        @for (q of doc.questions; track trackByQ($index, q)) {
+          <li class="mcq-q">
+            <div class="mcq-q__top">
+              <span class="mcq-q__pts">{{ q.points }} pts</span>
+              <span class="mcq-q__diff">{{ q.difficulty }}</span>
+            </div>
+            <p class="mcq-q__prompt">{{ q.prompt }}</p>
+            <ul class="mcq-q__choices">
+              @for (c of q.choices; track c.id) {
+                <li>
+                  <label class="mcq-choice" [class.mcq-choice--on]="picks()[q.id] === c.id">
+                    <input
+                      type="radio"
+                      [name]="'q-' + q.id"
+                      [checked]="picks()[q.id] === c.id"
+                      (change)="selectChoice(q.id, c.id)"
+                    />
+                    <span>{{ c.label }}</span>
+                  </label>
+                </li>
+              }
+            </ul>
+          </li>
+        }
+      </ol>
+
+      <div class="mcq__footer">
+        <button type="button" class="mcq__submit" [disabled]="loading() || !canSubmit(doc)" (click)="submit()">
+          @if (loading()) {
+            Submitting…
+          } @else {
+            Submit answers
+          }
+        </button>
+      </div>
+    }
+  }
+</div>

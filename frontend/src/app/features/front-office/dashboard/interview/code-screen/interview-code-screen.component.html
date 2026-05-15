@@ -1,0 +1,133 @@
+<div class="code-room">
+  <header class="code-room__header">
+    <span class="code-room__brand">SmartHire Coding Screen</span>
+    <span class="code-room__timer">{{ timerDisplay() }}</span>
+  </header>
+
+  <div class="progress-strip">
+    <span>{{ questionPositionLabel() }}</span>
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="progressPercent()"></div>
+    </div>
+    <span class="mode-pill">{{ mode() }}</span>
+  </div>
+
+  @if (!isLoaded() && !loadError()) {
+    <div class="state-card">
+      <p>Loading coding question...</p>
+    </div>
+  }
+
+  @if (loadError()) {
+    <div class="state-card state-card--error">
+      <p>{{ loadError() }}</p>
+      <button type="button" (click)="goToDefaultRoom()">Open Standard Room</button>
+    </div>
+  }
+
+  @if (isLoaded() && question() && question()!.type !== 'CODING') {
+    <div class="state-card">
+      <p>This question type should use the default interview room page.</p>
+      <p class="state-card__question">Current question: {{ question()!.questionText }}</p>
+      <button type="button" (click)="goToDefaultRoom()">Open Standard Room</button>
+    </div>
+  } @else if (isLoaded() && question() && question()!.type === 'CODING') {
+    <div class="split-layout">
+      <section class="left-panel">
+        <span class="title-tag">{{ question()!.domain }} · {{ question()!.category }}</span>
+        <h2>Problem Statement</h2>
+        <p class="problem-text">{{ question()!.questionText }}</p>
+
+        <div class="meta-row">
+          <span class="difficulty-pill">{{ question()!.difficulty }}</span>
+          @if (mode() === 'PRACTICE') {
+            <button class="small-btn" type="button" (click)="toggleHint()">Hint</button>
+          }
+        </div>
+
+        <div class="constraints">
+          <h3>Constraints</h3>
+          <p>Time: O(n), Space: O(n) target</p>
+        </div>
+
+        @if (hintOpen()) {
+          <div class="hint-box">
+            <h4>Hints</h4>
+            <ul>
+              @for (hint of parsedHints(); track hint) {
+                <li>{{ hint }}</li>
+              }
+            </ul>
+          </div>
+        }
+
+        <div class="test-cases">
+          <h3>Expected Test Cases</h3>
+          <div class="test-row">Case 1: input="abcabcbb" → output=3</div>
+          <div class="test-row">Case 2: input="bbbbb" → output=1</div>
+        </div>
+      </section>
+
+      <section class="right-panel">
+        <div class="editor-toolbar">
+          <label>
+            Language
+            <select [value]="selectedLanguage()" (change)="onLanguageChange($any($event.target).value)">
+              @for (item of languageOptions; track item.value) {
+                <option [value]="item.value">{{ item.label }}</option>
+              }
+            </select>
+          </label>
+          <button class="run-btn" type="button" [disabled]="running()" (click)="runCode()">
+            @if (running()) { Running... } @else { Run }
+          </button>
+        </div>
+
+        <textarea
+          class="editor-fallback"
+          rows="14"
+          [value]="editorValue()"
+          (input)="setEditorValue($any($event.target).value)"
+        ></textarea>
+
+        <div class="output-panel">
+          <h3>Output</h3>
+          <pre class="stdout">{{ outputStdout() }}</pre>
+          <pre class="stderr">{{ outputStderr() }}</pre>
+          <p class="meta">{{ outputMeta() }}</p>
+          <span class="summary" [class.summary--pass]="passedBadge() === 'pass'" [class.summary--fail]="passedBadge() === 'fail'">
+            {{ testSummary() }}
+          </span>
+        </div>
+
+        <div class="explain-panel">
+          <label for="explain">Explain your solution</label>
+          <textarea
+            id="explain"
+            rows="4"
+            placeholder="Describe your approach, time complexity, trade-offs..."
+            [value]="explanationText()"
+            (input)="explanationText.set($any($event.target).value)"
+          ></textarea>
+          <button type="button" (click)="submitExplanation()">Submit Explanation</button>
+        </div>
+
+        @if (followUpBubbleOpen()) {
+          <div class="follow-bubble">
+            <p class="follow-bubble__feedback">{{ followUpFeedback() }}</p>
+            <p class="follow-bubble__question">Follow-up: {{ followUpQuestion() }}</p>
+          </div>
+        }
+
+        @if (mode() === 'PRACTICE') {
+          <button class="big-o-btn" type="button" (click)="toggleOptimizeHint()">Get Big-O hint</button>
+          @if (optimizeHintOpen()) {
+            <div class="optimize-card">
+              Hint: aim for O(n) time using a data structure that gives O(1) lookup.
+            </div>
+          }
+        }
+      </section>
+    </div>
+  }
+</div>

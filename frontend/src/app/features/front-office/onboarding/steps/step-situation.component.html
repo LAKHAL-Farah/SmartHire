@@ -1,0 +1,22 @@
+<div class="step">
+  <h1 class="step__headline">
+    Welcome, <span class="step__gradient">where are you now?</span>
+  </h1>
+  <p class="step__sub">This helps us personalize your learning path and career roadmap.</p>
+
+  <div class="cards-grid">
+    @for (card of situations; track card.id) {
+      <button
+        class="sit-card"
+        [class.sit-card--active]="selected === card.id"
+        (click)="select(card.id)"
+      >
+        <span class="sit-card__emoji">{{ card.emoji }}</span>
+        <div class="sit-card__text">
+          <span class="sit-card__title">{{ card.title }}</span>
+          <span class="sit-card__desc">{{ card.desc }}</span>
+        </div>
+      </button>
+    }
+  </div>
+</div>

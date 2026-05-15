@@ -1,0 +1,64 @@
+﻿{
+    "scannedAt":  "2026-04-06T22:40:46",
+    "totalFiles":  176,
+    "byKind":  [
+                   {
+                       "kind":  "component-ts",
+                       "count":  51
+                   },
+                   {
+                       "kind":  "template-html",
+                       "count":  50
+                   },
+                   {
+                       "kind":  "style-scss",
+                       "count":  50
+                   },
+                   {
+                       "kind":  "service-ts",
+                       "count":  7
+                   },
+                   {
+                       "kind":  "guard-ts",
+                       "count":  5
+                   },
+                   {
+                       "kind":  "spec-ts",
+                       "count":  5
+                   },
+                   {
+                       "kind":  "ts",
+                       "count":  5
+                   },
+                   {
+                       "kind":  "environment-ts",
+                       "count":  2
+                   },
+                   {
+                       "kind":  "routes-ts",
+                       "count":  1
+                   }
+               ],
+    "byStatus":  [
+                     {
+                         "status":  "implemented",
+                         "count":  134
+                     },
+                     {
+                         "status":  "partial",
+                         "count":  40
+                     },
+                     {
+                         "status":  "empty",
+                         "count":  2
+                     }
+                 ],
+    "totalServices":  7,
+    "totalComponents":  51,
+    "componentsWithServices":  20,
+    "componentsWithDirectHttp":  0,
+    "componentsLikelyLocalData":  41,
+    "routeFiles":  [
+                       "src/app/app.routes.ts"
+                   ]
+}

@@ -1,0 +1,316 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: smarthire_mysql
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+    networks:
+      - smarthire-net
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","mysqladmin","ping","-h","localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - smarthire-net
+    restart: unless-stopped
+
+  configserver:
+    build:
+      context: ./backend
+      dockerfile: ConfigServer/Dockerfile
+    image: ${REGISTRY:-local}/configserver:${TAG:-latest}
+    environment:
+      - SPRING_PROFILES_ACTIVE=native,prod
+    volumes:
+      - ./backend/ConfigServer/config-repo:/app/config-repo:ro
+    networks:
+      - smarthire-net
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  discovery:
+    build:
+      context: ./backend
+      dockerfile: Discovery/Dockerfile
+    image: ${REGISTRY:-local}/discovery:${TAG:-latest}
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+    networks:
+      - smarthire-net
+    depends_on:
+      - configserver
+    restart: unless-stopped
+
+  gateway:
+    build:
+      context: ./backend
+      dockerfile: Gateway/Dockerfile
+    image: ${REGISTRY:-local}/gateway:${TAG:-latest}
+    environment:
+      - SPRING_CONFIG_LOCATION=file:/application.yml
+    volumes:
+      - ./backend/Gateway/application.yml:/application.yml:ro
+    networks:
+      - smarthire-net
+    depends_on:
+      - discovery
+    ports:
+      - "8887:8887"
+    restart: unless-stopped
+
+  ms-user:
+    build:
+      context: ./backend
+      dockerfile: MS-User/Dockerfile
+    image: ${REGISTRY:-local}/ms-user:${TAG:-latest}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE_USER_SERVICE}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - DISCOVERY_URL=http://discovery:8761/eureka/
+    networks:
+      - smarthire-net
+    depends_on:
+      - discovery
+      - mysql
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-local}/frontend:${TAG:-latest}
+    networks:
+      - smarthire-net
+    depends_on:
+      - gateway
+    ports:
+      - "4200:80"
+    restart: unless-stopped
+
+  ms-roadmap:
+    build:
+      context: ./backend
+      dockerfile: MS-Roadmap/Dockerfile
+    image: ${REGISTRY:-local}/ms-roadmap:${TAG:-latest}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE_MSROADMAP}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+    networks:
+      - smarthire-net
+    depends_on:
+      - discovery
+      - mysql
+    restart: unless-stopped
+
+  ms-assessment:
+    build:
+      context: ./backend
+      dockerfile: MS-Assessment/Dockerfile
+    image: ${REGISTRY:-local}/ms-assessment:${TAG:-latest}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE_ASSESSMENT}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - DISCOVERY_URL=http://discovery:8761/eureka/
+    networks:
+      - smarthire-net
+    depends_on:
+      - discovery
+      - mysql
+    restart: unless-stopped
+
+  ms-job:
+    build:
+      context: ./backend
+      dockerfile: MS_JOB/Dockerfile
+    image: ${REGISTRY:-local}/ms-job:${TAG:-latest}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE_JOB}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+    networks:
+      - smarthire-net
+    depends_on:
+      - discovery
+      - mysql
+    restart: unless-stopped
+
+  ms-profile:
+    build:
+      context: ./backend
+      dockerfile: MS-Profile/Dockerfile
+    image: ${REGISTRY:-local}/ms-profile:${TAG:-latest}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE_PROFILE}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - DISCOVERY_URL=http://discovery:8761/eureka/
+    networks:
+      - smarthire-net
+    depends_on:
+      - discovery
+      - mysql
+    restart: unless-stopped
+
+  ms-interview:
+    build:
+      context: ./backend
+      dockerfile: MS-Interview/Dockerfile
+    image: ${REGISTRY:-local}/ms-interview:${TAG:-latest}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE_INTERVIEW}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - JUDGE0_BASE_URL=http://judge0-server:2358
+      - KOKORO_BASE_URL=http://kokoro-tts:5000
+      - KOKORO_AUDIO_DIR=/app/temp/tts-audio
+    networks:
+      - smarthire-net
+    depends_on:
+      - discovery
+      - mysql
+      - judge0-server
+      - kokoro-tts
+    restart: unless-stopped
+
+  judge0-db:
+    image: postgres:16.2
+    env_file: ./backend/MS-Interview/tools/Judge0/judge0-v1.13.1/judge0.conf
+    volumes:
+      - judge0-data:/var/lib/postgresql/data/
+    networks:
+      - smarthire-net
+    restart: unless-stopped
+
+  judge0-redis:
+    image: redis:7.2.4
+    command: ["bash", "-c", "docker-entrypoint.sh --appendonly no --requirepass \"$$REDIS_PASSWORD\""]
+    env_file: ./backend/MS-Interview/tools/Judge0/judge0-v1.13.1/judge0.conf
+    networks:
+      - smarthire-net
+    restart: unless-stopped
+
+  judge0-server:
+    image: judge0/judge0:1.13.1
+    volumes:
+      - ./backend/MS-Interview/tools/Judge0/judge0-v1.13.1/judge0.conf:/judge0.conf:ro
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms32m -Xmx256m -XX:MaxMetaspaceSize=256m -XX:ReservedCodeCacheSize=96m
+    ports:
+      - "2358:2358"
+    privileged: true
+    networks:
+      - smarthire-net
+    depends_on:
+      - judge0-db
+      - judge0-redis
+    restart: unless-stopped
+
+  judge0-workers:
+    image: judge0/judge0:1.13.1
+    command: ["./scripts/workers"]
+    volumes:
+      - ./backend/MS-Interview/tools/Judge0/judge0-v1.13.1/judge0.conf:/judge0.conf:ro
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms32m -Xmx256m -XX:MaxMetaspaceSize=256m -XX:ReservedCodeCacheSize=96m
+    privileged: true
+    networks:
+      - smarthire-net
+    depends_on:
+      - judge0-db
+      - judge0-redis
+    restart: unless-stopped
+
+  kokoro-tts:
+    build:
+      context: ./backend/MS-Interview/tools/kokoro
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-local}/kokoro-tts:${TAG:-latest}
+    environment:
+      - CORS_ORIGINS=http://localhost:4200,http://127.0.0.1:4200,http://localhost:8887,http://127.0.0.1:8887
+    networks:
+      - smarthire-net
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  stress-inference:
+    build:
+      context: ./backend/MS-Interview/tools/stress-inference-service
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-local}/stress-inference:${TAG:-latest}
+    environment:
+      - CORS_ORIGINS=http://localhost:4200,http://127.0.0.1:4200,http://localhost:8887,http://127.0.0.1:8887
+    networks:
+      - smarthire-net
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  # AI/ML and other services
+  ai-advice:
+    build:
+      context: ./backend/AI-Advice
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-local}/ai-advice:${TAG:-latest}
+    environment:
+      - FLASK_ENV=production
+    networks:
+      - smarthire-net
+    ports:
+      - "8090:8090"
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  face-recognition:
+    build:
+      context: ./backend/FaceRecognition-Service
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-local}/face-recognition:${TAG:-latest}
+    networks:
+      - smarthire-net
+    ports:
+      - "5050:5000"
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+    name: smarthire_mysql_data
+  judge0-data:
+    name: smarthire_judge0_data
+
+networks:
+  smarthire-net:
+    driver: bridge

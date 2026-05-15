@@ -1,0 +1,119 @@
+### General
+.DS_Store
+Thumbs.db
+desktop.ini
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+/.idea/
+.vscode/
+.history/
+
+### Environment
+.env
+.env.*
+*.local
+/.venv/
+venv/
+ENV/
+env/
+
+### Node / Angular
+/node_modules/
+/dist/
+/build/
+/out/
+npm-debug.log*
+package-lock.json
+yarn.lock
+
+### Java / Maven / Spring
+/target/
+**/target/
+*.jar
+*.war
+*.ear
+.classpath
+.project
+.settings/
+/.mvn/
+
+### Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+*.egg
+venv/
+
+### IDEs
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+
+### Docker
+docker-compose.override.yml
+docker-compose.override.*.yml
+**/docker-compose.override.yml
+**/docker-compose.override.*.yml
+**/Dockerfile.*.local
+
+### Service property files that previously contained embedded keys
+/backend/MS_JOB/src/main/resources/application.properties
+/backend/MS-Profile/src/main/resources/application.properties
+/backend/MS-Assessment/src/main/resources/application-docker.properties
+/backend/MS-Assessment/src/main/resources/application.properties
+
+### Logs
+/logs
+*.log
+npm-debug.log*
+docker-compose-*.log
+
+### Databases
+*.sqlite
+*.db
+/data/
+/dump/
+mongodb/backup/
+mongod.lock
+
+### AI model artifacts
+*.joblib
+*.pkl
+*.pt
+*.pth
+*.bin
+model_weights/
+models/
+data/models/
+
+### OS files
+ehthumbs.db
+Icon
+Thumbs.db
+
+### Misc
+coverage/
+.cache/
+*.swp
+*.swo
+
+### Markdown: ignore drafts and miscellaneous .md files but keep key docs
+*.md
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+!CHANGELOG.md
+!docs/**/*.md
+# Root-level stored media and large local artifacts
+photo-1438761681033-6461ffad8d80.avif

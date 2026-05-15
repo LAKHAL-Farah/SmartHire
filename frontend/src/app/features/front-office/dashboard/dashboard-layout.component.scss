@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.dashboard {
+  min-height: 100vh;
+  background:
+    radial-gradient(110% 80% at 0% -10%, color-mix(in srgb, var(--accent-blue) 12%, transparent), transparent 58%),
+    radial-gradient(95% 72% at 100% 0%, color-mix(in srgb, var(--accent-purple) 10%, transparent), transparent 54%),
+    linear-gradient(180deg, var(--bg-primary), color-mix(in srgb, var(--bg-primary) 92%, #000000));
+}
+
+.dashboard__content {
+  margin-left: 240px;
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+  position: relative;
+  overflow: hidden;
+}

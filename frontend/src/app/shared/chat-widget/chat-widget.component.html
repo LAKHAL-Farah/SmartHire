@@ -1,0 +1,84 @@
+<div class="chat-widget" [class.chat-widget--open]="isOpen()" [style.width.px]="panelWidth()">
+  <!-- Collapsed title bar (always visible) -->
+  <button type="button" class="chat-widget__launcher" (click)="toggleOpen()">
+    <span class="chat-widget__launcher-title">AI Assistant</span>
+    <span class="chat-widget__launcher-state">{{ isOpen() ? '—' : '+' }}</span>
+  </button>
+
+  @if (isOpen()) {
+    <div class="chat-widget__panel" role="dialog" aria-label="AI Assistant chat" [style.width.px]="panelWidth()" [style.height.px]="panelHeight()">
+      <div class="chat-widget__resize-handle chat-widget__resize-handle--left" (pointerdown)="startResize('left', $event)"></div>
+      <div class="chat-widget__resize-handle chat-widget__resize-handle--top" (pointerdown)="startResize('top', $event)"></div>
+      <div class="chat-widget__resize-handle chat-widget__resize-handle--corner" (pointerdown)="startResize('corner', $event)"></div>
+
+      <div class="chat-widget__header">
+        <div class="chat-widget__header-title">AI Assistant</div>
+        <button type="button" class="chat-widget__header-action" (click)="minimize()">Minimize</button>
+      </div>
+
+      <div #messagesViewport class="chat-widget__messages" aria-live="polite">
+        @for (m of messages(); track m.id) {
+          <div class="chat-widget__message" [class.chat-widget__message--user]="m.role === 'user'" [class.chat-widget__message--ai]="m.role === 'ai'" [class.chat-widget__message--system]="m.role === 'system'">
+            <div class="chat-widget__bubble">{{ m.text }}</div>
+          </div>
+        }
+
+        @if (isSending()) {
+          <div class="chat-widget__message chat-widget__message--ai" aria-label="AI is typing">
+            <div class="chat-widget__bubble chat-widget__bubble--typing">
+              <span class="chat-widget__typing-dots" aria-hidden="true">
+                <span class="chat-widget__typing-dot"></span>
+                <span class="chat-widget__typing-dot"></span>
+                <span class="chat-widget__typing-dot"></span>
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (error()) {
+        <div class="chat-widget__error">{{ error() }}</div>
+      }
+
+      <div class="chat-widget__composer">
+        <div class="chat-widget__upload">
+          <label class="chat-widget__upload-btn">
+            <input
+              type="file"
+              class="chat-widget__upload-input"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              (change)="onFileSelected(($any($event.target).files?.item(0)) ?? null)"
+            />
+            Choose file
+          </label>
+
+          @if (selectedFile()) {
+            <div class="chat-widget__upload-file">
+              <span class="chat-widget__upload-name">{{ selectedFile()!.name }}</span>
+              <button type="button" class="chat-widget__upload-clear" (click)="clearSelectedFile()">Clear</button>
+            </div>
+          }
+
+          <button type="button" class="chat-widget__upload-send" [disabled]="!canUpload()" (click)="uploadResume()">
+            Upload
+          </button>
+        </div>
+
+        <div class="chat-widget__send">
+          <textarea
+            class="chat-widget__input"
+            [value]="draft()"
+            (input)="onDraftInput($any($event.target).value)"
+            (keydown)="onKeyDown($event)"
+            rows="2"
+            placeholder="Type a message…"
+          ></textarea>
+
+          <button type="button" class="chat-widget__send-btn" [disabled]="!canSend()" (click)="send()">
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

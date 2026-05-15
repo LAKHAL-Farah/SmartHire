@@ -1,0 +1,2113 @@
+[
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Tell me about yourself.",
+    "expectedPoints": [
+      "Clear structure covering education experience and goals",
+      "Relevant to the role applied for",
+      "Ends with why this company specifically"
+    ],
+    "followUps": [
+      "What makes you a fit for this role?",
+      "What are you looking for in your next position?"
+    ],
+    "hints": [
+      "Use Present-Past-Future structure",
+      "Keep it under 2 minutes",
+      "Connect back to the role"
+    ],
+    "idealAnswer": "I am a backend engineering student who has built several Spring Boot projects. I am applying because this platform aligns with my passion for AI-driven products.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Tell me about a challenge you faced and how you overcame it.",
+    "expectedPoints": [
+      "Uses STAR method clearly",
+      "Shows personal initiative not just team effort",
+      "Quantifies the outcome or impact"
+    ],
+    "followUps": [
+      "What did you learn from that experience?",
+      "What would you do differently today?",
+      "How did it change your approach going forward?"
+    ],
+    "hints": [
+      "STAR - Situation Task Action Result",
+      "Focus on YOUR actions not what the team did",
+      "End with a measurable result"
+    ],
+    "idealAnswer": "Our deployment pipeline broke before a critical demo. I traced it to a Docker misconfiguration, fixed it, and added a pre-deploy checklist. The demo ran perfectly.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Where do you see yourself in 5 years?",
+    "expectedPoints": [
+      "Shows ambition and clear direction",
+      "Realistic and aligned with the role",
+      "Shows long-term commitment not just using the company as a stepping stone"
+    ],
+    "followUps": [
+      "How does this role fit that 5-year plan?",
+      "What specific skills do you need to develop to get there?"
+    ],
+    "hints": [
+      "Be specific about your technical domain - backend, AI, cloud",
+      "Tie your answer back to this company's mission"
+    ],
+    "idealAnswer": "I aim to grow into a senior engineer role with deep expertise in distributed systems. This position is exactly the right environment to build those skills.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Tell me about a time you failed. What happened and what did you learn?",
+    "expectedPoints": [
+      "Acknowledges a real failure honestly",
+      "Shows genuine self-awareness",
+      "Demonstrates concrete learning and behavioral change afterward"
+    ],
+    "followUps": [
+      "How did that failure affect your team?",
+      "Would you make that same mistake today? Why or why not?"
+    ],
+    "hints": [
+      "Pick something real but recoverable",
+      "Spend 70% of your answer on the lesson not the failure itself"
+    ],
+    "idealAnswer": "I underestimated testing time and we shipped with bugs. Now I always add a dedicated testing buffer and never mark a feature done until it is fully tested.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Why do you want to work here?",
+    "expectedPoints": [
+      "Shows genuine research into the company",
+      "Connects personal values to the company mission",
+      "Gives specific reasons not generic ones"
+    ],
+    "followUps": [
+      "What specific product or initiative interests you most?",
+      "What do you know about our tech stack?"
+    ],
+    "hints": [
+      "Mention a specific product, value, or recent news item",
+      "Avoid vague answers like I need a job or I like the culture"
+    ],
+    "idealAnswer": "The AI-driven interview simulation product is exactly the kind of challenge I want to work on. Your stack also aligns well with my learning goals in distributed systems.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "How do you handle working under pressure or tight deadlines?",
+    "expectedPoints": [
+      "Gives a concrete real example",
+      "Shows clear prioritization logic",
+      "Stays calm and methodical under stress"
+    ],
+    "followUps": [
+      "Can you give me a specific example?",
+      "What do you do first when everything feels equally urgent?"
+    ],
+    "hints": [
+      "Give a real example with a real deadline",
+      "Show your prioritization logic",
+      "Mention a method such as the Eisenhower matrix"
+    ],
+    "idealAnswer": "I break work into must-have and nice-to-have and tackle the highest-risk items first. In a hackathon I delivered a working demo in 24 hours by cutting scope early and communicating clearly.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Describe a time you had a conflict with a teammate. How did you handle it?",
+    "expectedPoints": [
+      "Addresses the conflict directly and maturely",
+      "Shows empathy and active listening",
+      "Reaches a positive resolution for both parties"
+    ],
+    "followUps": [
+      "Who initiated the resolution?",
+      "What would you do differently now?",
+      "How is the relationship today?"
+    ],
+    "hints": [
+      "Do not blame the other person",
+      "Show you listened and understood their perspective",
+      "End with a positive outcome for the team"
+    ],
+    "idealAnswer": "A teammate and I disagreed on API design. We drew out both approaches together and agreed on a hybrid solution. The final design was better than either original idea.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "What is your greatest professional strength?",
+    "expectedPoints": [
+      "Names a specific strength not a vague one",
+      "Backs it up with a real concrete example",
+      "Relevance to engineering or technical work"
+    ],
+    "followUps": [
+      "Can you give me an example of that strength in action?",
+      "How has it helped your team specifically?"
+    ],
+    "hints": [
+      "Avoid clichés like I am a hard worker",
+      "Pick something technical: debugging, system thinking, communication, learning speed"
+    ],
+    "idealAnswer": "My strongest skill is breaking complex problems into small testable pieces. I isolated a production bug to a single service in under an hour by building a minimal reproduction case.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Tell me about a project you are most proud of.",
+    "expectedPoints": [
+      "Explains the technical problem clearly",
+      "Describes their specific contribution not the team's",
+      "Quantifies impact",
+      "Shows genuine passion for the work"
+    ],
+    "followUps": [
+      "What was the hardest technical decision you made on that project?",
+      "What would you build differently if you started today?"
+    ],
+    "hints": [
+      "Pick something with real technical depth",
+      "Explain your specific role clearly",
+      "Quantify the impact if possible"
+    ],
+    "idealAnswer": "I built a REST API for a university project management system from scratch. I designed the schema, built the backend, and deployed it on a VPS. 200 students used it daily.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Do you have any questions for us?",
+    "expectedPoints": [
+      "Asks thoughtful and specific questions",
+      "Shows genuine curiosity about the role and team",
+      "Does not ask about salary in the first round"
+    ],
+    "followUps": [
+      "What made you think of that question?",
+      "Is there anything else about the role you are still wondering about?"
+    ],
+    "hints": [
+      "Always prepare 2 to 3 questions in advance",
+      "Ask about team culture, technical challenges, or onboarding"
+    ],
+    "idealAnswer": "Yes. What does the onboarding process look like for new engineers? And what is the biggest technical challenge the team is facing right now?",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "How do you stay up to date with new technologies and industry trends?",
+    "expectedPoints": [
+      "Mentions specific and credible sources",
+      "Shows consistent learning habits not just occasional reading",
+      "Gives a recent example of something learned and applied"
+    ],
+    "followUps": [
+      "What is the last technical concept you learned?",
+      "How did you apply it in a project?"
+    ],
+    "hints": [
+      "Mention blogs, papers, YouTube channels, or communities by name",
+      "Give a concrete recent example"
+    ],
+    "idealAnswer": "I follow engineering blogs from companies like Netflix and Stripe, read research papers on ArXiv, and build small side projects to apply new concepts. Recently I implemented a rate limiter after reading about token bucket algorithms.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "How do you handle receiving critical feedback on your work?",
+    "expectedPoints": [
+      "Accepts feedback with openness not defensiveness",
+      "Asks clarifying questions to understand the feedback",
+      "Shows a concrete example of acting on feedback"
+    ],
+    "followUps": [
+      "Can you give an example where feedback changed your approach?",
+      "How do you separate personal feelings from professional critique?"
+    ],
+    "hints": [
+      "Show you welcome feedback as growth",
+      "Give a real example where feedback improved your work"
+    ],
+    "idealAnswer": "I try to listen fully before responding, ask questions to understand the specific concern, and then act on it. A code review once caught a design flaw I missed - fixing it made the system significantly cleaner.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Tell me about a time you had to learn something completely new in a short time.",
+    "expectedPoints": [
+      "Describes a real and specific learning challenge",
+      "Shows a structured approach to rapid learning",
+      "Demonstrates successful application of the new knowledge"
+    ],
+    "followUps": [
+      "What was your learning strategy?",
+      "How long did it take?",
+      "Would you use that strategy again?"
+    ],
+    "hints": [
+      "Describe your learning process step by step",
+      "Show you did not just read but built something or applied it"
+    ],
+    "idealAnswer": "I had to learn Kubernetes in two weeks for an internship project. I went through the official docs, deployed a local cluster with Minikube, and had a working multi-container deployment by day ten.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Describe a time you disagreed with a technical decision made by a senior engineer or manager. What did you do?",
+    "expectedPoints": [
+      "Raises the concern professionally with data or reasoning",
+      "Willing to disagree and then commit once a decision is made",
+      "Does not go around the manager or create team tension"
+    ],
+    "followUps": [
+      "What was the outcome?",
+      "Would you handle it differently now?",
+      "How did it affect your relationship with that person?"
+    ],
+    "hints": [
+      "Show you can hold a professional disagreement without being confrontational",
+      "Always present an alternative not just a complaint"
+    ],
+    "idealAnswer": "I disagreed with using a monolith for a component that I felt would need to scale independently. I presented a brief comparison in writing and proposed a hybrid approach. The team considered it and partially adopted my suggestion.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "How do you approach giving feedback to a peer whose work quality is not meeting expectations?",
+    "expectedPoints": [
+      "Gives feedback privately and directly",
+      "Uses specific examples not vague criticism",
+      "Focuses on the work not the person",
+      "Supports improvement"
+    ],
+    "followUps": [
+      "What if they react defensively?",
+      "Have you ever had to escalate peer feedback to a manager?"
+    ],
+    "hints": [
+      "Be specific and kind",
+      "Focus on observable behavior and impact",
+      "Offer to help"
+    ],
+    "idealAnswer": "I have a private conversation, point to specific examples, and frame it around impact rather than character. I also offer to help them close the gap.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "How do you work in a team environment? Do you prefer working alone or collaboratively?",
+    "expectedPoints": [
+      "Shows flexibility in both modes",
+      "Gives specific examples of effective collaboration",
+      "Acknowledges when solo work is more appropriate"
+    ],
+    "followUps": [
+      "Can you give an example of a successful team project?",
+      "What makes a team high-performing in your experience?"
+    ],
+    "hints": [
+      "Do not say you always prefer one mode",
+      "Show situational awareness about when each is better"
+    ],
+    "idealAnswer": "I genuinely enjoy both. I prefer collaboration for design and planning phases and focused solo work for implementation. On my last project I led daily standups while owning specific modules independently.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Tell me about a time you had to manage competing priorities from multiple stakeholders.",
+    "expectedPoints": [
+      "Identifies the competing demands clearly",
+      "Uses a prioritization framework",
+      "Communicates proactively to stakeholders rather than silently choosing"
+    ],
+    "followUps": [
+      "How did the stakeholders react?",
+      "What would you do differently with more time?"
+    ],
+    "hints": [
+      "Show you communicate proactively instead of silently picking one",
+      "Mention impact and urgency as your criteria"
+    ],
+    "idealAnswer": "Two team leads needed deliverables on the same day. I mapped out impact and urgency for each, had a transparent conversation with both, and negotiated a staggered delivery that worked for everyone.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Tell me about a time you took ownership of a problem that was not officially yours to solve.",
+    "expectedPoints": [
+      "Shows proactive initiative beyond their defined role",
+      "Takes full ownership without being asked",
+      "Delivers a real outcome not just effort"
+    ],
+    "followUps": [
+      "Why did you step in instead of waiting?",
+      "What was the reaction from your team?"
+    ],
+    "hints": "This is a leadership signal - show you act in the interest of the product not just your task list",
+    "idealAnswer": "Our monitoring setup was completely missing coverage for a critical service. Nobody was assigned to fix it, but I set up alerts and dashboards over a weekend. We caught a memory leak the following week because of those alerts.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "What is your biggest weakness and how are you working on it?",
+    "expectedPoints": [
+      "Identifies a real weakness not a disguised strength",
+      "Shows genuine self-awareness",
+      "Demonstrates active steps being taken to improve"
+    ],
+    "followUps": [
+      "How has that weakness affected your work concretely?",
+      "What progress have you made in the last three months?"
+    ],
+    "hints": [
+      "Avoid clichés like I am a perfectionist",
+      "Pick something real and show a growth plan"
+    ],
+    "idealAnswer": "I tend to over-engineer solutions. I have been practicing time-boxing my design phase and asking myself whether the simpler solution is good enough before building anything complex.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "BEHAVIORAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Describe a situation where you had to work with someone whose working style was very different from yours.",
+    "expectedPoints": [
+      "Acknowledges the style difference without judgment",
+      "Adapts their own approach to collaborate effectively",
+      "Reaches a productive outcome"
+    ],
+    "followUps": [
+      "What specifically was different about their style?",
+      "Would you work with that person again?"
+    ],
+    "hints": [
+      "Show flexibility and emotional intelligence",
+      "Focus on the outcome not the frustration"
+    ],
+    "idealAnswer": "My partner on a project preferred long planning sessions while I like to prototype fast. We agreed to do a short spike first and then do a focused planning session with real data. It worked well for both of us.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "A teammate is consistently missing deadlines and it is affecting the whole team. What do you do?",
+    "expectedPoints": [
+      "Does not immediately escalate to management",
+      "First tries a direct and empathetic private conversation",
+      "Protects team performance without being aggressive"
+    ],
+    "followUps": [
+      "What if they get defensive?",
+      "At what point would you involve the manager?"
+    ],
+    "hints": [
+      "Show empathy first - they may be struggling with something personal",
+      "Be direct without being confrontational"
+    ],
+    "idealAnswer": "I have a private conversation to understand what is blocking them. If the pattern continues I document specific examples and bring it to the team lead as a team health issue not a personal complaint.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Your manager asks you to implement a technical solution you believe is the wrong approach. What do you do?",
+    "expectedPoints": [
+      "Raises the concern professionally with data and an alternative",
+      "Willing to disagree and then commit fully once a decision is made",
+      "Does not go around the manager"
+    ],
+    "followUps": [
+      "What if they still do not change their mind?",
+      "How would you document your concern for the record?"
+    ],
+    "hints": [
+      "Never say you would just do what you are told",
+      "Show you can hold a professional disagreement and then fully commit"
+    ],
+    "idealAnswer": "I present my concern with data and propose an alternative in a one-on-one. If they still disagree after full discussion I commit completely but document my concern and the outcome for future reference.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "You discover a critical bug thirty minutes before a scheduled production release. What do you do?",
+    "expectedPoints": [
+      "Does not panic",
+      "Immediately communicates the issue to the team",
+      "Assesses severity before deciding",
+      "Delays release if user impact is significant"
+    ],
+    "followUps": [
+      "What if the release cannot be delayed?",
+      "How do you communicate the issue to non-technical stakeholders?"
+    ],
+    "hints": [
+      "Prioritize user safety over deadlines every time",
+      "Never hide an issue",
+      "Always have a rollback plan"
+    ],
+    "idealAnswer": "I stop the release immediately, alert the team, and assess the impact. If it affects core functionality I recommend a delay. I write a quick incident summary covering what broke, why, the fix applied, and prevention steps.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "You are assigned three tasks by three different people all marked urgent. How do you handle it?",
+    "expectedPoints": [
+      "Has a clear prioritization framework",
+      "Communicates openly about capacity constraints",
+      "Does not silently say yes to everything"
+    ],
+    "followUps": [
+      "Give me a specific example of this happening.",
+      "What tool or method do you use to prioritize?",
+      "What if two tasks are genuinely equally urgent?"
+    ],
+    "hints": [
+      "Mention a framework such as impact and urgency matrix",
+      "Always communicate proactively when you cannot meet all deadlines"
+    ],
+    "idealAnswer": "I list everything, score each by impact and urgency, and tackle the highest combined score first. If I cannot deliver everything on time I tell the relevant people immediately rather than silently missing deadlines.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "You join a team and inherit a messy legacy codebase with no documentation. How do you approach it?",
+    "expectedPoints": [
+      "Does not rewrite everything immediately",
+      "Reads and understands the code before forming opinions",
+      "Improves incrementally using the boy scout rule",
+      "No harsh judgment of previous authors"
+    ],
+    "followUps": [
+      "What is the first file you look at?",
+      "How do you balance cleanup work versus feature delivery?"
+    ],
+    "hints": [
+      "Show empathy - messy code always has context behind it",
+      "Boy scout rule: leave it better than you found it"
+    ],
+    "idealAnswer": "First I read the code to understand intent before judging it. Then I add tests to any areas I will touch. I refactor incrementally - one small improvement per feature. I never attempt a big rewrite upfront.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "A production system you own is down and you have no idea why. Walk me through your incident response.",
+    "expectedPoints": [
+      "Stays calm and follows a structured process",
+      "Communicates status to stakeholders immediately",
+      "Isolates the problem systematically",
+      "Considers rollback before a fix"
+    ],
+    "followUps": [
+      "How do you communicate to non-technical stakeholders during the incident?",
+      "When do you escalate?"
+    ],
+    "hints": [
+      "Step by step: communicate, check logs, isolate, rollback or fix, post-mortem",
+      "Never go silent during an incident"
+    ],
+    "idealAnswer": "I immediately post a status update to the team, check recent deployments and logs, isolate whether it is infrastructure or application, and consider rollback before attempting a live fix. Once stable I write a post-mortem.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "BEGINNER",
+    "domain": "general",
+    "category": "general",
+    "questionText": "You finish your assigned tasks two days before the sprint ends. What do you do?",
+    "expectedPoints": [
+      "Does not wait passively",
+      "Proactively picks up backlog work or helps teammates",
+      "Considers documentation or test coverage improvements"
+    ],
+    "followUps": [
+      "Do you prefer to ask for more work or find it yourself?",
+      "Have you ever helped a teammate unblock when you had spare time?"
+    ],
+    "hints": [
+      "Show initiative",
+      "Look at the team backlog, help unblock a teammate, or improve code quality"
+    ],
+    "idealAnswer": "I check the team backlog for the next highest priority item, or I ask a teammate if they need help unblocking. I also use extra time to improve test coverage or documentation in areas that are lacking.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "You are asked to estimate a complex feature with many unknowns. How do you approach it?",
+    "expectedPoints": [
+      "Acknowledges uncertainty explicitly",
+      "Breaks the feature into smaller estimable parts",
+      "Proposes a spike or time-boxed exploration for unknown parts",
+      "Gives a range not a single number"
+    ],
+    "followUps": [
+      "What if the stakeholder insists on a single deadline?",
+      "How do you track whether your estimate is still valid mid-sprint?"
+    ],
+    "hints": [
+      "Never give a single number for uncertain work",
+      "Break it down and give confidence ranges",
+      "Propose a spike for unknowns"
+    ],
+    "idealAnswer": "I break the feature into known and unknown parts. For known parts I estimate directly. For unknowns I propose a time-boxed spike to reduce uncertainty. I present a range with explicit assumptions rather than a single number.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "You notice a security vulnerability in code that is not part of your assigned work. What do you do?",
+    "expectedPoints": [
+      "Does not ignore it because it is not their problem",
+      "Reports it through the appropriate channel immediately",
+      "Does not publicly disclose before it is patched"
+    ],
+    "followUps": [
+      "What if the team decides not to fix it immediately?",
+      "How do you prioritize a security fix against feature work?"
+    ],
+    "hints": [
+      "Security issues are never someone else's problem",
+      "Report immediately through the right channel",
+      "Document it even if not fixed right away"
+    ],
+    "idealAnswer": "I document exactly what I found and report it to the team lead or security channel immediately. I do not post it publicly. If the team chooses to defer the fix I make sure it is tracked in the backlog with a clear risk note.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "ALL",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Your team is asked to deliver a feature in half the time originally planned. The scope is unchanged. What do you do?",
+    "expectedPoints": [
+      "Does not simply accept impossible scope",
+      "Negotiates scope or quality tradeoffs explicitly",
+      "Communicates risks clearly before committing"
+    ],
+    "followUps": [
+      "How do you decide what to cut?",
+      "How do you communicate the risk of rushing to a non-technical stakeholder?"
+    ],
+    "hints": [
+      "Halving time with unchanged scope means either scope must shrink or quality will suffer - name this explicitly",
+      "Never silently accept an impossible constraint"
+    ],
+    "idealAnswer": "I map the feature into must-have and nice-to-have pieces and present a proposal: full delivery at original timeline or an MVP subset at the reduced timeline. I present both options with their risks and let the stakeholder decide.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "operating_systems",
+    "category": "general",
+    "questionText": "What is the difference between a process and a thread?",
+    "expectedPoints": [
+      "Process has its own isolated memory space",
+      "Threads share memory within a process",
+      "Thread creation is cheaper",
+      "Race conditions arise from shared memory"
+    ],
+    "followUps": [
+      "When would you use threads over processes in Java?",
+      "What is a race condition and how do you prevent one?"
+    ],
+    "hints": [
+      "Think about memory isolation versus sharing",
+      "Web server example - threads per request is a classic use case"
+    ],
+    "idealAnswer": "A process is an isolated execution unit with its own memory. Threads share memory inside a process making them faster to create but requiring synchronization to avoid race conditions.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "databases",
+    "category": "general",
+    "questionText": "When would you choose a SQL database over a NoSQL database?",
+    "expectedPoints": [
+      "SQL - structured schema ACID compliance relational joins",
+      "NoSQL - flexible schema horizontal scaling high throughput",
+      "Picks the correct choice for a given use case"
+    ],
+    "followUps": [
+      "What is ACID compliance?",
+      "What NoSQL database have you actually used?",
+      "How do you decide for a new greenfield project?"
+    ],
+    "hints": [
+      "SQL equals tables joins and transactions",
+      "NoSQL equals documents key-value or wide-column",
+      "Give a concrete example for each type"
+    ],
+    "idealAnswer": "SQL enforces structure and ACID guarantees - ideal for financial data or anything requiring consistency. NoSQL scales horizontally and handles flexible schemas - ideal for logs, sessions, or product catalogs.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "BEGINNER",
+    "domain": "web",
+    "category": "general",
+    "questionText": "What are the core principles of REST?",
+    "expectedPoints": [
+      "Stateless interactions",
+      "Uniform interface using correct HTTP verbs",
+      "Resource-based URLs not action-based",
+      "Client-server separation"
+    ],
+    "followUps": [
+      "What is the difference between PUT and PATCH?",
+      "What HTTP status codes do you use most commonly and why?"
+    ],
+    "hints": [
+      "Resources are nouns and HTTP methods are verbs",
+      "GET /users not GET /getAllUsers"
+    ],
+    "idealAnswer": "REST is stateless, uses HTTP verbs correctly, and organizes endpoints around resources not actions. GET reads, POST creates, PUT replaces, PATCH updates, DELETE removes.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "databases",
+    "category": "general",
+    "questionText": "What is a database index and when should you add one?",
+    "expectedPoints": [
+      "Index is a B-tree structure for fast row lookup",
+      "Speeds up SELECT queries but slows INSERT and UPDATE",
+      "Add on columns used in WHERE clauses and JOIN conditions",
+      "Too many indexes hurt write performance"
+    ],
+    "followUps": [
+      "What is a composite index?",
+      "What is the cost of too many indexes?",
+      "How do you verify a query is actually using an index?"
+    ],
+    "hints": [
+      "Like a book index at the back",
+      "Tradeoff: read speed versus write speed",
+      "EXPLAIN command shows the query execution plan"
+    ],
+    "idealAnswer": "An index is a B-tree that finds rows without scanning the full table. It speeds up reads but slows writes. Add indexes on columns in WHERE clauses and JOIN conditions.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "web",
+    "category": "general",
+    "questionText": "Walk me through what happens when you type a URL into a browser and press Enter.",
+    "expectedPoints": [
+      "DNS resolution to IP address",
+      "TCP handshake",
+      "HTTP or HTTPS request sent",
+      "Server processes the request",
+      "Browser receives response and renders"
+    ],
+    "followUps": [
+      "What is DNS caching?",
+      "What if the server is behind a load balancer?",
+      "When does TLS kick in during this process?"
+    ],
+    "hints": [
+      "Step by step - DNS, TCP, HTTP, response, render",
+      "Mention DNS cache, CDN, and load balancer as bonus points"
+    ],
+    "idealAnswer": "DNS resolves the hostname to an IP. A TCP handshake establishes the connection. The browser sends an HTTP GET. The server returns a response. The browser parses HTML, fetches assets, and renders the page.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "distributed_systems",
+    "category": "general",
+    "questionText": "What is the CAP theorem and why does it matter in distributed system design?",
+    "expectedPoints": [
+      "CAP - Consistency Availability Partition Tolerance",
+      "Cannot fully guarantee all three simultaneously",
+      "Real systems choose CP or AP depending on requirements"
+    ],
+    "followUps": [
+      "Can you give a real database example for CP and one for AP?",
+      "Where does your last project fall on the CAP spectrum?"
+    ],
+    "hints": [
+      "Partition tolerance is essentially mandatory in any real distributed system",
+      "The real choice is between C and A when a partition occurs"
+    ],
+    "idealAnswer": "The CAP theorem says a distributed system can guarantee at most two of three: Consistency, Availability, and Partition Tolerance. Since network partitions happen, systems must choose between consistency and availability when a partition occurs.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "web",
+    "category": "general",
+    "questionText": "Explain the difference between authentication and authorization.",
+    "expectedPoints": [
+      "Authentication - who are you, verifying identity",
+      "Authorization - what are you allowed to do, checking permissions",
+      "Both are required and serve different purposes"
+    ],
+    "followUps": [
+      "How do JWT tokens relate to authentication and authorization?",
+      "What happens if you implement authorization but skip authentication?"
+    ],
+    "hints": [
+      "Authentication is the login step",
+      "Authorization is the permission check after login"
+    ],
+    "idealAnswer": "Authentication verifies who you are - login with credentials. Authorization determines what you are allowed to do - role and permission checks after identity is confirmed.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "architecture",
+    "category": "general",
+    "questionText": "What is the difference between microservices and a monolithic architecture? When would you choose each?",
+    "expectedPoints": [
+      "Monolith - simpler to develop and deploy, harder to scale independently",
+      "Microservices - independently deployable, more operational complexity",
+      "Team size and product maturity influence the choice"
+    ],
+    "followUps": [
+      "What is service discovery in a microservices context?",
+      "What problems does a distributed monolith create?"
+    ],
+    "hints": [
+      "Microservices are not always better - they add real operational cost",
+      "Consider team size, deployment frequency, and domain boundaries"
+    ],
+    "idealAnswer": "A monolith packages everything together - simpler to start but harder to scale specific parts. Microservices let you deploy and scale components independently but require investment in orchestration, networking, and observability.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "concurrency",
+    "category": "general",
+    "questionText": "What is a deadlock and how do you prevent it?",
+    "expectedPoints": [
+      "Deadlock - two or more threads wait for each other's resources indefinitely",
+      "Prevention strategies: lock ordering, timeout, try-lock",
+      "Detection and recovery as an alternative"
+    ],
+    "followUps": [
+      "Can you describe a real scenario where a deadlock could occur in Java?",
+      "What is a livelock versus a deadlock?"
+    ],
+    "hints": [
+      "Classic example - Thread A holds lock 1 waiting for lock 2, Thread B holds lock 2 waiting for lock 1",
+      "Fix by always acquiring locks in the same order"
+    ],
+    "idealAnswer": "A deadlock occurs when two threads each hold a resource the other needs. Prevention strategies include always acquiring locks in a consistent order and using try-lock with a timeout instead of blocking indefinitely.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "TECHNICAL",
+    "difficulty": "BEGINNER",
+    "domain": "java",
+    "category": "general",
+    "questionText": "What is the difference between an interface and an abstract class in Java?",
+    "expectedPoints": [
+      "Interface - defines a contract with no state, supports multiple implementation",
+      "Abstract class - can have state and partial implementation, single inheritance only",
+      "Correct usage context for each"
+    ],
+    "followUps": [
+      "When would you choose an interface over an abstract class in a real design?",
+      "What changed in Java 8 regarding interfaces?"
+    ],
+    "hints": [
+      "Interface for pure contract",
+      "Abstract class when you have shared behavior or state",
+      "Java 8 added default methods to interfaces"
+    ],
+    "idealAnswer": "An interface defines a pure contract with no state and supports multiple implementation. An abstract class can hold state and partial implementation but allows only single inheritance. Use interfaces for contracts and abstract classes for shared base behavior.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "BEGINNER",
+    "domain": "algorithms",
+    "category": "general",
+    "questionText": "Given an integer array and a target, return indices of the two numbers that add up to the target.",
+    "expectedPoints": [
+      "Identifies brute force O(n squared) first",
+      "Optimizes to O(n) with a HashMap",
+      "Handles edge cases such as duplicate values"
+    ],
+    "followUps": [
+      "What is the time complexity of your solution?",
+      "Why use a HashMap instead of a nested loop?",
+      "What if duplicates exist in the array?"
+    ],
+    "hints": [
+      "A HashMap gives O(1) lookup",
+      "Store number to index mapping as you scan left to right"
+    ],
+    "idealAnswer": "HashMap approach - for each number check if target minus number exists in the map. If yes return both indices. O(n) time O(n) space.",
+    "sampleCode": "import java.util.*;\n\npublic class Main {\n\n    public static int[] twoSum(int[] nums, int target) {\n        // Write your solution here\n        return new int[]{};\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] parts = sc.nextLine().trim().split(\",\");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) {\n            nums[i] = Integer.parseInt(parts[i].trim().replace(\"[\", \"\").replace(\"]\", \"\"));\n        }\n        int target = Integer.parseInt(sc.nextLine().trim());\n        int[] result = twoSum(nums, target);\n        System.out.println(Arrays.toString(result));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "BEGINNER",
+    "domain": "algorithms",
+    "category": "general",
+    "questionText": "Determine if a string is a palindrome, ignoring non-alphanumeric characters and case.",
+    "expectedPoints": [
+      "Two-pointer approach moving inward",
+      "Handles edge cases correctly",
+      "Ignores non-alphanumeric characters",
+      "O(1) space solution"
+    ],
+    "followUps": [
+      "What is the time complexity?",
+      "Can you solve it without reversing the string?"
+    ],
+    "hints": [
+      "Two pointers - left from start, right from end",
+      "Use Character.isLetterOrDigit() to skip non-alphanumeric"
+    ],
+    "idealAnswer": "Two pointers moving inward, skipping non-alphanumeric characters, comparing lowercased characters. O(n) time O(1) space.",
+    "sampleCode": "public class Main {\n\n    public static boolean isPalindrome(String s) {\n        // Write your solution here\n        return false;\n    }\n\n    public static void main(String[] args) {\n        java.util.Scanner sc = new java.util.Scanner(System.in);\n        String s = sc.nextLine().trim();\n        if (s.startsWith(\"\\\"\")) s = s.substring(1, s.length() - 1);\n        System.out.println(isPalindrome(s));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "INTERMEDIATE",
+    "domain": "algorithms",
+    "category": "general",
+    "questionText": "Given a string of brackets, determine if the bracket sequence is valid.",
+    "expectedPoints": [
+      "Uses a Stack data structure",
+      "Maps closing brackets to their matching openers",
+      "Handles the empty stack edge case correctly"
+    ],
+    "followUps": [
+      "Why use a stack and not a simple counter?",
+      "How would you extend this if we added a new type of bracket?"
+    ],
+    "hints": [
+      "Push opening brackets onto the stack",
+      "On a closing bracket peek the top and check for a match",
+      "Store pairs in a Map"
+    ],
+    "idealAnswer": "Push openers onto the stack. For each closer check if the top of the stack is the matching opener. The stack must be empty at the end.",
+    "sampleCode": "import java.util.*;\n\npublic class Main {\n\n    public static boolean isValid(String s) {\n        // Write your solution here\n        return false;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s = sc.nextLine().trim();\n        if (s.startsWith(\"\\\"\")) s = s.substring(1, s.length() - 1);\n        System.out.println(isValid(s));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "INTERMEDIATE",
+    "domain": "algorithms",
+    "category": "general",
+    "questionText": "Find the contiguous subarray with the largest sum.",
+    "expectedPoints": [
+      "Identifies the dynamic programming approach (Kadane's algorithm)",
+      "Correctly resets the running sum when it goes negative",
+      "Handles an all-negative array"
+    ],
+    "followUps": [
+      "What is the time complexity of your solution?",
+      "Can you modify it to return the actual subarray and not just the sum?"
+    ],
+    "hints": [
+      "Key insight - if the running sum goes negative reset it to the current element",
+      "Track the maximum seen so far at each step"
+    ],
+    "idealAnswer": "currentSum equals max of element or currentSum plus element. Update maxSum at each step. O(n) time O(1) space.",
+    "sampleCode": "public class Main {\n\n    public static int maxSubArray(int[] nums) {\n        // Write your solution here\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        java.util.Scanner sc = new java.util.Scanner(System.in);\n        String[] parts = sc.nextLine().trim().split(\",\");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) {\n            nums[i] = Integer.parseInt(parts[i].trim().replace(\"[\", \"\").replace(\"]\", \"\"));\n        }\n        System.out.println(maxSubArray(nums));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "INTERMEDIATE",
+    "domain": "data_structures",
+    "category": "general",
+    "questionText": "Reverse a singly linked list in place.",
+    "expectedPoints": [
+      "Uses three pointers - prev, current, next",
+      "O(1) space solution",
+      "Handles null and single-node edge cases correctly"
+    ],
+    "followUps": [
+      "What is the space complexity?",
+      "Can you implement it recursively?"
+    ],
+    "hints": [
+      "Three pointers - prev equals null, curr equals head",
+      "Each step: save next, flip the pointer, advance both pointers"
+    ],
+    "idealAnswer": "Three pointers. Each step: save next, set curr.next to prev, advance both. When curr is null, prev is the new head.",
+    "sampleCode": "public class Main {\n\n    static class ListNode {\n        int val;\n        ListNode next;\n        ListNode(int val) { this.val = val; }\n    }\n\n    public static ListNode reverseList(ListNode head) {\n        // Write your solution here\n        return null;\n    }\n\n    public static void main(String[] args) {\n        java.util.Scanner sc = new java.util.Scanner(System.in);\n        String line = sc.nextLine().trim();\n        line = line.replace(\"[\", \"\").replace(\"]\", \"\");\n        if (line.isEmpty()) { System.out.println(\"[]\"); return; }\n        String[] parts = line.split(\",\");\n        ListNode dummy = new ListNode(0);\n        ListNode cur = dummy;\n        for (String p : parts) cur = cur.next = new ListNode(Integer.parseInt(p.trim()));\n        ListNode result = reverseList(dummy.next);\n        StringBuilder sb = new StringBuilder(\"[\");\n        while (result != null) {\n            sb.append(result.val);\n            if (result.next != null) sb.append(\",\");\n            result = result.next;\n        }\n        System.out.println(sb.append(\"]\"));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "INTERMEDIATE",
+    "domain": "algorithms",
+    "category": "general",
+    "questionText": "Find all duplicates in an integer array where each element appears once or twice and values are between 1 and n.",
+    "expectedPoints": [
+      "Uses the array itself as a hash map by negating visited indices",
+      "O(n) time O(1) space",
+      "Handles the in-place constraint correctly"
+    ],
+    "followUps": [
+      "What is the space complexity?",
+      "Would this work if values could be zero?"
+    ],
+    "hints": [
+      "For each value use its absolute value minus one as an index",
+      "If the value at that index is already negative it is a duplicate"
+    ],
+    "idealAnswer": "For each element use its absolute value as an index and negate the value there. If it is already negative the current element is a duplicate. O(n) time O(1) space.",
+    "sampleCode": "import java.util.*;\n\npublic class Main {\n\n    public static List<Integer> findDuplicates(int[] nums) {\n        // Write your solution here\n        return new ArrayList<>();\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] parts = sc.nextLine().trim().split(\",\");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) {\n            nums[i] = Integer.parseInt(parts[i].trim().replace(\"[\", \"\").replace(\"]\", \"\"));\n        }\n        System.out.println(findDuplicates(nums));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "INTERMEDIATE",
+    "domain": "data_structures",
+    "category": "general",
+    "questionText": "Implement a stack that supports push, pop, top, and retrieving the minimum element in constant time.",
+    "expectedPoints": [
+      "Uses two stacks - one main and one to track minimums",
+      "All operations are O(1)",
+      "Handles edge cases like popping below the minimum"
+    ],
+    "followUps": [
+      "Why do you need a second stack?",
+      "What happens to the min stack when you pop the current minimum?"
+    ],
+    "hints": [
+      "Push to the min stack only when the new value is less than or equal to the current minimum",
+      "Pop from min stack when you pop the current minimum"
+    ],
+    "idealAnswer": "Use a main stack and a min stack. Push to min stack when the new element is less than or equal to the current min. Pop from both when popping the current minimum. All operations remain O(1).",
+    "sampleCode": "import java.util.*;\n\npublic class Main {\n\n    static Deque<Integer> stack = new ArrayDeque<>();\n    static Deque<Integer> minStack = new ArrayDeque<>();\n\n    static void push(int val) {\n        // Write your solution here\n    }\n\n    static void pop() {\n        // Write your solution here\n    }\n\n    static int top() {\n        // Write your solution here\n        return 0;\n    }\n\n    static int getMin() {\n        // Write your solution here\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        StringBuilder output = new StringBuilder();\n        while (sc.hasNextLine()) {\n            String line = sc.nextLine().trim();\n            if (line.isEmpty()) continue;\n            if (line.startsWith(\"push\")) {\n                int val = Integer.parseInt(line.split(\" \")[1]);\n                push(val);\n            } else if (line.equals(\"pop\")) {\n                pop();\n            } else if (line.equals(\"top\")) {\n                if (output.length() > 0) output.append(\"\\n\");\n                output.append(top());\n            } else if (line.equals(\"getMin\")) {\n                if (output.length() > 0) output.append(\"\\n\");\n                output.append(getMin());\n            }\n        }\n        System.out.print(output);\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "ADVANCED",
+    "domain": "algorithms",
+    "category": "general",
+    "questionText": "Given a list of intervals, merge all overlapping intervals.",
+    "expectedPoints": [
+      "Sorts intervals by start time first",
+      "Merges by comparing current end with next start",
+      "Returns the merged list correctly"
+    ],
+    "followUps": [
+      "What is the time complexity of your solution?",
+      "What if the list is already sorted - can you skip the sort?"
+    ],
+    "hints": [
+      "Sort by start time first",
+      "Two intervals overlap if the start of the next is less than or equal to the end of the current"
+    ],
+    "idealAnswer": "Sort by start time. Iterate and merge whenever the next interval starts before or at the current end. Update the end to the maximum of both ends. O(n log n) overall.",
+    "sampleCode": "import java.util.*;\n\npublic class Main {\n\n    public static int[][] merge(int[][] intervals) {\n        // Write your solution here\n        return new int[][]{};\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String line = sc.nextLine().trim();\n        line = line.substring(2, line.length() - 2);\n        String[] pairs = line.split(\"],\\\\[\");\n        int[][] intervals = new int[pairs.length][2];\n        for (int i = 0; i < pairs.length; i++) {\n            String[] p = pairs[i].split(\",\");\n            intervals[i][0] = Integer.parseInt(p[0].trim());\n            intervals[i][1] = Integer.parseInt(p[1].trim());\n        }\n        int[][] result = merge(intervals);\n        StringBuilder sb = new StringBuilder(\"[\");\n        for (int i = 0; i < result.length; i++) {\n            sb.append(\"[\").append(result[i][0]).append(\",\").append(result[i][1]).append(\"]\");\n            if (i < result.length - 1) sb.append(\",\");\n        }\n        System.out.println(sb.append(\"]\"));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "ADVANCED",
+    "domain": "algorithms",
+    "category": "general",
+    "questionText": "Given an m by n grid, find the number of unique paths from the top-left to the bottom-right corner moving only right or down.",
+    "expectedPoints": [
+      "Identifies the dynamic programming approach",
+      "Uses a 2D DP table or optimizes to a single row",
+      "Correctly initializes base cases"
+    ],
+    "followUps": [
+      "Can you solve it mathematically using combinations?",
+      "How does the space complexity change with the row optimization?"
+    ],
+    "hints": [
+      "dp[i][j] equals dp[i-1][j] plus dp[i][j-1]",
+      "First row and first column are all ones"
+    ],
+    "idealAnswer": "dp[i][j] equals the sum of the cell above and the cell to the left. Base cases: first row and column are all 1. Can be optimized to O(n) space using a single row array.",
+    "sampleCode": "public class Main {\n\n    public static int uniquePaths(int m, int n) {\n        // Write your solution here\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        java.util.Scanner sc = new java.util.Scanner(System.in);\n        int m = Integer.parseInt(sc.nextLine().trim());\n        int n = Integer.parseInt(sc.nextLine().trim());\n        System.out.println(uniquePaths(m, n));\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "SE",
+    "type": "CODING",
+    "difficulty": "ADVANCED",
+    "domain": "data_structures",
+    "category": "general",
+    "questionText": "Implement a least recently used cache with get and put operations both in O(1) time.",
+    "expectedPoints": [
+      "Combines a HashMap and a doubly linked list",
+      "get and put both in O(1)",
+      "Correctly evicts the least recently used element when capacity is exceeded"
+    ],
+    "followUps": [
+      "Why do you need both a HashMap and a linked list?",
+      "What would the complexity be if you only used a list?"
+    ],
+    "hints": [
+      "HashMap for O(1) lookup, doubly linked list for O(1) move-to-front and eviction",
+      "Java LinkedHashMap with access order can also be used"
+    ],
+    "idealAnswer": "Use a HashMap from key to node and a doubly linked list ordered by recency. On get move the node to the front. On put if capacity is exceeded remove the tail. Both operations are O(1).",
+    "sampleCode": "import java.util.*;\n\npublic class Main {\n\n    static int capacity;\n    static LinkedHashMap<Integer, Integer> cache;\n\n    static void init(int cap) {\n        capacity = cap;\n        // Write your solution here - initialize your cache\n    }\n\n    static int get(int key) {\n        // Write your solution here\n        return -1;\n    }\n\n    static void put(int key, int value) {\n        // Write your solution here\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int cap = Integer.parseInt(sc.nextLine().trim());\n        init(cap);\n        StringBuilder output = new StringBuilder();\n        while (sc.hasNextLine()) {\n            String line = sc.nextLine().trim();\n            if (line.isEmpty()) continue;\n            String[] parts = line.split(\" \");\n            if (parts[0].equals(\"put\")) {\n                put(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));\n            } else if (parts[0].equals(\"get\")) {\n                if (output.length() > 0) output.append(\"\\n\");\n                output.append(get(Integer.parseInt(parts[1])));\n            }\n        }\n        System.out.print(output);\n        sc.close();\n    }\n}",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "BEGINNER",
+    "domain": "machine_learning",
+    "category": "general",
+    "questionText": "What is the difference between supervised and unsupervised learning?",
+    "expectedPoints": [
+      "Supervised - labeled data, predicts a target",
+      "Unsupervised - no labels, finds structure",
+      "Gives a concrete example of each"
+    ],
+    "followUps": [
+      "Where does reinforcement learning fit?",
+      "Can you name a real algorithm for each category?"
+    ],
+    "hints": [
+      "Supervised equals classification and regression",
+      "Unsupervised equals clustering and dimensionality reduction"
+    ],
+    "idealAnswer": "Supervised learning trains on labeled data to predict outputs - for example spam classification. Unsupervised learning finds patterns in unlabeled data - for example customer segmentation with k-means.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "machine_learning",
+    "category": "general",
+    "questionText": "What is overfitting and how do you detect and prevent it?",
+    "expectedPoints": [
+      "Overfitting - model memorizes training data, fails on new data",
+      "Detection - train versus validation loss gap",
+      "Prevention - regularization, dropout, more data, early stopping"
+    ],
+    "followUps": [
+      "What is the bias-variance tradeoff?",
+      "When is a model underfitting instead?"
+    ],
+    "hints": [
+      "Plot train loss versus val loss - if val loss rises while train keeps dropping that is overfitting",
+      "L2 regularization and dropout are your main tools"
+    ],
+    "idealAnswer": "Overfitting occurs when a model learns training noise instead of general patterns. Detect it by monitoring the gap between training and validation loss. Prevent it with regularization, dropout, early stopping, or more training data.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "deep_learning",
+    "category": "general",
+    "questionText": "Explain how backpropagation works at a high level.",
+    "expectedPoints": [
+      "Forward pass computes predictions",
+      "Loss is calculated",
+      "Gradients flow backward via chain rule",
+      "Weights are updated in the direction that reduces loss"
+    ],
+    "followUps": [
+      "What is the vanishing gradient problem?",
+      "How do modern architectures address it?"
+    ],
+    "hints": [
+      "Think of it as the chain rule applied repeatedly from output to input",
+      "Each layer gets a gradient signal proportional to its contribution to the error"
+    ],
+    "idealAnswer": "A forward pass computes the prediction and the loss. Backpropagation uses the chain rule to compute how each weight contributed to the error. The optimizer then updates weights in the direction that reduces loss.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "nlp",
+    "category": "general",
+    "questionText": "What is the transformer architecture and what problem does it solve over RNNs?",
+    "expectedPoints": [
+      "Self-attention mechanism allows parallel processing",
+      "Captures long-range dependencies better than RNNs",
+      "Positional encoding replaces recurrence"
+    ],
+    "followUps": [
+      "What is the role of multi-head attention?",
+      "What is positional encoding and why is it needed?"
+    ],
+    "hints": [
+      "RNNs process tokens sequentially - slow and prone to forgetting early tokens",
+      "Transformers process all tokens in parallel using attention scores"
+    ],
+    "idealAnswer": "Transformers use self-attention to relate every token to every other token in parallel. This solves the RNN bottleneck of sequential processing and poor long-range dependency capture. Positional encoding injects sequence order information.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "machine_learning",
+    "category": "general",
+    "questionText": "What is the difference between precision and recall, and when do you prioritize each?",
+    "expectedPoints": [
+      "Precision - of predicted positives, how many are actually positive",
+      "Recall - of actual positives, how many did the model catch",
+      "Prioritize precision when false positives are costly, recall when false negatives are costly"
+    ],
+    "followUps": [
+      "What is the F1 score?",
+      "Give me a real use case where you would prioritize recall over precision."
+    ],
+    "hints": [
+      "Medical diagnosis - high recall matters so you do not miss a sick patient",
+      "Spam filter - high precision matters so you do not delete real emails"
+    ],
+    "idealAnswer": "Precision measures how many predicted positives are correct. Recall measures how many actual positives the model caught. Prioritize recall in high-stakes detection like disease diagnosis and precision in systems where false alarms have a high cost.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "mlops",
+    "category": "general",
+    "questionText": "What is model drift and how do you monitor for it in production?",
+    "expectedPoints": [
+      "Data drift - input distribution changes",
+      "Concept drift - relationship between input and output changes",
+      "Monitoring via statistical tests on feature distributions and performance metrics"
+    ],
+    "followUps": [
+      "What is the difference between data drift and concept drift?",
+      "How would you set up automated retraining?"
+    ],
+    "hints": [
+      "Track input feature distributions over time using PSI or KL divergence",
+      "Monitor output distributions and downstream performance metrics"
+    ],
+    "idealAnswer": "Model drift occurs when real-world data changes after deployment. Data drift means input distributions shift. Concept drift means the target relationship itself changes. Monitor with statistical distribution tests on features and track prediction performance on labeled samples over time.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "machine_learning",
+    "category": "general",
+    "questionText": "What is cross-validation and why is it better than a simple train-test split?",
+    "expectedPoints": [
+      "Cross-validation uses all data for both training and evaluation",
+      "Reduces variance in the performance estimate",
+      "K-fold is the most common method"
+    ],
+    "followUps": [
+      "What is stratified k-fold and when do you need it?",
+      "What is the cost of k-fold versus a simple split?"
+    ],
+    "hints": [
+      "A single train-test split gives one estimate that depends heavily on which data ended up where",
+      "K-fold gives k estimates and averages them for a more reliable result"
+    ],
+    "idealAnswer": "Cross-validation rotates which portion of the data is used for testing across k folds and averages the results. This gives a more reliable performance estimate than a single split, especially with small datasets.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "deep_learning",
+    "category": "general",
+    "questionText": "What is transfer learning and when would you use it?",
+    "expectedPoints": [
+      "A pretrained model's weights are reused for a new task",
+      "Saves training time and data requirements",
+      "Fine-tuning versus feature extraction as two strategies"
+    ],
+    "followUps": [
+      "What is fine-tuning versus feature extraction?",
+      "When does transfer learning NOT work well?"
+    ],
+    "hints": [
+      "A model trained on ImageNet already knows edges, shapes, and textures - useful for any vision task",
+      "Transfer learning works best when the source and target domains are similar"
+    ],
+    "idealAnswer": "Transfer learning reuses weights from a model trained on a large dataset and adapts them for a new task. Use it when you have limited labeled data or want to reduce training time. Fine-tuning updates the pretrained weights on the new task.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "llm",
+    "category": "general",
+    "questionText": "What is retrieval-augmented generation (RAG) and what problem does it solve?",
+    "expectedPoints": [
+      "RAG combines a retrieval system with a language model",
+      "Solves the knowledge cutoff and hallucination problems of LLMs",
+      "Retrieval brings in relevant context at inference time"
+    ],
+    "followUps": [
+      "What embedding model would you use for the retrieval step?",
+      "What are the main failure modes of a RAG pipeline?"
+    ],
+    "hints": [
+      "The LLM alone cannot know about documents it was not trained on",
+      "RAG retrieves relevant chunks from a vector store and passes them as context to the model"
+    ],
+    "idealAnswer": "RAG augments an LLM with a retrieval step. At inference time relevant documents are fetched from a vector store and passed as context to the model. This reduces hallucination and allows the model to answer questions about private or recent data.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "mlops",
+    "category": "general",
+    "questionText": "How would you design an end-to-end ML pipeline for a text classification task going to production?",
+    "expectedPoints": [
+      "Data collection and labeling",
+      "Feature engineering or embedding",
+      "Model training and evaluation",
+      "Versioning artifacts",
+      "Serving endpoint with monitoring"
+    ],
+    "followUps": [
+      "How do you handle class imbalance in this pipeline?",
+      "What happens when the model degrades over time?"
+    ],
+    "hints": [
+      "Think in stages - data, training, evaluation, deployment, monitoring",
+      "Each stage has its own failure modes and tooling"
+    ],
+    "idealAnswer": "The pipeline covers data ingestion and cleaning, labeling, embedding or feature extraction, model training with cross-validation, artifact versioning, deployment behind an API endpoint, and ongoing monitoring of drift and performance metrics.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "BEGINNER",
+    "domain": "fundamentals",
+    "category": "general",
+    "questionText": "What is the difference between IaaS, PaaS, and SaaS?",
+    "expectedPoints": [
+      "IaaS - raw infrastructure, you manage OS and above",
+      "PaaS - platform manages infrastructure, you deploy code",
+      "SaaS - fully managed application",
+      "Real examples for each"
+    ],
+    "followUps": [
+      "Where does Kubernetes fall in this model?",
+      "Give me a cloud provider example for each category."
+    ],
+    "hints": [
+      "IaaS is EC2, PaaS is Elastic Beanstalk or Heroku, SaaS is Gmail or Salesforce",
+      "Think about the responsibility boundary at each level"
+    ],
+    "idealAnswer": "IaaS provides raw compute, storage, and networking - you manage everything above the hypervisor. PaaS manages the OS and runtime so you just deploy code. SaaS is a fully managed application consumed directly by end users.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "networking",
+    "category": "general",
+    "questionText": "What is a VPC and why is it important for cloud security?",
+    "expectedPoints": [
+      "VPC creates an isolated private network in the cloud",
+      "Controls ingress and egress with security groups and NACLs",
+      "Enables private subnets for sensitive resources"
+    ],
+    "followUps": [
+      "What is the difference between a security group and a NACL?",
+      "How does VPC peering work?"
+    ],
+    "hints": [
+      "Think of a VPC as your own private data center inside AWS",
+      "Public subnets have route to internet gateway, private subnets do not"
+    ],
+    "idealAnswer": "A VPC is an isolated virtual network in the cloud. It lets you control what traffic enters and exits using security groups and network ACLs. Sensitive resources like databases live in private subnets with no direct internet access.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "containers",
+    "category": "general",
+    "questionText": "What is the difference between a Docker container and a virtual machine?",
+    "expectedPoints": [
+      "VMs include a full OS and hypervisor - heavier",
+      "Containers share the host kernel - lighter and faster to start",
+      "Containers are more portable but offer less isolation"
+    ],
+    "followUps": [
+      "When would you choose a VM over a container?",
+      "What is a container image versus a running container?"
+    ],
+    "hints": [
+      "VMs virtualize hardware, containers virtualize the OS",
+      "Startup time for a container is seconds, for a VM it can be minutes"
+    ],
+    "idealAnswer": "A virtual machine includes a full OS and runs on a hypervisor - strong isolation but heavy. A container shares the host kernel, starts in seconds, and is portable across environments but provides less isolation than a VM.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "orchestration",
+    "category": "general",
+    "questionText": "What problem does Kubernetes solve and what are its core components?",
+    "expectedPoints": [
+      "Kubernetes automates deployment, scaling, and healing of containers",
+      "Core components - Pod, Deployment, Service, Node",
+      "Handles scheduling and self-healing automatically"
+    ],
+    "followUps": [
+      "What is the difference between a Deployment and a StatefulSet?",
+      "What is a Kubernetes Service and what types exist?"
+    ],
+    "hints": [
+      "Pod is the smallest unit - one or more containers",
+      "Deployment manages replicas and rolling updates",
+      "Service exposes pods to traffic"
+    ],
+    "idealAnswer": "Kubernetes automates container orchestration - scheduling, scaling, and self-healing. A Pod runs one or more containers. A Deployment manages replicas and updates. A Service exposes pods to internal or external traffic.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "BEGINNER",
+    "domain": "fundamentals",
+    "category": "general",
+    "questionText": "What is auto-scaling and why is it important in cloud architectures?",
+    "expectedPoints": [
+      "Auto-scaling adds or removes compute capacity based on load",
+      "Prevents over-provisioning and under-provisioning",
+      "Reduces cost and improves availability"
+    ],
+    "followUps": [
+      "What metrics would you scale on?",
+      "What is the difference between horizontal and vertical scaling?"
+    ],
+    "hints": [
+      "Horizontal scaling adds more instances, vertical scaling makes the instance bigger",
+      "Auto-scaling reacts to real demand rather than guessing upfront"
+    ],
+    "idealAnswer": "Auto-scaling dynamically adjusts the number of running instances based on demand metrics like CPU or request count. It reduces cost by not over-provisioning and improves availability by adding capacity before performance degrades.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "storage",
+    "category": "general",
+    "questionText": "What is the difference between object storage, block storage, and file storage?",
+    "expectedPoints": [
+      "Object storage - flat namespace, highly durable, for unstructured data like S3",
+      "Block storage - raw disk, low latency, for databases and OS volumes",
+      "File storage - hierarchical, shared across instances, for NFS use cases"
+    ],
+    "followUps": [
+      "Which would you use for storing user-uploaded images?",
+      "Why can you not use object storage as a database volume?"
+    ],
+    "hints": [
+      "S3 is object storage - great for files, terrible for random writes",
+      "EBS is block storage - acts like a hard drive attached to one instance"
+    ],
+    "idealAnswer": "Object storage stores data as flat objects with metadata - ideal for images, backups, and logs. Block storage presents a raw disk to the OS - ideal for databases and boot volumes. File storage provides a shared filesystem mountable by multiple instances.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "architecture",
+    "category": "general",
+    "questionText": "How do you design a cloud architecture for a service that must have 99.99 percent availability?",
+    "expectedPoints": [
+      "Multi-region or multi-AZ deployment",
+      "Load balancers and health checks",
+      "Automated failover",
+      "Redundant database with replication",
+      "No single points of failure"
+    ],
+    "followUps": [
+      "What is the difference between active-active and active-passive failover?",
+      "How do you handle data consistency across regions?"
+    ],
+    "hints": [
+      "99.99 percent uptime means roughly 52 minutes of downtime per year",
+      "Every single component must be redundant and health-checked"
+    ],
+    "idealAnswer": "Deploy across multiple availability zones or regions behind a load balancer. Use managed databases with automatic failover and replication. Set up health checks that route traffic away from failed nodes. Eliminate every single point of failure.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "security",
+    "category": "general",
+    "questionText": "What is the principle of least privilege and how do you apply it in a cloud environment?",
+    "expectedPoints": [
+      "Grant only the permissions required for the specific task",
+      "Apply at IAM role, service account, and resource policy level",
+      "Regularly audit and revoke unused permissions"
+    ],
+    "followUps": [
+      "How do you enforce least privilege for an EC2 instance that needs to read from S3?",
+      "What is a service account in Kubernetes?"
+    ],
+    "hints": [
+      "Never use root credentials in production",
+      "Attach a specific IAM role with a narrow policy to the service that needs it"
+    ],
+    "idealAnswer": "The principle of least privilege means granting the minimum permissions needed for each task. In cloud environments this means using IAM roles with narrow policies attached to specific services rather than broad admin permissions.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "networking",
+    "category": "general",
+    "questionText": "What is a CDN and what problems does it solve?",
+    "expectedPoints": [
+      "CDN caches content at edge locations geographically close to users",
+      "Reduces latency for static assets",
+      "Reduces load on origin servers",
+      "Improves availability"
+    ],
+    "followUps": [
+      "What types of content are best suited for a CDN?",
+      "What is cache invalidation and why is it hard?"
+    ],
+    "hints": [
+      "CDN is great for images, JS, CSS, and video",
+      "Dynamic API responses are usually not cached by CDNs"
+    ],
+    "idealAnswer": "A CDN distributes content to edge servers close to end users. It reduces latency by serving cached static assets from the nearest edge location instead of the origin server, reduces origin load, and improves resilience.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "cost_optimization",
+    "category": "general",
+    "questionText": "How would you approach cost optimization for a cloud infrastructure running over budget?",
+    "expectedPoints": [
+      "Rightsize compute instances",
+      "Use spot or preemptible instances for fault-tolerant workloads",
+      "Review and eliminate idle or orphaned resources",
+      "Use reserved instances for predictable baseline load"
+    ],
+    "followUps": [
+      "How do you identify idle resources programmatically?",
+      "What is the risk of using spot instances for stateful workloads?"
+    ],
+    "hints": [
+      "Rightsizing is usually the biggest quick win",
+      "Reserved instances for baseline, spot for burst, on-demand only as a fallback"
+    ],
+    "idealAnswer": "Start by analyzing usage patterns and rightsizing underutilized instances. Move fault-tolerant batch workloads to spot instances. Eliminate orphaned resources like unattached volumes and idle load balancers. Use reserved instances for predictable baseline capacity.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Your model performs well in offline evaluation but degrades significantly in production. What do you investigate first?",
+    "expectedPoints": [
+      "Checks for train-serve skew - different feature distributions between training and production",
+      "Checks for data drift in production inputs",
+      "Investigates the preprocessing pipeline for inconsistencies"
+    ],
+    "followUps": [
+      "How do you detect train-serve skew systematically?",
+      "What monitoring would you add to catch this earlier?"
+    ],
+    "hints": [
+      "Train-serve skew is the most common cause - features are computed differently offline versus at serving time",
+      "Log real production inputs and compare their distribution to training data"
+    ],
+    "idealAnswer": "I first check for train-serve skew by logging real production inputs and comparing their distribution to training data. Then I verify that the preprocessing pipeline is identical between training and serving. Finally I check for concept drift in the target variable.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "A stakeholder wants to use your AI model output to make high-stakes automated decisions without human review. How do you respond?",
+    "expectedPoints": [
+      "Raises model limitations and failure modes explicitly",
+      "Advocates for a human-in-the-loop safeguard",
+      "Proposes a confidence threshold or fallback mechanism"
+    ],
+    "followUps": [
+      "At what confidence level would you trust the model to act autonomously?",
+      "What would you document in writing?"
+    ],
+    "hints": [
+      "No model is perfect - always quantify your error rate before automation",
+      "High-stakes decisions need a fallback plan and a human escalation path"
+    ],
+    "idealAnswer": "I present the model's error rate and failure modes clearly to the stakeholder. I advocate for a human review step for low-confidence predictions and for high-stakes edge cases. I propose a confidence threshold below which decisions escalate to a human.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "Your cloud bill doubled this month with no new features shipped. How do you investigate?",
+    "expectedPoints": [
+      "Pulls cost explorer or billing dashboard immediately",
+      "Breaks down costs by service, region, and resource tag",
+      "Checks for runaway auto-scaling, forgotten test resources, or data transfer spikes"
+    ],
+    "followUps": [
+      "How do you set up alerts to catch this before the bill arrives?",
+      "What tagging strategy prevents this in the future?"
+    ],
+    "hints": [
+      "Break it down by service first, then by resource tag",
+      "Data transfer and NAT gateway costs are common surprise culprits"
+    ],
+    "idealAnswer": "I open the cost explorer and break down the delta by service, region, and tag. I look for runaway auto-scaling groups, forgotten test environments, data egress spikes, or untagged resources that bypassed budget controls. Then I set billing alerts to catch this earlier next month.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "general",
+    "category": "general",
+    "questionText": "You need to migrate a monolithic application to the cloud with minimal downtime. How do you plan it?",
+    "expectedPoints": [
+      "Uses a strangler fig or lift-and-shift approach rather than a big bang migration",
+      "Plans a rollback strategy before starting",
+      "Migrates in phases with validation at each step",
+      "Keeps the old system live until the new one is proven stable"
+    ],
+    "followUps": [
+      "How do you handle database migration specifically?",
+      "What does your rollback plan look like if phase two fails?"
+    ],
+    "hints": [
+      "Never cut over everything at once - migrate in slices",
+      "Run old and new in parallel until confident",
+      "Database migration is the riskiest part"
+    ],
+    "idealAnswer": "I plan a phased migration starting with stateless components. I run old and new systems in parallel with traffic gradually shifting to the new environment. Each phase has a defined success metric and rollback procedure. Database migration happens last with a validated replication lag close to zero before cutover.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "CLOUD",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "general",
+    "category": "general",
+    "questionText": "A production Kubernetes pod keeps crashing and restarting in a CrashLoopBackOff state. Walk me through your debugging process.",
+    "expectedPoints": [
+      "Runs kubectl describe pod to read events",
+      "Runs kubectl logs with previous flag to read the last crash output",
+      "Checks resource limits and liveness probe configuration",
+      "Checks ConfigMap or secret mounts for missing values"
+    ],
+    "followUps": [
+      "What is the difference between a liveness probe and a readiness probe?",
+      "How do you debug a pod that crashes before it can log anything?"
+    ],
+    "hints": [
+      "kubectl describe pod gives events and kubectl logs --previous gives the last crash output",
+      "CrashLoopBackOff means it keeps dying - you need the crash log not the current log"
+    ],
+    "idealAnswer": "I run kubectl describe pod to read the events section for signals like OOMKilled or failed probes. Then I run kubectl logs --previous to get the last crash output. I check resource limits, liveness probe thresholds, and whether required environment variables or secrets are mounted correctly.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "Walk me through a complete ML pipeline from raw data to a deployed model.",
+    "expectedPoints": [
+      "Data ingestion and storage",
+      "Data cleaning and preprocessing",
+      "Feature engineering",
+      "Model training and hyperparameter tuning",
+      "Evaluation on a held-out test set",
+      "Serialization and deployment",
+      "Monitoring in production"
+    ],
+    "followUps": [
+      "What breaks most often in a real pipeline?",
+      "How do you version your data and models together?",
+      "What is the difference between online and batch serving?"
+    ],
+    "hints": [
+      "Cover all 7 stages - data -> preprocessing -> features -> training -> evaluation -> deployment -> monitoring",
+      "Most candidates skip monitoring - include it"
+    ],
+    "idealAnswer": "A complete pipeline starts with ingesting raw data into a data store, cleaning and transforming it, engineering features, training a model with cross-validation, evaluating on a test set, serializing the model artifact, deploying it behind an API, and monitoring prediction drift and latency in production.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "What is feature engineering and why does it matter more than model choice in many problems?",
+    "expectedPoints": [
+      "Feature engineering transforms raw data into signals the model can learn from",
+      "Domain knowledge encodes meaning that models cannot learn alone",
+      "Well-engineered features reduce model complexity and training time",
+      "Bad features cause high bias regardless of model sophistication"
+    ],
+    "followUps": [
+      "Give me an example of a feature you engineered that improved a model's performance.",
+      "What is feature leakage and how do you prevent it?"
+    ],
+    "hints": [
+      "Think about encoding, scaling, interaction terms, and domain-specific transformations",
+      "Feature leakage is a common trap - target variable leaking into features"
+    ],
+    "idealAnswer": "Feature engineering creates informative signals from raw inputs. A model trained on well-crafted features - normalized numerics, encoded categoricals, meaningful interactions - routinely outperforms a complex model on poorly prepared data. Domain expertise drives the best features because models cannot infer domain meaning from numbers alone.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "How do you handle class imbalance in a classification problem?",
+    "expectedPoints": [
+      "Resampling strategies: oversampling minority class with SMOTE or undersampling majority class",
+      "Class-weight adjustment in the loss function",
+      "Choosing the right evaluation metric: F1, AUC-ROC, precision-recall instead of accuracy",
+      "Threshold tuning on the decision boundary"
+    ],
+    "followUps": [
+      "When would you choose SMOTE over class weighting?",
+      "Why is accuracy a misleading metric on imbalanced data?"
+    ],
+    "hints": [
+      "Accuracy is useless when classes are imbalanced - use F1 or AUC",
+      "SMOTE generates synthetic minority samples by interpolation"
+    ],
+    "idealAnswer": "I first adjust class weights in the model loss so the minority class contributes proportionally. If that is insufficient I apply SMOTE to oversample the minority class synthetically. I evaluate with AUC-ROC and F1, not accuracy, and tune the classification threshold on a validation set to optimize the metric that matters to the business.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "What is model drift and how do you detect and respond to it in production?",
+    "expectedPoints": [
+      "Data drift: input feature distribution shifts over time",
+      "Concept drift: the relationship between features and target changes",
+      "Detection: monitor prediction distribution, feature statistics, and model performance metrics on a rolling window",
+      "Response: trigger retraining, alert on-call, or fall back to a simpler rule-based model"
+    ],
+    "followUps": [
+      "What is the difference between data drift and concept drift?",
+      "How do you set up alerts without labeled production data?"
+    ],
+    "hints": [
+      "You can detect data drift without labels by comparing input distributions",
+      "Concept drift requires labeled production data or a proxy metric"
+    ],
+    "idealAnswer": "Data drift means input distributions shift - e.g. user demographics change. Concept drift means the mapping from inputs to outputs changes - e.g. fraud patterns evolve. I monitor input feature statistics with a rolling window test like KL divergence, track prediction score distributions, and where labels are available track live model accuracy. When drift exceeds a threshold I trigger automated retraining and route traffic back to the previous model until the new one is validated.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "Explain the bias-variance tradeoff and how it guides your modeling decisions.",
+    "expectedPoints": [
+      "High bias: model is too simple, underfits, high training and validation error",
+      "High variance: model is too complex, overfits, low training error but high validation error",
+      "The goal is to minimize total error: bias squared plus variance plus irreducible noise",
+      "Regularization, cross-validation, and ensemble methods manage this tradeoff"
+    ],
+    "followUps": [
+      "How does adding more training data affect bias and variance separately?",
+      "When would you deliberately choose a high-bias model?"
+    ],
+    "hints": [
+      "More data reduces variance but not bias",
+      "Regularization reduces variance at the cost of a small increase in bias"
+    ],
+    "idealAnswer": "Bias is systematic error from wrong model assumptions. Variance is sensitivity to training data fluctuations. A simple linear model has high bias and low variance. A deep decision tree has low bias but high variance. I manage the tradeoff by using cross-validation to detect overfitting, regularization to constrain complexity, and ensembles like random forests to average out variance.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "What evaluation metrics would you use for a fraud detection model and why?",
+    "expectedPoints": [
+      "Precision: out of all flagged transactions, how many are actually fraud",
+      "Recall: out of all actual fraud, how many did we catch",
+      "F1 score: harmonic mean - balances precision and recall",
+      "AUC-ROC: overall discriminative ability across all thresholds",
+      "Business context determines which metric to optimize: missing fraud is costlier than a false alert"
+    ],
+    "followUps": [
+      "What happens to your metrics if you lower the classification threshold?",
+      "How do you communicate model performance to a non-technical stakeholder?"
+    ],
+    "hints": [
+      "In fraud detection missing a fraud is worse than a false positive - optimize recall",
+      "AUC-ROC is threshold-independent and useful for model comparison"
+    ],
+    "idealAnswer": "For fraud detection I prioritize recall to minimize missed fraud, while monitoring precision to keep false alerts manageable for the review team. I evaluate with AUC-ROC for model comparison and use a precision-recall curve to select the operating threshold. Accuracy is not useful because fraud is rare and a model predicting no-fraud-ever would score 99%.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "How would you deploy a machine learning model to production as a REST API?",
+    "expectedPoints": [
+      "Serialize the trained model with pickle or ONNX",
+      "Wrap it in a FastAPI or Flask service",
+      "Containerize with Docker for reproducibility",
+      "Deploy behind a load balancer for scalability",
+      "Add input validation and error handling",
+      "Log predictions and latency for monitoring",
+      "Use a CI/CD pipeline to automate redeployment on model update"
+    ],
+    "followUps": [
+      "What is ONNX and why would you use it over pickle?",
+      "How do you roll back to the previous model version if the new one degrades?"
+    ],
+    "hints": [
+      "ONNX is runtime-independent - a model trained in PyTorch can serve in a Java environment via ONNX",
+      "Always version your model artifacts with the training data version"
+    ],
+    "idealAnswer": "I serialize the model to ONNX for portability, wrap it in a FastAPI service with input validation, containerize it with Docker, and deploy it with a rolling update strategy behind a load balancer. I log every prediction with its input features and latency. A CI/CD pipeline automatically builds and deploys a new image when the model artifact in the registry is updated. I keep the previous image tagged so rollback is a one-command operation.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "TECHNICAL",
+    "difficulty": "ADVANCED",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "What is a feature store and when would you introduce one into your ML platform?",
+    "expectedPoints": [
+      "A feature store is a centralized repository for computed, versioned features shared across models",
+      "Eliminates train-serve skew by using identical feature computation logic offline and online",
+      "Enables feature reuse across teams and reduces duplication",
+      "Introduce when multiple models share the same features or when train-serve inconsistency is causing production bugs"
+    ],
+    "followUps": [
+      "How does a feature store prevent train-serve skew?",
+      "Name a real feature store tool and describe its architecture."
+    ],
+    "hints": [
+      "Train-serve skew is the most dangerous silent failure in ML - a feature store fixes it",
+      "Feast and Tecton are common open-source and managed options"
+    ],
+    "idealAnswer": "A feature store centralizes feature computation so the same pipeline runs during training and at serving time, eliminating train-serve skew. It stores feature values with point-in-time correctness for historical training and serves them at low latency for online inference. I would introduce one when two or more models share features or when we have had a production incident caused by inconsistent preprocessing between training and serving.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "SITUATIONAL",
+    "difficulty": "ADVANCED",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "Your sentiment classifier achieves 92% accuracy in testing but product managers report it is giving wrong results on real user reviews. What do you investigate?",
+    "expectedPoints": [
+      "Checks for distribution shift between test data and production data",
+      "Inspects the test set for data leakage or unrepresentative sampling",
+      "Analyzes failure cases by category: review length, language, slang, domain-specific vocabulary",
+      "Checks preprocessing pipeline consistency between training and serving"
+    ],
+    "followUps": [
+      "How would you build a feedback loop to collect labels from production?",
+      "What would you change about your evaluation strategy going forward?"
+    ],
+    "hints": [
+      "92% accuracy on a biased test set is meaningless - the test set must match production distribution",
+      "Slice your error analysis by review category, length, and language"
+    ],
+    "idealAnswer": "I first collect a random sample of production reviews where the model was wrong and inspect them manually to identify patterns. Then I compare the production input distribution to the training set - if the vocabulary, review length, or domain differs significantly that explains the gap. I also verify that the preprocessing pipeline at serving time is byte-for-byte identical to what ran during training. Finally I build a human review queue to collect labeled production examples and add them to the next training run.",
+    "isActive": true
+  },
+  {
+    "careerPathId": 1,
+    "roleType": "AI",
+    "type": "SITUATIONAL",
+    "difficulty": "INTERMEDIATE",
+    "domain": "ml_pipeline",
+    "category": "general",
+    "questionText": "A data scientist on your team wants to ship a model trained on last year's data. What concerns do you raise before approving the deployment?",
+    "expectedPoints": [
+      "Data freshness: has the world changed since last year in a way that affects the target?",
+      "Distribution shift: compare last year's feature distributions to current production traffic",
+      "Evaluation on recent data: the model must be evaluated on a recent holdout, not just the original test set",
+      "Monitoring plan: what alerts will fire if the model degrades silently after deployment?"
+    ],
+    "followUps": [
+      "How do you convince a data scientist that their year-old model is risky without experimental data to prove it?",
+      "What is the minimum monitoring setup you would require before approving any model deployment?"
+    ],
+    "hints": [
+      "Re-evaluate on recent data before approving any deployment",
+      "Even a model that was great last year can be dangerously stale if the data distribution has shifted"
+    ],
+    "idealAnswer": "I would require three things before approving. First, re-evaluate the model on a recent holdout from the last 30 to 60 days - if accuracy drops significantly the model needs retraining. Second, compare last year's feature distributions to today's using statistical tests to quantify drift. Third, agree on a monitoring plan with alerting thresholds before go-live so we can catch silent degradation immediately rather than waiting for user complaints.",
+    "isActive": true
+  }
+]

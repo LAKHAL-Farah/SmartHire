@@ -1,0 +1,69 @@
+<div class="an-page">
+  <header class="page-hdr">
+    <div>
+      <h1 class="page-hdr__title">Roadmap Analytics</h1>
+      <p class="page-hdr__sub">Live metrics sourced directly from roadmap database endpoints.</p>
+    </div>
+    <button
+      type="button"
+      class="roadmap-admin__refresh"
+      (click)="refreshRoadmapAdminMetrics()"
+      [disabled]="roadmapLoading"
+    >
+      {{ roadmapLoading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </header>
+
+  <section class="roadmap-admin">
+    <div class="roadmap-admin__state" *ngIf="roadmapLoading">Loading roadmap admin metrics...</div>
+    <div class="roadmap-admin__state roadmap-admin__state--error" *ngIf="!roadmapLoading && roadmapError">
+      {{ roadmapError }}
+    </div>
+
+    <ng-container *ngIf="!roadmapLoading && !roadmapError">
+      <div class="roadmap-admin__kpi-grid" *ngIf="roadmapStats as stats">
+        <article class="roadmap-admin__kpi">
+          <span>Total Roadmaps</span>
+          <strong>{{ stats.totalRoadmaps | number }}</strong>
+        </article>
+        <article class="roadmap-admin__kpi">
+          <span>Completed Roadmaps</span>
+          <strong>{{ stats.completedRoadmaps | number }}</strong>
+        </article>
+        <article class="roadmap-admin__kpi">
+          <span>Completion Rate</span>
+          <strong>{{ stats.completionRatePercent | number: '1.1-1' }}%</strong>
+        </article>
+        <article class="roadmap-admin__kpi">
+          <span>Average Progress</span>
+          <strong>{{ roadmapAverageProgress | number: '1.1-1' }}%</strong>
+        </article>
+      </div>
+
+      <div class="roadmap-admin__table-wrap" *ngIf="roadmapCompletionRows.length > 0">
+        <table class="roadmap-admin__table">
+          <thead>
+            <tr>
+              <th>Roadmap</th>
+              <th>Progress</th>
+              <th>Completed</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of roadmapCompletionRows">
+              <td>{{ row.title }}</td>
+              <td>{{ row.progressPercent | number: '1.1-1' }}%</td>
+              <td>{{ row.completedSteps }}</td>
+              <td>{{ row.totalSteps }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="roadmap-admin__state" *ngIf="!hasRoadmapData()">
+        No roadmap analytics rows were returned by the database yet.
+      </p>
+    </ng-container>
+  </section>
+</div>

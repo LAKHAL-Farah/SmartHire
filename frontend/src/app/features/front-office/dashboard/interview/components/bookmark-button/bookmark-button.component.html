@@ -1,0 +1,67 @@
+<div class="bookmark-widget" [class.bookmark-widget--saved]="isBookmarked()">
+  <button
+    type="button"
+    class="bookmark-toggle"
+    [class.bookmark-toggle--active]="isBookmarked()"
+    [class.bookmark-toggle--flash-save]="animState() === 'saved'"
+    [class.bookmark-toggle--flash-remove]="animState() === 'removed'"
+    [disabled]="!userId"
+    (click)="togglePanel()"
+  >
+    <lucide-icon name="bookmark" [size]="16" [strokeWidth]="2"></lucide-icon>
+    <span>@if (isBookmarked()) { Bookmarked } @else { Save this question }</span>
+  </button>
+
+  @if (!userId) {
+    <p class="bookmark-state">Sign in to save this question.</p>
+  }
+
+  @if (requestMessage()) {
+    <p class="bookmark-state bookmark-state--ok">{{ requestMessage() }}</p>
+  }
+
+  @if (requestError()) {
+    <p class="bookmark-state bookmark-state--error">{{ requestError() }}</p>
+  }
+
+  @if (panelOpen() && userId) {
+    <div class="bookmark-panel">
+      <label>
+        Quick note
+        <textarea
+          rows="3"
+          placeholder="Why does this question matter for your next practice run?"
+          [value]="noteDraft()"
+          (input)="noteDraft.set($any($event.target).value)"
+        ></textarea>
+      </label>
+
+      <label>
+        Tag
+        <input
+          type="text"
+          maxlength="40"
+          placeholder="ex: Arrays, Behavioral, Cloud"
+          [value]="tagDraft()"
+          [disabled]="isBookmarked()"
+          (input)="tagDraft.set($any($event.target).value)"
+        />
+      </label>
+
+      <div class="bookmark-actions">
+        <button type="button" class="btn-save" [disabled]="busy()" (click)="save()">
+          @if (busy()) { Saving... } @else if (isBookmarked()) { Update Note } @else { Save Bookmark }
+        </button>
+
+        <button
+          type="button"
+          class="btn-remove"
+          [disabled]="busy() || !isBookmarked()"
+          (click)="remove()"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+  }
+</div>

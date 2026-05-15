@@ -1,0 +1,370 @@
+<div class="jobs-page">
+  <!-- ═══ THREE-COLUMN LAYOUT ═══ -->
+  <div class="jobs-layout">
+
+    <!-- ─── LEFT: Filter Panel (260px) ─── -->
+    <aside class="filter-panel">
+      <div class="filter-panel__inner">
+        <!-- Search -->
+        <div class="filter-search">
+          <lucide-icon name="search" [size]="16" class="filter-search__icon"></lucide-icon>
+          <input class="filter-search__input" type="text" placeholder="Search jobs…"
+            [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" (input)="applySearch()"/>
+        </div>
+
+        <!-- Location Type -->
+        <div class="filter-group">
+          <span class="filter-group__label">Location Type</span>
+          <div class="filter-pills">
+            @for (opt of locationOptions; track opt) {
+              <button class="filter-pill"
+                [class.filter-pill--active]="locationFilters().includes(opt)"
+                (click)="toggleFilter('location', opt)">{{ opt }}</button>
+            }
+          </div>
+        </div>
+
+        <!-- Contract Type -->
+        <div class="filter-group">
+          <span class="filter-group__label">Contract Type</span>
+          <div class="filter-checks">
+            @for (opt of contractOptions; track opt) {
+              <label class="filter-check">
+                <input type="checkbox"
+                  [checked]="contractFilters().includes(opt)"
+                  (change)="toggleFilter('contract', opt)"/>
+                <span class="filter-check__box"></span>
+                <span class="filter-check__text">{{ opt }}</span>
+              </label>
+            }
+          </div>
+        </div>
+
+        <!-- Experience Level -->
+        <div class="filter-group">
+          <span class="filter-group__label">Experience Level</span>
+          <div class="filter-pills">
+            @for (opt of experienceOptions; track opt) {
+              <button class="filter-pill"
+                [class.filter-pill--active]="experienceFilters().includes(opt)"
+                (click)="toggleFilter('experience', opt)">{{ opt }}</button>
+            }
+          </div>
+        </div>
+
+        <!-- Salary Range -->
+        <div class="filter-group">
+          <span class="filter-group__label">Salary Range</span>
+          <div class="salary-slider">
+            <div class="salary-slider__track">
+              <div class="salary-slider__fill"
+                [style.left.%]="salaryMin() / 2000"
+                [style.width.%]="(salaryMax() - salaryMin()) / 2000">
+              </div>
+            </div>
+            <input type="range" class="salary-slider__input salary-slider__input--min"
+              min="0" max="200000" step="5000"
+              [ngModel]="salaryMin()"
+              (ngModelChange)="onSalaryMinChange($event)"/>
+            <input type="range" class="salary-slider__input salary-slider__input--max"
+              min="0" max="200000" step="5000"
+              [ngModel]="salaryMax()"
+              (ngModelChange)="onSalaryMaxChange($event)"/>
+          </div>
+          <div class="salary-labels">
+            <span class="salary-labels__val">\${{ (salaryMin() / 1000) }}k</span>
+            <span class="salary-labels__val">\${{ (salaryMax() / 1000) }}k</span>
+          </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="filter-group">
+          <span class="filter-group__label">Tech Stack</span>
+          <div class="tech-input-wrap">
+            <input class="tech-input" type="text" placeholder="Type a skill…"
+              [ngModel]="techQuery()" (ngModelChange)="techQuery.set($event)"
+              (keydown.enter)="addTechTag()" />
+          </div>
+          @if (techSuggestions().length > 0) {
+            <div class="tech-suggestions">
+              @for (s of techSuggestions(); track s) {
+                <button class="tech-suggestion" (click)="pickTechTag(s)">{{ s }}</button>
+              }
+            </div>
+          }
+          <div class="tech-tags">
+            @for (tag of techFilters(); track tag) {
+              <span class="tech-tag">
+                {{ tag }}
+                <button class="tech-tag__remove" (click)="removeTechTag(tag)">&times;</button>
+              </span>
+            }
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="filter-actions">
+          <button class="btn-apply-filters" (click)="applySearch()">Apply Filters</button>
+          <button class="btn-clear-all" (click)="clearFilters()">Clear all</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ─── CENTER: Job List ─── -->
+    <section class="job-list">
+      <div class="job-list__header">
+        <span class="job-list__count">{{ filteredJobs().length }} open positions</span>
+        <div class="job-list__sort">
+          <span class="job-list__sort-label">Sort by:</span>
+          <select class="job-list__sort-select" [ngModel]="sortOption()" (ngModelChange)="sortOption.set($event)">
+            <option value="match">Best Match</option>
+            <option value="recent">Most Recent</option>
+            <option value="salary">Highest Salary</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="job-list__cards">
+        @for (job of filteredJobs(); track job.id) {
+          <div class="job-card"
+            [class.job-card--selected]="selectedJobId() === job.id"
+            (click)="selectedJobId.set(job.id)">
+            <div class="job-card__strip"></div>
+            <div class="job-card__body">
+              <!-- Top row -->
+              <div class="job-card__top">
+                <div class="job-card__logo" [style.background]="job.companyColor">
+                  {{ job.companyInitials }}
+                </div>
+                <div class="job-card__info">
+                  <span class="job-card__title">{{ job.title }}</span>
+                  <span class="job-card__company">{{ job.company }}</span>
+                </div>
+                <div class="match-badge"
+                  [class.match-badge--high]="job.matchScore >= 70"
+                  [class.match-badge--mid]="job.matchScore >= 50 && job.matchScore < 70"
+                  [class.match-badge--low]="job.matchScore < 50">
+                  <svg width="40" height="40" viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/>
+                    <circle cx="20" cy="20" r="16" fill="none"
+                      [attr.stroke]="job.matchScore >= 70 ? '#2ee8a5' : job.matchScore >= 50 ? '#f59e0b' : '#6b6b80'"
+                      stroke-width="3" stroke-linecap="round"
+                      [attr.stroke-dasharray]="matchCircum"
+                      [attr.stroke-dashoffset]="matchCircum * (1 - job.matchScore / 100)"
+                      style="transform: rotate(-90deg); transform-origin: center;"/>
+                  </svg>
+                  <span class="match-badge__pct">{{ job.matchScore }}</span>
+                </div>
+              </div>
+              <!-- Info chips -->
+              <div class="job-card__chips">
+                <span class="info-chip">
+                  <lucide-icon name="map-pin" [size]="12"></lucide-icon>
+                  {{ job.locationType }}
+                </span>
+                <span class="info-chip">
+                  <lucide-icon name="briefcase" [size]="12"></lucide-icon>
+                  {{ job.contractType }}
+                </span>
+                <span class="info-chip">
+                  <lucide-icon name="dollar-sign" [size]="12"></lucide-icon>
+                  {{ job.salaryRange }}
+                </span>
+              </div>
+              <!-- Skill tags -->
+              <div class="job-card__skills">
+                @for (skill of job.skills; track skill) {
+                  <span class="skill-tag"
+                    [class.skill-tag--match]="userSkills.includes(skill)"
+                    [class.skill-tag--miss]="!userSkills.includes(skill)">
+                    {{ skill }}
+                  </span>
+                }
+              </div>
+              <!-- Bottom row -->
+              <div class="job-card__bottom">
+                <span class="job-card__date">{{ getTimeAgo(job.postedDate)  }}</span>
+                <div class="job-card__btns">
+                  <button class="btn-save" [class.btn-save--saved]="job.saved"
+                    (click)="toggleSave(job, $event)">
+                    <lucide-icon name="bookmark" [size]="14"></lucide-icon>
+                    {{ job.saved ? 'Saved' : 'Save' }}
+                  </button>
+                  <button class="btn-apply" (click)="openApplyModal(job.id); $event.stopPropagation()">Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (filteredJobs().length === 0) {
+          <div class="empty-jobs">
+            <p class="empty-jobs__text">No jobs match your filters. Try broadening your criteria.</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- ─── RIGHT: Job Detail Panel (380px) ─── -->
+    <aside class="detail-panel">
+      @if (selectedJob(); as job) {
+        <div class="detail-panel__inner">
+          <!-- Company header -->
+          <div class="detail-header">
+            <div class="detail-header__logo" [style.background]="job.companyColor">
+              {{ job.companyInitials }}
+            </div>
+            <div class="detail-header__info">
+              <div class="detail-header__company-row">
+                <span class="detail-header__company">{{ job.company }}</span>
+                @if (job.verified) {
+                  <span class="verified-badge" title="Verified employer">
+                    <lucide-icon name="shield-check" [size]="14" color="#2ee8a5"></lucide-icon>
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <h2 class="detail-title">{{ job.title }}</h2>
+
+          <!-- Info chips -->
+          <div class="detail-chips">
+            <span class="detail-chip">
+              <lucide-icon name="map-pin" [size]="13"></lucide-icon>
+              {{ job.locationType }}
+            </span>
+            <span class="detail-chip">
+              <lucide-icon name="briefcase" [size]="13"></lucide-icon>
+              {{ job.contractType }}
+            </span>
+            <span class="detail-chip">
+              <lucide-icon name="dollar-sign" [size]="13"></lucide-icon>
+              {{ job.salaryRange }}
+            </span>
+            <span class="detail-chip">
+              <lucide-icon name="activity" [size]="13"></lucide-icon>
+              {{ job.experienceLevel }}
+            </span>
+          </div>
+
+          <!-- Description -->
+          <div class="detail-description">
+            @for (para of job.description.split('\\n'); track para) {
+              <p class="detail-description__para">{{ para }}</p>
+            }
+          </div>
+
+          <!-- Required Skills -->
+          <div class="detail-section">
+            <h3 class="detail-section__title">Required Skills</h3>
+            <div class="detail-skills">
+              @for (skill of job.skills; track skill) {
+                <span class="skill-tag"
+                  [class.skill-tag--match]="userSkills.includes(skill)"
+                  [class.skill-tag--miss]="!userSkills.includes(skill)">
+                  {{ skill }}
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- AI Match Breakdown -->
+          <div class="detail-section">
+            <h3 class="detail-section__title">AI Match Breakdown</h3>
+            <div class="ai-breakdown" [class.ai-breakdown--open]="breakdownOpen()">
+              <button class="ai-breakdown__toggle" (click)="breakdownOpen.set(!breakdownOpen())">
+                <span class="ai-breakdown__score"
+                  [class.ai-breakdown__score--high]="job.matchScore >= 70"
+                  [class.ai-breakdown__score--mid]="job.matchScore >= 50 && job.matchScore < 70"
+                  [class.ai-breakdown__score--low]="job.matchScore < 50">
+                  {{ job.matchScore }}% match
+                </span>
+                <lucide-icon name="chevron-down" [size]="16" class="ai-breakdown__chevron"></lucide-icon>
+              </button>
+              @if (breakdownOpen()) {
+                <div class="ai-breakdown__body">
+                  <div class="ai-breakdown__group">
+                    <span class="ai-breakdown__group-label ai-breakdown__group-label--match">Matched Skills</span>
+                    <div class="ai-breakdown__tags">
+                      @for (skill of getMatchedSkills(job); track skill) {
+                        <span class="bd-tag bd-tag--match">{{ skill }}</span>
+                      }
+                    </div>
+                  </div>
+                  <div class="ai-breakdown__group">
+                    <span class="ai-breakdown__group-label ai-breakdown__group-label--miss">Missing Skills</span>
+                    <div class="ai-breakdown__tags">
+                      @for (skill of getMissingSkills(job); track skill) {
+                        <span class="bd-tag bd-tag--miss">{{ skill }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Sticky bottom buttons -->
+          <div class="detail-actions">
+            <button class="btn-detail-save" [class.btn-detail-save--saved]="job.saved"
+              (click)="toggleSave(job, $event)">
+              <lucide-icon name="bookmark" [size]="15"></lucide-icon>
+              {{ job.saved ? 'Saved' : 'Save Job' }}
+            </button>
+            <button class="btn-detail-apply" (click)="openApplyModal(job.id)">Apply Now</button>
+          </div>
+        </div>
+      }
+    </aside>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════ APPLY MODAL ═══════════════════════ -->
+@if (applyModalOpen()) {
+  <div class="modal-overlay" (click)="closeApplyModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-card__header">
+        <h2 class="modal-card__title">Apply to this job</h2>
+        <button class="modal-card__close" (click)="closeApplyModal()" [disabled]="isSubmitting()">
+          <lucide-icon name="x" [size]="20"></lucide-icon>
+        </button>
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-field__label">Resume</label>
+        <input
+          class="resume-input"
+          type="file"
+          accept=".pdf,.doc,.docx"
+          (change)="onResumeSelected($event)"
+          [disabled]="isSubmitting()"
+        />
+        @if (resumeFile(); as f) {
+          <div class="resume-filename">Selected: {{ f.name }}</div>
+        }
+        <div class="resume-hint">Accepted: PDF, DOC, DOCX</div>
+      </div>
+
+      @if (submitError()) {
+        <div class="modal-error">{{ submitError() }}</div>
+      }
+
+      @if (lastApplication()) {
+        <div class="modal-success">Application submitted.</div>
+      }
+
+      <div class="modal-actions">
+        <button class="btn-ghost" (click)="closeApplyModal()" [disabled]="isSubmitting()">Cancel</button>
+        <button
+          class="btn-primary"
+          (click)="submitApplication()"
+          [disabled]="!resumeFile() || isSubmitting()"
+        >
+          {{ isSubmitting() ? 'Submitting…' : 'Upload & Apply' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,131 @@
+<div class="step-detail-page">
+  <a class="back-link" routerLink="/dashboard/roadmap">&larr; Back to roadmap</a>
+
+  <section class="card state-card" *ngIf="loading()">
+    Loading step details...
+  </section>
+
+  <section class="card state-card error" *ngIf="!loading() && errorMessage()">
+    {{ errorMessage() }}
+  </section>
+
+  <ng-container *ngIf="!loading() && step() as currentStep">
+    <section class="card hero-card">
+      <div class="hero-header">
+        <div>
+          <p class="eyebrow">Step {{ currentStep.stepOrder }}</p>
+          <h1>{{ currentStep.title }}</h1>
+          <p class="description">{{ currentStep.description }}</p>
+        </div>
+        <span class="status-pill">{{ statusLabel() }}</span>
+      </div>
+
+      <p class="objective">{{ currentStep.objective }}</p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="label">Estimated Days</span>
+          <strong>{{ currentStep.estimatedDays }}</strong>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="track">
+          <span class="fill" [style.width.%]="progressPercent()"></span>
+        </div>
+        <span class="progress-text">{{ progressPercent() }}%</span>
+      </div>
+
+      <div class="tech-row" *ngIf="currentStep.technologies.length > 0">
+        <span class="tech-chip" *ngFor="let tech of currentStep.technologies">{{ tech }}</span>
+      </div>
+
+      <button
+        class="complete-btn"
+        type="button"
+        [disabled]="completing() || currentStep.status === 'COMPLETED' || currentStep.status === 'LOCKED' || !quizPassedForStep()"
+        (click)="markComplete()"
+      >
+        {{
+          currentStep.status === 'COMPLETED'
+            ? 'Already Completed'
+            : currentStep.status === 'LOCKED'
+              ? 'Locked - complete prerequisites'
+              : !quizPassedForStep()
+                ? 'Pass quiz to unlock completion'
+                : (completing() ? 'Completing...' : 'Mark Step as Complete')
+        }}
+      </button>
+      <p class="lock-hint" *ngIf="currentStep.status === 'LOCKED'">
+        This node is locked. Complete required previous nodes to unlock it.
+      </p>
+      <p
+        class="quiz-hint"
+        *ngIf="
+          currentStep.status !== 'LOCKED' &&
+          currentStep.status !== 'COMPLETED' &&
+          currentStep.status !== 'SKIPPED' &&
+          !quizPassedForStep()
+        ">
+        Pass the node quiz in roadmap view to unlock completion for this step.
+      </p>
+    </section>
+
+    <section class="card resources-card">
+      <div class="section-header">
+        <h2>Resources</h2>
+        <p>Recommended material for this step plus your custom additions.</p>
+      </div>
+
+      <div class="state-card" *ngIf="resourcesLoading()">Loading resources...</div>
+
+      <div class="resource-grid" *ngIf="!resourcesLoading() && resources().length > 0">
+        <article class="resource-item" *ngFor="let resource of resources(); trackBy: trackResource">
+          <div class="resource-top">
+            <span class="tag">{{ resource.type }}</span>
+            <span class="provider">{{ resource.provider }}</span>
+          </div>
+          <h3>{{ resource.title }}</h3>
+          <p *ngIf="resource.durationHours">~{{ resource.durationHours }}h</p>
+          <a [href]="resource.url" target="_blank" rel="noopener">Open resource</a>
+        </article>
+      </div>
+
+      <p class="empty" *ngIf="!resourcesLoading() && resources().length === 0">
+        No resources available yet for this step.
+      </p>
+
+      <form class="resource-form" [formGroup]="resourceForm" (ngSubmit)="addCustomResource()">
+        <h3>Add Custom Resource</h3>
+
+        <label>
+          Title
+          <input type="text" formControlName="title" placeholder="Resource title" />
+        </label>
+
+        <label>
+          URL
+          <input type="url" formControlName="url" placeholder="https://..." />
+        </label>
+
+        <div class="form-row">
+          <label>
+            Type
+            <select formControlName="type">
+              <option value="ARTICLE">Article</option>
+              <option value="VIDEO">Video</option>
+              <option value="COURSE">Course</option>
+            </select>
+          </label>
+
+          <label>
+            Duration (hours)
+            <input type="number" min="0.25" step="0.25" formControlName="durationHours" />
+          </label>
+        </div>
+
+        <button class="add-btn" type="submit">Add Resource</button>
+      </form>
+    </section>
+  </ng-container>
+</div>

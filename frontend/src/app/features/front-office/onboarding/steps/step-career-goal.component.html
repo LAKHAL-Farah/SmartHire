@@ -1,0 +1,22 @@
+<div class="step">
+  <h1 class="step__headline">
+    What's your <span class="step__gradient">target role?</span>
+  </h1>
+  <p class="step__sub">Pick the career path that excites you most. You can always change it later.</p>
+
+  <div class="cards-grid">
+    @for (path of careerPaths; track path.id) {
+      <button
+        class="career-card"
+        [class.career-card--active]="selected === path.id"
+        (click)="select(path.id)"
+      >
+        <div class="career-card__top-line"></div>
+        <span class="career-card__emoji">{{ path.emoji }}</span>
+        <span class="career-card__title">{{ path.title }}</span>
+        <span class="career-card__desc">{{ path.tech }}</span>
+        <span class="career-card__badge">{{ path.badge }}</span>
+      </button>
+    }
+  </div>
+</div>

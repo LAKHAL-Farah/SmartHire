@@ -1,0 +1,72 @@
+/**
+ * ✅ EXEMPLE COMPLET À COPIER dans RouteAuthorizationConfig.initializeRouteRules()
+ * 
+ * Cet exemple montre comment configurer MS-Assessment.
+ * Les commentaires expliquent chaque décision.
+ */
+
+// ==================== MS-ASSESSMENT Routes ====================
+// Scénario: Recruteur crée et gère les assessments, candidats les passent
+
+// 1. Assessments - Liste, créer, modifier, supprimer
+routeRules.put("/api/v1/assessments", new RouteRule()
+    .addRule("GET", Arrays.asList("recruiter", "candidate", "admin"))      // Tous voient la listes des assessments
+    .addRule("POST", Arrays.asList("recruiter", "admin"))                  // Recruiter crée assessments
+    .addRule("PUT", Arrays.asList("recruiter", "admin"))                   // Recruiter modifie
+    .addRule("DELETE", Arrays.asList("admin"))                             // Seul admin supprime
+    // PATCH n'est pas listée = PUBLIC si appelez, sinon non supporté
+);
+
+// 2. Questions - Gérées par recruteur
+routeRules.put("/api/v1/questions", new RouteRule()
+    .addRule("GET", Arrays.asList("recruiter", "admin"))                   // Recruiter voit les questions
+    .addRule("POST", Arrays.asList("recruiter", "admin"))
+    .addRule("PUT", Arrays.asList("recruiter", "admin"))
+    .addRule("DELETE", Arrays.asList("admin"))
+);
+
+// 3. Candidat consulte ses assessments assignés (route personnalisée)
+// Format: /api/v1/assessments/my-assessments ou /api/v1/assessments?mine=true
+// Cette route n'a pas besoin de rôle spécifique - l'authentification suffit
+// -> Ne pas configurer dans RouteAuthorizationConfig = Authentifiée seulement
+
+// 4. Soumettre une réponse d'assessment
+// Format: POST /api/v1/assessments/{id}/submit
+// Authentifiée seulement (candidat soumet sa réponse)
+// -> Ne pas configurer = Authentifiée seulement
+
+// ==================== SI VOUS AVEZ D'AUTRES ENDPOINTS ====================
+
+// Exemple: Résultats des assessments
+// routeRules.put("/api/v1/assessments/results", new RouteRule()
+//     .addRule("GET", Arrays.asList("recruiter", "admin"))                // Recruiter voit les résultats
+// );
+
+// Exemple: Analytics
+// routeRules.put("/api/v1/assessments/stats", new RouteRule()
+//     .addRule("GET", Arrays.asList("recruiter", "admin"))
+// );
+
+/**
+ * 🎯 RÉSUMÉ POUR MS-ASSESSMENT
+ * 
+ * Routes PUBLIQUES (pas même d'auth):
+ * - POST /auth/connexion (login)
+ * - POST /api/v1/users (inscription)
+ * 
+ * Routes AUTHENTIFIÉES (n'importe quel rôle):
+ * - GET /api/v1/assessments/my-assessments
+ * - POST /api/v1/assessments/{id}/submit
+ * 
+ * Routes RECRUITER (recruiter ou admin):
+ * - GET /api/v1/assessments
+ * - POST /api/v1/assessments
+ * - PUT /api/v1/assessments/{id}
+ * - DELETE /api/v1/assessments/{id}
+ * - GET /api/v1/questions
+ * - POST /api/v1/questions
+ * - PUT /api/v1/questions/{id}
+ * 
+ * Routes ADMIN (admin seulement):
+ * - DELETE /api/v1/questions/{id}
+ */

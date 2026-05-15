@@ -1,0 +1,32 @@
+services:
+  mysql:
+    image: mysql:8.0.27
+    ports:
+      - 3377:3306
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: tp-foyer
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    networks:
+      - mysql-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8087:8080
+    networks:
+      - mysql-network
+
+
+
+networks:
+  mysql-network:
+
+volumes:
+  mysql-volume:
+    name: smarthire_backend_mysql_volume

@@ -1,0 +1,36 @@
+<section class="problem" #problemSection>
+  <div class="section-container">
+    <p class="problem__eyebrow">The Problem</p>
+
+    <!-- GitHub-style big scroll text -->
+    <div class="scroll-text problem__statement" #scrollText>
+      <span class="word">You've</span>
+      <span class="word">watched</span>
+      <span class="word">100+</span>
+      <span class="word">tutorials.</span>
+      <span class="word">Built</span>
+      <span class="word">to-do</span>
+      <span class="word">apps.</span>
+      <span class="word">Still</span>
+      <span class="word word--accent">no</span>
+      <span class="word word--accent">interviews.</span>
+      <span class="word">No</span>
+      <span class="word">roadmap.</span>
+      <span class="word">No</span>
+      <span class="word">feedback.</span>
+      <span class="word">Just</span>
+      <span class="word word--accent">tutorial</span>
+      <span class="word word--accent">hell.</span>
+    </div>
+
+    <div class="problem__grid">
+      @for (card of cards; track card.icon) {
+        <div class="problem__card glass-card">
+          <span class="problem__icon">{{ card.icon }}</span>
+          <h3 class="problem__card-title">{{ card.title }}</h3>
+          <p class="problem__text">{{ card.text }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

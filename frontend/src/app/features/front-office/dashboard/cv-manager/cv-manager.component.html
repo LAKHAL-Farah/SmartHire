@@ -1,0 +1,323 @@
+<section class="po-manager">
+  <div class="po-manager__grain"></div>
+  <div class="po-manager__bloom po-manager__bloom--teal"></div>
+  <div class="po-manager__bloom po-manager__bloom--purple"></div>
+
+  <aside class="po-left">
+    <article class="po-card po-upload-card">
+      <div class="po-card__header po-card__header--stacked">
+        <h2><lucide-icon name="upload-cloud" [size]="18"></lucide-icon> Upload CV</h2>
+        <p>Drop a CV and let the optimizer parse, score, and prepare it for tailoring.</p>
+      </div>
+
+      <div
+        class="po-upload-zone"
+        [class.po-upload-zone--drag]="dragOver()"
+        [class.po-upload-zone--filled]="!!selectedFile()"
+        (click)="filePicker.click()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <input #filePicker type="file" accept=".pdf,.docx" (change)="onFilePicked($event)" />
+
+        @if (!selectedFile()) {
+          <div class="po-upload-zone__visual">
+            <span class="po-upload-zone__ring"></span>
+            <lucide-icon name="upload-cloud" [size]="32"></lucide-icon>
+          </div>
+          <div class="po-upload-zone__copy">
+            <p>Drop PDF or DOCX here</p>
+            <small>Glass upload surface with animated focus glow</small>
+          </div>
+          <button type="button" class="po-link" (click)="$event.stopPropagation(); filePicker.click()">Select a file</button>
+          <small>Max 5MB</small>
+        } @else {
+          <div class="po-upload-zone__selected">
+            <span class="po-upload-zone__selected-label">Selected file</span>
+            <p>{{ selectedFile()!.name }}</p>
+            <small>Ready to parse and score</small>
+          </div>
+          <div class="po-inline-actions" (click)="$event.stopPropagation()">
+            <button type="button" class="po-btn po-btn--ghost" (click)="clearSelectedFile()">Remove</button>
+            <button type="button" class="po-btn po-btn--primary" [disabled]="parsing()" (click)="parseSelectedCv()">
+              @if (parsing()) {
+                <span class="po-spinner"></span>
+                <span>Parsing...</span>
+              } @else {
+                <lucide-icon name="upload" [size]="14"></lucide-icon>
+                <span>Parse CV</span>
+              }
+            </button>
+          </div>
+        }
+      </div>
+
+      @if (uploadError()) {
+        <p class="po-error">{{ uploadError() }}</p>
+      }
+    </article>
+
+    <article class="po-card po-active-card">
+      <div class="po-card__header">
+        <h3><lucide-icon name="star" [size]="16"></lucide-icon> Active CV</h3>
+        @if (activeCv()) {
+          <span class="po-active-card__badge"><span></span> ACTIVE</span>
+        }
+      </div>
+      @if (activeCv()) {
+        <div class="po-active-mini">
+          <div class="po-active-mini__ring">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs>
+                <linearGradient [attr.id]="'active-ring-gradient-' + activeCv()!.id" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00FFB2"></stop>
+                  <stop offset="55%" stop-color="#7B61FF"></stop>
+                  <stop offset="100%" stop-color="#FF6B6B"></stop>
+                </linearGradient>
+              </defs>
+              <circle class="po-score-ring__track" cx="32" cy="32" [attr.r]="scoreRingRadius"></circle>
+              <circle
+                class="po-score-ring__progress"
+                cx="32"
+                cy="32"
+                [attr.r]="scoreRingRadius"
+                [attr.stroke]="'url(#active-ring-gradient-' + activeCv()!.id + ')'"
+                [style.stroke-dasharray]="scoreRingCircumference"
+                [style.stroke-dashoffset]="scoreRingCircumference * (1 - ((activeCv()!.atsScore ?? 0) / 100))"
+              ></circle>
+            </svg>
+            <span class="po-score-ring__value">{{ activeCv()!.atsScore ?? 0 }}</span>
+          </div>
+          <div class="po-active-mini__body">
+            <strong>{{ activeCv()!.originalFileName }}</strong>
+            <div class="po-active-mini__score-row">
+              <span class="po-score-pill"><span>{{ activeCv()!.atsScore ?? 0 }}</span>/100</span>
+              <span class="po-active-mini__hint">Currently driving tips and readiness</span>
+            </div>
+            <div class="po-active-mini__progress">
+              <div class="po-active-mini__progress-fill" [style.width.%]="activeCv()!.atsScore ?? 0"></div>
+            </div>
+            <div class="po-active-mini__actions">
+              <a [routerLink]="['/dashboard/cv-detail', activeCv()!.id]">View →</a>
+              <button type="button" class="po-link" (click)="setTab('uploaded')">Change</button>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <p class="po-muted">No active CV - pick one from the list →</p>
+      }
+    </article>
+  </aside>
+
+  <main class="po-right">
+    <header class="po-tab-header po-card">
+      <div class="po-tab-copy">
+        <p class="po-kicker">CV Library</p>
+        <h2>Uploaded and tailored versions</h2>
+      </div>
+
+      <div class="po-segmented" role="tablist" aria-label="CV sections">
+        <span class="po-segmented__indicator" [style.transform]="tab() === 'uploaded' ? 'translateX(0%)' : 'translateX(100%)'"></span>
+        <button type="button" [class.active]="tab() === 'uploaded'" (click)="setTab('uploaded')">Uploaded CVs</button>
+        <button type="button" [class.active]="tab() === 'tailored'" (click)="setTab('tailored')">Tailored CVs</button>
+      </div>
+
+      @if (tab() === 'uploaded') {
+        <select class="po-sort-select" [value]="uploadedSort()" (change)="uploadedSort.set($any($event.target).value)">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="highest">Highest ATS</option>
+          <option value="lowest">Lowest ATS</option>
+        </select>
+      } @else {
+        <select class="po-sort-select" [value]="tailoredSort()" (change)="tailoredSort.set($any($event.target).value)">
+          <option value="newest">Newest first</option>
+          <option value="highest">Highest ATS</option>
+          <option value="lowest">Lowest ATS</option>
+        </select>
+      }
+    </header>
+
+    @if (tab() === 'uploaded') {
+      <section class="po-list po-list--uploaded">
+        @for (cv of uploadedList(); track cv.id) {
+          <article class="po-card po-cv-card" [class.po-cv-card--active]="activeCvService.isActive(cv.id)">
+            <div class="po-cv-main">
+              <div class="po-cv-main__header">
+                <div>
+                  <span class="po-file-pill">{{ cv.fileFormat }}</span>
+                  <h3>{{ cv.originalFileName }}</h3>
+                </div>
+                <span class="po-status-pill" [ngClass]="'po-status-pill--' + cv.parseStatus.toLowerCase()">{{ cv.parseStatus }}</span>
+              </div>
+
+              <div class="po-cv-meta">
+                <small><lucide-icon name="calendar" [size]="13"></lucide-icon> {{ cv.uploadedAt | date:'MMM d, y' }}</small>
+                <div class="po-cv-tags">
+                  @for (skill of parseTopSkills(cv); track skill) {
+                    <span>{{ skill }}</span>
+                  }
+                </div>
+                @if (isParsedContentInvalid(cv)) {
+                  <p class="po-error">Parsed content is invalid JSON.</p>
+                }
+              </div>
+
+              @if (cv.parseStatus === 'COMPLETED') {
+                <footer class="po-cv-actions">
+                  <div class="po-score-ring po-score-ring--compact po-score-ring--uploaded">
+                    <svg viewBox="0 0 64 64" aria-hidden="true">
+                      <defs>
+                        <linearGradient [attr.id]="'uploaded-ring-gradient-' + cv.id" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#7B61FF"></stop>
+                          <stop offset="100%" stop-color="#FF6B6B"></stop>
+                        </linearGradient>
+                      </defs>
+                      <circle class="po-score-ring__track" cx="32" cy="32" [attr.r]="scoreRingRadius"></circle>
+                      <circle
+                        class="po-score-ring__progress"
+                        cx="32"
+                        cy="32"
+                        [attr.r]="scoreRingRadius"
+                        [attr.stroke]="'url(#uploaded-ring-gradient-' + cv.id + ')'"
+                        [style.stroke-dasharray]="scoreRingCircumference"
+                        [style.stroke-dashoffset]="scoreRingCircumference * (1 - ((cv.atsScore ?? 0) / 100))"
+                      ></circle>
+                    </svg>
+                    <span class="po-score-ring__value">{{ cv.atsScore ?? 0 }}</span>
+                  </div>
+
+                  <div class="po-cv-actions__buttons">
+                    @if (activeCvService.isActive(cv.id)) {
+                      <span class="po-active-label"><lucide-icon name="star" [size]="13"></lucide-icon> Active CV</span>
+                    } @else {
+                      <button type="button" class="po-btn po-btn--ghost" (click)="setAsActive(cv)">
+                        <lucide-icon name="star" [size]="13"></lucide-icon>
+                        <span>Set Active</span>
+                      </button>
+                    }
+
+                    <button type="button" class="po-btn po-btn--ghost" [disabled]="optimizingCvId() === cv.id" (click)="optimizeCv(cv)">
+                      @if (optimizingCvId() === cv.id) {
+                        <span class="po-spinner"></span>
+                        <span>Optimizing...</span>
+                      } @else {
+                        <lucide-icon name="wand2" [size]="13"></lucide-icon>
+                        <span>Optimize</span>
+                      }
+                    </button>
+
+                    <a class="po-btn po-btn--ghost" [routerLink]="['/dashboard/cv-detail', cv.id]">
+                      <lucide-icon name="eye" [size]="13"></lucide-icon>
+                      <span>View</span>
+                    </a>
+
+                    @if (deletingCvId() !== cv.id) {
+                      <button type="button" class="po-delete-btn" (click)="promptDelete(cv.id)">
+                        <lucide-icon name="trash-2" [size]="14"></lucide-icon>
+                      </button>
+                    } @else {
+                      <div class="po-inline-confirm">
+                        <span>Delete?</span>
+                        <button type="button" (click)="confirmDelete(cv)">Yes</button>
+                        <button type="button" (click)="cancelDelete()">No</button>
+                      </div>
+                    }
+                  </div>
+                </footer>
+              }
+            </div>
+            @if (activeCvService.isActive(cv.id)) {
+              <span class="po-active-badge">ACTIVE</span>
+            }
+          </article>
+        }
+      </section>
+    } @else {
+      <section class="po-list po-list--tailored">
+        @if (!tailoredList().length) {
+          <article class="po-card po-empty">
+            <lucide-icon name="file-text" [size]="40"></lucide-icon>
+            <h3>No tailored CVs yet</h3>
+            <p>Go to a job offer and tailor your CV to create one</p>
+            <a class="po-btn po-btn--primary" routerLink="/dashboard/job-offers">Browse Job Offers</a>
+          </article>
+        } @else {
+          @for (version of tailoredList(); track version.id) {
+            <article class="po-card po-tailored-card">
+              <div class="po-cv-main">
+                <div class="po-cv-main__header">
+                  <div>
+                    <span class="po-tailored-pill">TAILORED</span>
+                    <h3>For: {{ version.jobOfferId || 'General optimization' }}</h3>
+                  </div>
+                  <small>{{ version.generatedAt | date:'MMM d, y' }}</small>
+                </div>
+                <p class="po-muted"><lucide-icon name="file-text" [size]="13"></lucide-icon> Based on: {{ cvFileName(version.cvId) }}</p>
+                <p class="po-keyword-match" [ngClass]="'po-score-text--' + scoreTone(version.keywordMatchRate)">
+                  <lucide-icon name="trending-up" [size]="13"></lucide-icon>
+                  {{ version.keywordMatchRate ?? 0 }}% keyword match
+                </p>
+
+                <footer class="po-cv-actions">
+                  <div class="po-score-ring po-score-ring--compact po-score-ring--tailored">
+                    <svg viewBox="0 0 64 64" aria-hidden="true">
+                      <defs>
+                        <linearGradient [attr.id]="'tailored-ring-gradient-' + version.id" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#00FFB2"></stop>
+                          <stop offset="55%" stop-color="#7B61FF"></stop>
+                          <stop offset="100%" stop-color="#FF6B6B"></stop>
+                        </linearGradient>
+                      </defs>
+                      <circle class="po-score-ring__track" cx="32" cy="32" [attr.r]="scoreRingRadius"></circle>
+                      <circle
+                        class="po-score-ring__progress"
+                        cx="32"
+                        cy="32"
+                        [attr.r]="scoreRingRadius"
+                        [attr.stroke]="'url(#tailored-ring-gradient-' + version.id + ')'"
+                        [style.stroke-dasharray]="scoreRingCircumference"
+                        [style.stroke-dashoffset]="scoreRingCircumference * (1 - ((version.atsScore ?? 0) / 100))"
+                      ></circle>
+                    </svg>
+                    <span class="po-score-ring__value">{{ version.atsScore ?? 0 }}</span>
+                  </div>
+
+                  <span [class.po-delta-positive]="scoreDelta(version) >= 0" [class.po-delta-negative]="scoreDelta(version) < 0">
+                    @if (scoreDelta(version) >= 0) {
+                      <lucide-icon name="trending-up" [size]="13"></lucide-icon>
+                      +{{ scoreDelta(version) }}
+                    } @else {
+                      <lucide-icon name="trending-down" [size]="13"></lucide-icon>
+                      {{ scoreDelta(version) }}
+                    }
+                  </span>
+
+                  <div class="po-cv-actions__buttons">
+                    <button type="button" class="po-btn po-btn--ghost" [disabled]="downloadingVersionId() === version.id" (click)="exportVersionAsPdf(version.id)">
+                      @if (downloadingVersionId() === version.id) {
+                        <span class="po-spinner"></span>
+                        <span>Downloading...</span>
+                      } @else {
+                        <lucide-icon name="download" [size]="13"></lucide-icon>
+                        <span>Download PDF</span>
+                      }
+                    </button>
+
+                    <a class="po-btn po-btn--ghost" [routerLink]="['/dashboard/cv-detail', version.cvId]" [queryParams]="{ version: version.id }">
+                      <lucide-icon name="eye" [size]="13"></lucide-icon>
+                      <span>View Details</span>
+                    </a>
+                  </div>
+                </footer>
+              </div>
+            </article>
+          }
+        }
+      </section>
+    }
+  </main>
+
+  <app-toast></app-toast>
+</section>

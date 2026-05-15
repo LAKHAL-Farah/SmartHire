@@ -1,0 +1,38 @@
+{
+  "/api/v1": {
+    "target": "http://localhost:8081",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/v1": "/interview-service/api/v1"
+    }
+  },
+  "/interview-service": {
+    "target": "http://localhost:8081",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/ws-interview": {
+    "target": "http://localhost:8081",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/ws-interview": "/interview-service/ws-interview"
+    }
+  },
+  "/auth": {
+    "target": "http://localhost:8887",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/api": {
+    "target": "http://127.0.0.1:8084",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

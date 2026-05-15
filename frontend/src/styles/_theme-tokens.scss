@@ -1,0 +1,177 @@
+$palettes: (
+  "original": (
+    light: (
+      "primary": #3b82f6,
+      "accent": #10b981,
+      "bg": #f8fafc,
+      "surface": #ffffff,
+      "text-p": #1e293b,
+      "text-s": #64748b,
+      "border": #e2e8f0
+    ),
+    dark: (
+      "primary": #60a5fa,
+      "accent": #34d399,
+      "bg": #0f172a,
+      "surface": #1e293b,
+      "text-p": #f8fafc,
+      "text-s": #94a3b8,
+      "border": #334155
+    )
+  ),
+  "midnight-neon": (
+    light: (
+      "primary": #7c3aed,
+      "accent": #00f2ff,
+      "bg": #f5f3ff,
+      "surface": #ffffff,
+      "text-p": #1e1b4b,
+      "text-s": #4c1d95,
+      "border": #ddd6fe
+    ),
+    dark: (
+      "primary": #a78bfa,
+      "accent": #00f2ff,
+      "bg": #030712,
+      "surface": #111827,
+      "text-p": #f9fafb,
+      "text-s": #9ca3af,
+      "border": #374151
+    )
+  ),
+  "obsidian-glow": (
+    light: (
+      "primary": #111827,
+      "accent": #22c55e,
+      "bg": #f9fafb,
+      "surface": #ffffff,
+      "text-p": #111827,
+      "text-s": #4b5563,
+      "border": #e5e7eb
+    ),
+    dark: (
+      "primary": #22c55e,
+      "accent": #4ade80,
+      "bg": #050505,
+      "surface": #121212,
+      "text-p": #ffffff,
+      "text-s": #a1a1aa,
+      "border": #27272a
+    )
+  ),
+  "aurora-pulse": (
+    light: (
+      "primary": #4f46e5,
+      "accent": #14b8a6,
+      "bg": #eef2ff,
+      "surface": #ffffff,
+      "text-p": #1e1b4b,
+      "text-s": #4338ca,
+      "border": #c7d2fe
+    ),
+    dark: (
+      "primary": #818cf8,
+      "accent": #5eead4,
+      "bg": #0b1026,
+      "surface": #161b38,
+      "text-p": #eef2ff,
+      "text-s": #a5b4fc,
+      "border": #2b3768
+    )
+  ),
+  "solar-flare": (
+    light: (
+      "primary": #f97316,
+      "accent": #8b5cf6,
+      "bg": #fff7ed,
+      "surface": #ffffff,
+      "text-p": #431407,
+      "text-s": #9a3412,
+      "border": #ffedd5
+    ),
+    dark: (
+      "primary": #fb923c,
+      "accent": #c084fc,
+      "bg": #0c0a09,
+      "surface": #1c1917,
+      "text-p": #fafaf9,
+      "text-s": #a8a29e,
+      "border": #44403c
+    )
+  ),
+  "ocean-glass": (
+    light: (
+      "primary": #0891b2,
+      "accent": #fbbf24,
+      "bg": #f0f9ff,
+      "surface": #ffffff,
+      "text-p": #083344,
+      "text-s": #155e75,
+      "border": #bae6fd
+    ),
+    dark: (
+      "primary": #22d3ee,
+      "accent": #fbbf24,
+      "bg": #020617,
+      "surface": #0f172a,
+      "text-p": #f0f9ff,
+      "text-s": #94a3b8,
+      "border": #1e293b
+    )
+  ),
+  "velvet-ember": (
+    light: (
+      "primary": #7c2d12,
+      "accent": #c2410c,
+      "bg": #fff7ed,
+      "surface": #fffaf6,
+      "text-p": #3f1d12,
+      "text-s": #7c2d12,
+      "border": #fed7aa
+    ),
+    dark: (
+      "primary": #fb923c,
+      "accent": #f97316,
+      "bg": #1a120f,
+      "surface": #2a1b17,
+      "text-p": #fff7ed,
+      "text-s": #fdba74,
+      "border": #7c2d12
+    )
+  ),
+  "cyber-lime": (
+    light: (
+      "primary": #111111,
+      "accent": #84cc16,
+      "bg": #fafafa,
+      "surface": #ffffff,
+      "text-p": #111111,
+      "text-s": #3f3f46,
+      "border": #e4e4e7
+    ),
+    dark: (
+      "primary": #fafafa,
+      "accent": #a3e635,
+      "bg": #090909,
+      "surface": #141414,
+      "text-p": #fafafa,
+      "text-s": #a1a1aa,
+      "border": #2a2a2a
+    )
+  )
+);
+
+@mixin generate-themes($map) {
+  @each $name, $modes in $map {
+    @each $mode, $tokens in $modes {
+      :root[data-theme="#{$name}"][data-mode="#{$mode}"] {
+        @each $key, $value in $tokens {
+          --color-#{$key}: #{$value};
+          --color-#{$key}-rgb: #{red($value)}, #{green($value)}, #{blue($value)};
+        }
+      }
+    }
+  }
+}
+
+@include generate-themes($palettes);

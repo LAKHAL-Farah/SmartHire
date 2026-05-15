@@ -1,0 +1,167 @@
+<div class="discover-page">
+  <header class="discover-header">
+    <div>
+      <h1>Discover Questions</h1>
+      <p>Explore every interview prompt, save what matters, and build your next focused practice set.</p>
+    </div>
+    <button type="button" class="discover-reset" (click)="clearFilters()">Reset Filters</button>
+  </header>
+
+  <div class="discover-layout">
+    <aside class="panel filters-panel">
+      <h2>Filter Feed</h2>
+
+      <label>
+        Search
+        <input
+          type="text"
+          [ngModel]="search()"
+          (ngModelChange)="setSearch($event)"
+          placeholder="Search by keyword, category, or domain"
+        />
+      </label>
+
+      <div class="group">
+        <span>Role</span>
+        <div class="chips">
+          @for (role of roleFilters; track role) {
+            <button type="button" [class.chip--active]="selectedRole() === role" (click)="setRole(role)">
+              {{ role }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="group">
+        <span>Type</span>
+        <div class="chips">
+          @for (type of typeFilters; track type) {
+            <button type="button" [class.chip--active]="selectedType() === type" (click)="setType(type)">
+              {{ type }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="group">
+        <span>Difficulty</span>
+        <div class="chips">
+          @for (difficulty of difficultyFilters; track difficulty) {
+            <button
+              type="button"
+              [class.chip--active]="selectedDifficulty() === difficulty"
+              (click)="setDifficulty(difficulty)"
+            >
+              {{ difficulty }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <label>
+        Sort by
+        <select [ngModel]="selectedSort()" (ngModelChange)="setSort($event)">
+          @for (option of sortOptions; track option.value) {
+            <option [ngValue]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="bookmark-only-toggle"
+        [class.bookmark-only-toggle--active]="onlyBookmarked()"
+        (click)="toggleOnlyBookmarked()"
+      >
+        <lucide-icon name="bookmark" [size]="14" [strokeWidth]="2"></lucide-icon>
+        @if (onlyBookmarked()) { Showing only bookmarks } @else { Show only bookmarked questions }
+      </button>
+    </aside>
+
+    <section class="feed-panel">
+      @if (loadError()) {
+        <div class="feed-state feed-state--error">{{ loadError() }}</div>
+      }
+
+      @if (loading()) {
+        <div class="feed-list">
+          @for (row of skeletonRows; track row) {
+            <article class="question-card question-card--skeleton">
+              <div class="skeleton-line skeleton-line--sm"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line skeleton-line--md"></div>
+            </article>
+          }
+        </div>
+      } @else if (!filteredQuestions().length) {
+        <div class="feed-state">No questions match your current filters.</div>
+      } @else {
+        <div class="feed-list">
+          @for (question of visibleQuestions(); track question.id) {
+            <article class="question-card">
+              <div class="question-meta">
+                <span class="meta-pill">{{ question.roleType }}</span>
+                <span class="meta-pill">{{ question.type }}</span>
+                <span class="meta-pill">{{ question.difficulty }}</span>
+              </div>
+
+              <h3>{{ question.questionText }}</h3>
+              <p class="question-subline">
+                {{ question.domain || 'General' }} · {{ question.category || 'General' }}
+              </p>
+
+              <div class="question-actions">
+                <button type="button" class="practice-btn" (click)="practiceQuestion(question)">
+                  Practice this question
+                </button>
+                <app-bookmark-button [questionId]="question.id" [userId]="userId"></app-bookmark-button>
+              </div>
+            </article>
+          }
+        </div>
+
+        <div class="feed-footer" [class.feed-footer--done]="!canLoadMore()">
+          @if (canLoadMore()) {
+            Scroll to load more questions...
+          } @else {
+            You reached the end of the feed.
+          }
+        </div>
+      }
+    </section>
+
+    <aside class="panel widgets-panel">
+      <section class="widget">
+        <h3>Top Tags</h3>
+        @if (!topTags().length) {
+          <p class="widget-empty">No tags available yet.</p>
+        } @else {
+          <div class="top-tags">
+            @for (tag of topTags(); track tag.label) {
+              <div class="top-tag-row">
+                <span>{{ tag.label }}</span>
+                <strong>{{ tag.count }}</strong>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <section class="widget">
+        <h3>This Week Progress</h3>
+        <p>{{ completedThisWeek() }} completed sessions this week</p>
+        <div class="progress-track">
+          <div class="progress-fill" [style.width.%]="weekProgressPercent()"></div>
+        </div>
+        <small>Target: {{ weeklyTarget }} sessions</small>
+      </section>
+
+      <section class="widget streak-widget">
+        <h3>Your Streak</h3>
+        <p class="streak-value">🔥 {{ streak()?.currentStreak ?? 0 }} days</p>
+        <p class="streak-sub">Longest: {{ streak()?.longestStreak ?? 0 }} days</p>
+      </section>
+    </aside>
+  </div>
+</div>

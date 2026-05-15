@@ -1,0 +1,102 @@
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header">
+    <h2 class="modal-title">Edit User</h2>
+    <button class="modal-close" (click)="onCancel()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Error Alert -->
+  @if (errorMessage) {
+    <div class="alert alert--error">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  <!-- Form -->
+  <form [formGroup]="form" class="modal-form">
+    <!-- User Info Card -->
+    <div class="user-info-card">
+      <div class="user-avatar" [style.background]="userGradient">
+        {{ user.avatar }}
+      </div>
+      <div class="user-details">
+        <span class="user-name">{{ user.name }}</span>
+        <span class="user-email">{{ user.email }}</span>
+      </div>
+    </div>
+
+    <!-- Form Fields -->
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input 
+        type="email" 
+        class="form-input" 
+        formControlName="email"
+        placeholder="Enter email address"
+      />
+      @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+        <span class="form-error">Email is required</span>
+      }
+      @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+        <span class="form-error">Invalid email format</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password <span class="optional">(optional)</span></label>
+      <input 
+        type="password" 
+        class="form-input" 
+        formControlName="password"
+        placeholder="Leave empty to keep current password"
+      />
+      <span class="form-hint">Only fill this if you want to change the password</span>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Role</label>
+      <select class="form-select" formControlName="roleName">
+        @for (role of roles; track role.value) {
+          <option [value]="role.value">{{ role.label }}</option>
+        }
+      </select>
+      @if (form.get('roleName')?.hasError('required') && form.get('roleName')?.touched) {
+        <span class="form-error">Role is required</span>
+      }
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <div class="modal-footer">
+    <button 
+      class="btn btn--outline" 
+      (click)="onCancel()"
+      [disabled]="isSubmitting"
+    >
+      Cancel
+    </button>
+    <button 
+      class="btn btn--primary" 
+      (click)="onSubmit()"
+      [disabled]="isSubmitting || form.invalid"
+    >
+      @if (isSubmitting) {
+        <div class="spinner-mini"></div>
+        <span>Saving...</span>
+      } @else {
+        <span>Save Changes</span>
+      }
+    </button>
+  </div>
+</div>
+

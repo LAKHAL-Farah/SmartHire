@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  face-recognition-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: face-recognition-service
+    restart: unless-stopped
+    networks:
+      - smarthire-network
+    ports:
+      - "5050:5050"
+    environment:
+      FLASK_ENV: ${FLASK_ENV:-development}
+      FLASK_DEBUG: ${FLASK_DEBUG:-False}
+      HOST: 0.0.0.0
+      PORT: 5050
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4200,http://127.0.0.1:4200,http://localhost:8887,http://127.0.0.1:8887}
+      CONFIDENCE_THRESHOLD: ${CONFIDENCE_THRESHOLD:-0.85}
+      FACE_RECOGNITION_MODEL: ${FACE_RECOGNITION_MODEL:-hog}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      MAX_FILE_SIZE: 16777216
+    volumes:
+      - ./temp:/app/temp
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5050/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+networks:
+  smarthire-network:
+    driver: bridge

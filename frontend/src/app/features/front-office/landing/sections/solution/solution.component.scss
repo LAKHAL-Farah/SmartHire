@@ -1,0 +1,310 @@
+:host { display: block; }
+
+.solution {
+  padding: 0;
+  min-height: 100vh;
+}
+
+.solution__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Text column */
+.solution__text-col {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.solution__step {
+  opacity: 0.25;
+  transition: all 0.5s ease;
+  padding-left: 24px;
+  border-left: 2px solid var(--border-subtle);
+}
+.solution__step.active {
+  opacity: 1;
+  border-left-color: var(--accent-teal);
+}
+
+.solution__step-num {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-teal);
+  margin-bottom: 8px;
+  letter-spacing: 0.1em;
+}
+
+.solution__step-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.solution__step-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Visual column */
+.solution__visual-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solution__visual-frame {
+  width: 100%;
+  max-width: 460px;
+  min-height: 380px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.solution__scene {
+  display: none;
+  animation: fadeInScene 0.6s ease forwards;
+}
+.solution__scene.active {
+  display: block;
+}
+
+@keyframes fadeInScene {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Radar chart */
+.radar-chart {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+}
+.radar-chart svg {
+  width: 100%;
+}
+.radar-bg {
+  fill: none;
+  stroke: var(--border-subtle);
+  stroke-width: 1;
+}
+.radar-fill {
+  fill: rgba(46, 232, 165, 0.12);
+  stroke: var(--accent-teal);
+  stroke-width: 2;
+}
+.radar-labels {
+  position: absolute;
+  inset: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.radar-labels span {
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* Roadmap */
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.roadmap__item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: slideInRight 0.5s ease forwards;
+  opacity: 0;
+}
+.solution__scene.active .roadmap__item {
+  opacity: 1;
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.roadmap__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--text-muted);
+  flex-shrink: 0;
+}
+.roadmap__dot.done {
+  background: var(--accent-teal);
+  border-color: var(--accent-teal);
+}
+.roadmap__content {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+.roadmap__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.roadmap__duration {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Interview */
+.interview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.interview__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.interview__badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-teal);
+  background: rgba(46, 232, 165, 0.1);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+.interview__timer {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.interview__messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.interview__msg {
+  padding: 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.interview__msg-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.interview__msg--ai {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  color: var(--text-secondary);
+}
+.interview__msg--ai .interview__msg-label { color: var(--accent-blue); }
+.interview__msg--user {
+  background: rgba(46, 232, 165, 0.06);
+  border: 1px solid rgba(46, 232, 165, 0.12);
+  color: var(--text-secondary);
+}
+.interview__msg--user .interview__msg-label { color: var(--accent-teal); }
+.interview__feedback {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+.interview__score {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-teal);
+}
+.interview__tip {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Jobs */
+.jobs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.jobs__card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  animation: slideInRight 0.5s ease forwards;
+  opacity: 0;
+}
+.solution__scene.active .jobs__card {
+  opacity: 1;
+}
+.jobs__match {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-teal);
+  background: rgba(46, 232, 165, 0.1);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+.jobs__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.jobs__role {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.jobs__company {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.jobs__apply {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--accent-teal);
+  color: var(--accent-teal);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.jobs__apply:hover {
+  background: var(--accent-teal);
+  color: var(--bg-primary);
+}
+
+@media (max-width: 768px) {
+  .solution__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}

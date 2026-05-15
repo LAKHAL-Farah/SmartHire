@@ -1,0 +1,14 @@
+{
+  "type": "LIVE_AI_SPEECH",
+  "payload": {
+    "audioUrl": "/audio/closing.wav",
+    "text": "That wraps things up. Thank you so much.",
+    "isFollowUp": false,
+    "isRetry": false,
+    "isClosing": true,
+    "nextQuestionId": null,
+    "nextQuestionText": null,
+    "currentQuestionIndex": 4,
+    "totalQuestions": 5
+  }
+}

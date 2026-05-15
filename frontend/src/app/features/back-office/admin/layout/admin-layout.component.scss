@@ -1,0 +1,12 @@
+:host { display: block; }
+
+.admin {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.admin__content {
+  margin-left: 240px;
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+}

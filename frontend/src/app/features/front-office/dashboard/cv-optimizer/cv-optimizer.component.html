@@ -1,0 +1,211 @@
+<div class="cv-page">
+  <section class="page-header">
+    <div>
+      <p class="eyebrow">M4 Smart CV</p>
+      <h1 class="page-header__title">CV Hub</h1>
+      <p class="page-header__text">Upload a CV, compare ATS coverage, and create tailored versions against a target job offer.</p>
+    </div>
+    <label class="btn-primary file-trigger">
+      <input type="file" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)" />
+      {{ busyUpload() ? 'Uploading…' : 'Upload CV' }}
+    </label>
+  </section>
+
+  @if (error()) {
+    <div class="page-banner page-banner--error">{{ error() }}</div>
+  }
+  @if (notice()) {
+    <div class="page-banner page-banner--success">{{ notice() }}</div>
+  }
+  @if (loading()) {
+    <div class="page-banner">Loading CV hub…</div>
+  }
+
+  <div class="stats-row">
+    <section class="stat-card">
+      <span class="eyebrow">ATS Score</span>
+      <strong>{{ snapshot()?.activeCvScore?.atsScore ?? 0 }}</strong>
+      <p>{{ snapshot()?.activeCvScore?.keywordMatchRate ?? 0 }}% keyword match</p>
+    </section>
+    <section class="stat-card">
+      <span class="eyebrow">Matched Keywords</span>
+      <strong>{{ snapshot()?.activeCvScore?.matchedKeywords?.length ?? 0 }}</strong>
+      <p>Direct alignment with the current job target</p>
+    </section>
+    <section class="stat-card">
+      <span class="eyebrow">Versions</span>
+      <strong>{{ versions().length }}</strong>
+      <p>Original and tailored iterations for the selected CV</p>
+    </section>
+  </div>
+
+  <div class="cv-layout">
+    <aside class="cv-list">
+      @for (cv of snapshot()?.cvs ?? []; track cv.id) {
+        <button class="cv-card" type="button" [class.cv-card--active]="selectedCv()?.id === cv.id" (click)="chooseCv(cv.id)">
+          <div class="cv-card__top">
+            <div>
+              <div class="cv-card__title">{{ cv.originalFileName }}</div>
+              <div class="cv-card__meta">{{ cv.uploadedAt | date:'mediumDate' }} · {{ cv.fileFormat }}</div>
+            </div>
+            <div class="mini-ring">
+              <svg width="48" height="48" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"></circle>
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="20"
+                  fill="none"
+                  [attr.stroke]="scoreTone(cv.atsScore) === 'high' ? '#2ee8a5' : scoreTone(cv.atsScore) === 'mid' ? '#f59e0b' : '#fb7185'"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  [attr.stroke-dasharray]="miniCircum"
+                  [attr.stroke-dashoffset]="miniCircum * (1 - (cv.atsScore ?? 0) / 100)"
+                  style="transform: rotate(-90deg); transform-origin: center;"
+                ></circle>
+              </svg>
+              <span class="mini-ring__pct">{{ cv.atsScore ?? 0 }}</span>
+            </div>
+          </div>
+          <div class="cv-card__footer">
+            <span class="chip" [class.chip--positive]="cv.isActive">{{ cv.isActive ? 'Active CV' : 'Archived version' }}</span>
+            <span class="chip chip--outline">{{ cv.parseStatus }}</span>
+          </div>
+        </button>
+      }
+
+      <label class="upload-dropzone">
+        <input type="file" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)" />
+        <lucide-icon name="upload" [size]="20"></lucide-icon>
+        <span>{{ busyUpload() ? 'Uploading file…' : 'Drop or browse a new CV' }}</span>
+      </label>
+    </aside>
+
+    <main class="cv-panel">
+      <div class="tab-row">
+        @for (tab of tabs; track tab.id) {
+          <button class="tab-btn" type="button" [class.tab-btn--active]="activeTab() === tab.id" (click)="activeTab.set(tab.id)">
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+
+      @if (activeTab() === 'hub') {
+        <div class="tab-content">
+          <section class="content-card">
+            <div class="card-head">
+              <span class="eyebrow">ATS Coverage</span>
+              <span class="score-pill" [class.score-pill--high]="scoreTone(snapshot()?.activeCvScore?.atsScore) === 'high'" [class.score-pill--mid]="scoreTone(snapshot()?.activeCvScore?.atsScore) === 'mid'" [class.score-pill--low]="scoreTone(snapshot()?.activeCvScore?.atsScore) === 'low'">
+                {{ snapshot()?.activeCvScore?.atsScore ?? 0 }}
+              </span>
+            </div>
+            <div class="keyword-grid">
+              <div>
+                <span class="detail-label">Matched keywords</span>
+                <div class="keyword-chips">
+                  @for (keyword of snapshot()?.activeCvScore?.matchedKeywords ?? []; track keyword) {
+                    <span class="chip chip--positive">{{ keyword }}</span>
+                  }
+                </div>
+              </div>
+              <div>
+                <span class="detail-label">Missing keywords</span>
+                <div class="keyword-chips">
+                  @for (keyword of snapshot()?.activeCvScore?.missingKeywords ?? []; track keyword) {
+                    <span class="chip chip--danger">{{ keyword }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="content-card content-card--form">
+            <div class="card-head">
+              <span class="eyebrow">Tailor For Job Offer</span>
+              <button class="btn-primary" type="button" (click)="tailorCv()" [disabled]="busyTailor()">
+                {{ busyTailor() ? 'Tailoring…' : 'Generate Tailored Version' }}
+              </button>
+            </div>
+            <div class="form-grid">
+              <label class="field">
+                <span>Target role</span>
+                <input type="text" [(ngModel)]="jobOfferTitle" />
+              </label>
+              <label class="field">
+                <span>Company</span>
+                <input type="text" [(ngModel)]="jobOfferCompany" />
+              </label>
+              <label class="field field--full">
+                <span>Source URL</span>
+                <input type="text" [(ngModel)]="jobOfferSourceUrl" />
+              </label>
+              <label class="field field--full">
+                <span>Job description</span>
+                <textarea rows="8" [(ngModel)]="jobOfferText"></textarea>
+              </label>
+            </div>
+          </section>
+        </div>
+      }
+
+      @if (activeTab() === 'editor') {
+        <div class="tab-content">
+          <section class="content-card">
+            <div class="card-head">
+              <span class="eyebrow">Current Preview</span>
+              @if (latestVersion(); as version) {
+                <span class="meta-chip">{{ version.versionType.replace('_', ' ') }}</span>
+              } @else {
+                <span class="meta-chip">No version</span>
+              }
+            </div>
+            @if (versionSections().length === 0) {
+              <p class="body-copy">No section preview is available yet. Upload a CV or generate a tailored version.</p>
+            } @else {
+              @for (section of versionSections(); track section.label) {
+                <article class="preview-section">
+                  <div class="preview-section__label">{{ section.label }}</div>
+                  <p class="preview-section__body">{{ section.content }}</p>
+                </article>
+              }
+            }
+          </section>
+        </div>
+      }
+
+      @if (activeTab() === 'history') {
+        <div class="tab-content">
+          <section class="content-card">
+            <div class="card-head">
+              <span class="eyebrow">Version History</span>
+              <span class="meta-subtle">{{ versions().length }} entries</span>
+            </div>
+            <div class="history-list">
+              @for (version of versions(); track version.id) {
+                <div class="history-item">
+                  <div>
+                    <div class="history-item__title">{{ version.versionType.replace('_', ' ') }}</div>
+                    <div class="history-item__meta">{{ version.generatedAt | date:'medium' }}</div>
+                  </div>
+                  <div class="history-item__right">
+                    <span class="score-pill" [class.score-pill--high]="scoreTone(version.atsScore) === 'high'" [class.score-pill--mid]="scoreTone(version.atsScore) === 'mid'" [class.score-pill--low]="scoreTone(version.atsScore) === 'low'">
+                      {{ version.atsScore ?? 0 }}
+                    </span>
+                    <span class="chip chip--outline">{{ version.keywordMatchRate ?? 0 }}% match</span>
+                  </div>
+                  @if (version.diffSnapshot; as diff) {
+                    <ul class="bullet-list bullet-list--compact">
+                      @for (line of diff.summary; track line) {
+                        <li>{{ line }}</li>
+                      }
+                    </ul>
+                  }
+                </div>
+              }
+            </div>
+          </section>
+        </div>
+      }
+    </main>
+  </div>
+</div>

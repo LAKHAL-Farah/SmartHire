@@ -1,0 +1,311 @@
+/* ═══════════════════ LAYOUT ═══════════════════ */
+:host { display: block; }
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.auth-layout__left {
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.auth-layout__right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+/* ═══════════════════ FORM CARD ═══════════════════ */
+.auth-form-card {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-form-card__header {
+  margin-bottom: 32px;
+}
+
+.auth-form-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.auth-form-card__subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.auth-form-card__footer {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 32px;
+}
+
+/* ═══════════════════ OAUTH ROW ═══════════════════ */
+.oauth-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.oauth-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+}
+.oauth-btn:hover {
+  border-color: var(--accent-teal);
+  background: rgba(46, 232, 165, 0.04);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════ DIVIDER ═══════════════════ */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.auth-divider__line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.auth-divider__text {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ═══════════════════ FORM FIELDS ═══════════════════ */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field__label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-field__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-field__link {
+  font-size: 12px;
+  color: var(--accent-teal);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.form-field__link:hover {
+  color: #3ffbb8;
+}
+
+.form-field__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-field__icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.form-field__input {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  background: var(--bg-tertiary);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: var(--font-sans);
+  outline: none;
+  transition: all 0.25s ease;
+}
+.form-field__input::placeholder {
+  color: var(--text-muted);
+}
+.form-field__input:focus {
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 0 3px rgba(46, 232, 165, 0.12);
+  background: var(--bg-card);
+}
+.form-field__input:focus ~ .form-field__icon,
+.form-field__input:focus + .form-field__icon {
+  color: var(--accent-teal);
+}
+/* Make the icon also teal on focus via sibling in the wrap */
+.form-field__input-wrap:focus-within .form-field__icon {
+  color: var(--accent-teal);
+}
+
+.form-field__toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  transition: color 0.2s;
+}
+.form-field__toggle:hover {
+  color: var(--text-primary);
+}
+
+/* Error state */
+.form-field--error .form-field__input {
+  border-color: #f44336;
+  box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+}
+
+.form-field__error {
+  font-size: 12px;
+  color: #f44336;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ═══════════════════ REMEMBER ROW ═══════════════════ */
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-row__check {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-teal);
+  cursor: pointer;
+}
+
+.remember-row__text {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════ SUBMIT BUTTON ═══════════════════ */
+.auth-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent-teal);
+  color: var(--bg-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.auth-submit-btn:hover:not(:disabled) {
+  background: #3ffbb8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(46, 232, 165, 0.25);
+}
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.auth-submit-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.auth-submit-btn:hover:not(:disabled)::after {
+  transform: translateX(100%);
+}
+
+.auth-submit-btn__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(10, 10, 15, 0.3);
+  border-top-color: var(--bg-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════ LINK STYLE ═══════════════════ */
+.auth-link {
+  color: var(--accent-teal);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.auth-link:hover {
+  color: #3ffbb8;
+  text-decoration: underline;
+}
+
+/* ═══════════════════ RESPONSIVE ═══════════════════ */
+@media (max-width: 960px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+  .auth-layout__left {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .auth-layout__right {
+    padding: 40px 20px 60px;
+  }
+}

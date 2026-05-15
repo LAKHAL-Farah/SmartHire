@@ -1,0 +1,552 @@
+<div class="saa">
+  <header class="saa__hero">
+    <div class="saa__hero-text">
+      <h1 class="saa__hero-title">Skill assessments</h1>
+      <p class="saa__hero-sub">
+        Build your question bank: pick a <strong>category</strong> in the table, then add <strong>questions</strong> and
+        <strong>answer choices</strong>. By default, scores stay hidden until you publish below (optional server
+        <strong>auto-release</strong>). Use <strong>View responses</strong> to inspect answers, then publish with optional
+        candidate feedback.
+      </p>
+    </div>
+  </header>
+
+  @if (apiError) {
+    <div class="saa__alert" role="alert">{{ apiError }}</div>
+  }
+
+  @if (pending.length > 0) {
+    <section class="saa-pending" aria-label="Candidates waiting for categories">
+      <div class="saa-pending__head">
+        <h2 class="saa-pending__title">Assign assessments</h2>
+        <p class="saa-pending__sub">
+          Candidates finished onboarding and are waiting. Pick categories and approve — they can start those assessments
+          in Skill assessments; you won’t see them here again.
+        </p>
+      </div>
+      <ul class="saa-pending__list">
+        @for (row of pending; track row.userId) {
+          <li class="saa-pending__card">
+            <div class="saa-pending__meta">
+              <span class="saa-pending__uid" title="MS-User id">{{ row.userId }}</span>
+              <span class="saa-pending__prefs">
+                {{ row.situation || '—' }} → {{ row.careerPath || '—' }}
+              </span>
+            </div>
+            <div class="saa-pending__cats">
+              @for (c of categories; track c.id) {
+                <label class="saa-pending__chk">
+                  <input
+                    type="checkbox"
+                    [checked]="isApprovalCat(row.userId, c.id)"
+                    (change)="toggleApprovalCat(row.userId, c.id)"
+                  />
+                  <span>{{ c.title }}</span>
+                </label>
+              }
+            </div>
+            <button type="button" class="saa-btn saa-btn--gradient" [disabled]="loading" (click)="approveRow(row.userId)">
+              Approve assignment
+            </button>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  <section class="saa-release" aria-labelledby="saa-release-title">
+    <div class="saa-release__head">
+      <h2 id="saa-release-title" class="saa-release__title">Completed attempts — publish results</h2>
+      <p class="saa-release__sub">
+        These sessions are finished and scored. The candidate cannot see their mark until you publish it here.
+      </p>
+    </div>
+    @if (pendingRelease.length === 0) {
+      <p class="saa-release__empty">
+        No completed attempts waiting for release. When someone submits a skill assessment, it will show up here.
+      </p>
+    } @else {
+      <ul class="saa-release__list">
+        @for (s of pendingRelease; track s.id) {
+          <li class="saa-release__card">
+            <div class="saa-release__row">
+              <div class="saa-release__main">
+                <span class="saa-release__cat">{{ s.categoryTitle }}</span>
+                @if (s.topicTag) {
+                  <span class="saa-chip saa-chip--topic">{{ s.topicTag }}</span>
+                }
+                <span class="saa-release__uid" title="MS-User id">{{ s.userId }}</span>
+                @if (s.completedAt) {
+                  <span class="saa-release__when">Completed {{ s.completedAt | date : 'medium' }}</span>
+                }
+              </div>
+              <div class="saa-release__score">
+                <span class="saa-release__score-val">{{ s.scorePercent ?? '—' }}%</span>
+                <span class="saa-release__score-lbl">score</span>
+              </div>
+            </div>
+            <div class="saa-release__actions">
+              <button
+                type="button"
+                class="saa-btn saa-btn--ghost"
+                [disabled]="loading"
+                (click)="openReview(s.id)"
+              >
+                View responses
+              </button>
+              <button
+                type="button"
+                class="saa-btn saa-btn--gradient"
+                [disabled]="loading"
+                (click)="openPublishModal(s)"
+              >
+                Publish result to candidate
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <section class="saa-history" aria-labelledby="saa-history-title">
+    <div class="saa-history__head">
+      <h2 id="saa-history-title" class="saa-history__title">All completed attempts</h2>
+      <p class="saa-history__sub">
+        Open any row to see the candidate’s choices and correct answers. Works before or after publishing.
+      </p>
+    </div>
+    @if (completedSessions.length === 0) {
+      <p class="saa-release__empty">No completed sessions yet.</p>
+    } @else {
+      <ul class="saa-history__list">
+        @for (s of completedSessions; track s.id) {
+          <li class="saa-history__row">
+            <div class="saa-history__main">
+              <span class="saa-history__cat">{{ s.categoryTitle }}</span>
+              @if (s.topicTag) {
+                <span class="saa-chip saa-chip--topic">{{ s.topicTag }}</span>
+              }
+              <span class="saa-history__uid" title="User id">{{ s.userId }}</span>
+              @if (s.completedAt) {
+                <span class="saa-history__when">{{ s.completedAt | date : 'medium' }}</span>
+              }
+            </div>
+            <div class="saa-history__right">
+              <span class="saa-history__score">{{ s.scorePercent ?? '—' }}%</span>
+              @if (s.scoreReleased) {
+                <span class="saa-chip saa-chip--ok">Published</span>
+              } @else {
+                <span class="saa-chip saa-chip--wait">Not published</span>
+              }
+              <button type="button" class="saa-btn saa-btn--ghost saa-btn--sm" [disabled]="loading" (click)="openReview(s.id)">
+                View responses
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <div class="saa__stats">
+    <div class="saa__stats-item">
+      <span class="saa__stats-label">Categories</span>
+      <div class="saa__stats-main">
+        <span class="saa__stats-value">{{ categories.length }}</span>
+        <span class="saa__stats-unit">in bank</span>
+      </div>
+    </div>
+    <div class="saa__stats-divider"></div>
+    <div class="saa__stats-item">
+      <span class="saa__stats-label">Total questions</span>
+      <div class="saa__stats-main">
+        <span class="saa__stats-value">{{ totalQuestionsInBank }}</span>
+        <span class="saa__stats-unit">across all</span>
+      </div>
+    </div>
+    <div class="saa__stats-divider"></div>
+    <div class="saa__stats-item">
+      <span class="saa__stats-label">Awaiting release</span>
+      <div class="saa__stats-main">
+        <span class="saa__stats-value">{{ pendingRelease.length }}</span>
+        <span class="saa__stats-unit">to publish</span>
+      </div>
+    </div>
+    <div class="saa__stats-divider"></div>
+    <div class="saa__stats-item">
+      <span class="saa__stats-label">Pending assignment</span>
+      <div class="saa__stats-main">
+        <span class="saa__stats-value">{{ pending.length }}</span>
+        <span class="saa__stats-unit">in queue</span>
+      </div>
+    </div>
+    <div class="saa__stats-divider"></div>
+    <div class="saa__stats-item">
+      <span class="saa__stats-label">Choices (open question)</span>
+      <div class="saa__stats-main">
+        <span class="saa__stats-value">{{ choicesCountSelected }}</span>
+        <span class="saa__stats-unit">options</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1: Categories table -->
+  <section class="saa-bank" aria-labelledby="saa-bank-title">
+    <div class="saa-toolbar">
+      <div>
+        <h2 id="saa-bank-title" class="saa-bank__title">1 · Categories</h2>
+        <p class="saa-bank__hint">Click a row to open the question editor for that category. Use “Add category” to create a new line.</p>
+      </div>
+      <div class="saa-toolbar__actions">
+        <button
+          type="button"
+          class="saa-btn saa-btn--ghost"
+          [disabled]="loading"
+          title="Insert all default categories that are not in the database yet"
+          (click)="seedDefaultBank()"
+        >
+          Load default categories
+        </button>
+        <button type="button" class="saa-btn saa-btn--gradient saa-btn--icon" [disabled]="loading" (click)="openNewCategoryForm()">
+          <lucide-icon name="plus" [size]="16"></lucide-icon>
+          Add category
+        </button>
+      </div>
+    </div>
+
+    @if (showCategoryForm) {
+      <div class="saa-panel saa-panel--category">
+        <div class="saa-panel__head">
+          <span class="saa-panel__head-title">{{ editingCategoryId == null ? 'New category' : 'Edit category' }}</span>
+          <button type="button" class="saa-btn saa-btn--ghost saa-btn--sm" (click)="cancelCategoryForm()">Cancel</button>
+        </div>
+        <form class="saa-form saa-form--compact" (ngSubmit)="saveCategory()">
+          <div class="saa-form-grid">
+            <div>
+              <label class="saa-field-label">Code</label>
+              <input class="saa-input" name="cCode" [(ngModel)]="catForm.code" placeholder="e.g. JAVA_OOP" />
+            </div>
+            <div class="saa-form-grid__span2">
+              <label class="saa-field-label">Title</label>
+              <input class="saa-input" name="cTitle" [(ngModel)]="catForm.title" placeholder="Display name" />
+            </div>
+          </div>
+          <label class="saa-field-label">Description (optional)</label>
+          <textarea
+            class="saa-input saa-input--textarea"
+            name="cDesc"
+            rows="2"
+            [(ngModel)]="catForm.description"
+            placeholder="Short note for admins"
+          ></textarea>
+          <button type="submit" class="saa-btn saa-btn--gradient" [disabled]="loading">
+            {{ editingCategoryId == null ? 'Create category' : 'Save changes' }}
+          </button>
+        </form>
+      </div>
+    }
+
+    <div class="saa-table-wrap">
+      <table class="saa-table">
+        <thead>
+          <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Title &amp; description</th>
+            <th scope="col" class="saa-table__col-n">Questions</th>
+            <th scope="col" class="saa-table__col-actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of categories; track c.id) {
+            <tr
+              class="saa-table__row"
+              [class.saa-table__row--selected]="selectedCategoryId === c.id"
+              (click)="selectCategory(c.id)"
+            >
+              <td>
+                <span class="saa-chip saa-chip--code">{{ c.code }}</span>
+              </td>
+              <td>
+                <div class="saa-table__cell-title">{{ c.title }}</div>
+                @if (c.description) {
+                  <div class="saa-table__cell-desc" [title]="c.description">
+                    {{ c.description.length > 100 ? (c.description | slice : 0 : 100) + '…' : c.description }}
+                  </div>
+                }
+              </td>
+              <td class="saa-table__col-n">
+                <span class="saa-table__count">{{ c.questionCount }}</span>
+              </td>
+              <td class="saa-table__col-actions" (click)="$event.stopPropagation()">
+                <button type="button" class="saa-icon-btn" (click)="editCategory(c)" title="Edit category">
+                  <lucide-icon name="square-pen" [size]="16"></lucide-icon>
+                </button>
+                <button
+                  type="button"
+                  class="saa-icon-btn saa-icon-btn--danger"
+                  (click)="deleteCategory(c)"
+                  title="Delete category"
+                >
+                  <lucide-icon name="circle-x" [size]="16"></lucide-icon>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      @if (categories.length === 0 && !loading) {
+        <p class="saa-empty saa-empty--table">No categories yet. Click “Add category” to create your first row.</p>
+      }
+    </div>
+  </section>
+
+  <!-- Step 2: Questions + choices for selected category -->
+  @if (selectedCategoryId != null && selectedCategory; as cat) {
+    <section class="saa-workspace" aria-label="Questions for selected category">
+      <nav class="saa-crumb" aria-label="Breadcrumb">
+        <span class="saa-crumb__root">Question bank</span>
+        <lucide-icon name="chevron-right" [size]="14" class="saa-crumb__sep"></lucide-icon>
+        <span class="saa-crumb__current">{{ cat.title }}</span>
+      </nav>
+
+      <div class="saa-workspace__head">
+        <div>
+          <h2 class="saa-workspace__title">2 · Questions &amp; answers</h2>
+          <p class="saa-workspace__sub">
+            <span class="saa-chip saa-chip--code">{{ cat.code }}</span>
+            · {{ cat.questionCount }} question(s) saved · expand a row to edit <strong>choices</strong> (correct answer is set here only)
+          </p>
+        </div>
+        <button type="button" class="saa-btn saa-btn--gradient saa-btn--icon" [disabled]="loading" (click)="startNewQuestion()">
+          <lucide-icon name="plus" [size]="16"></lucide-icon>
+          New question
+        </button>
+      </div>
+
+      <div class="saa-panel saa-panel--question">
+        <h3 class="saa-panel__label">{{ editingQuestionId == null ? 'Add a question to this category' : 'Edit question' }}</h3>
+        <form class="saa-form saa-form--compact" (ngSubmit)="saveQuestion()">
+          <label class="saa-field-label">Question text</label>
+          <textarea
+            class="saa-input saa-input--textarea"
+            name="qPrompt"
+            rows="3"
+            [(ngModel)]="qForm.prompt"
+            placeholder="What should the candidate answer?"
+          ></textarea>
+          <label class="saa-field-label">Topic tag (optional)</label>
+          <input
+            class="saa-input"
+            name="qTopic"
+            [(ngModel)]="qForm.topic"
+            placeholder="e.g. java — for topic-based quizzes"
+          />
+          <div class="saa-form-row">
+            <div class="saa-form-field">
+              <label class="saa-field-label">Points</label>
+              <input class="saa-input" type="number" name="qPts" min="1" [(ngModel)]="qForm.points" />
+            </div>
+            <div class="saa-form-field">
+              <label class="saa-field-label">Difficulty</label>
+              <select class="saa-input saa-select" name="qDiff" [(ngModel)]="qForm.difficulty">
+                @for (d of difficulties; track d) {
+                  <option [value]="d">{{ d }}</option>
+                }
+              </select>
+            </div>
+            <label class="saa-check">
+              <input type="checkbox" name="qAct" [(ngModel)]="qForm.active" />
+              Active
+            </label>
+          </div>
+          <button type="submit" class="saa-btn saa-btn--gradient" [disabled]="loading">
+            {{ editingQuestionId == null ? 'Save question' : 'Update question' }}
+          </button>
+        </form>
+      </div>
+
+      <ul class="saa-q-stack">
+        @for (q of questions; track q.id) {
+          <li class="saa-q-block" [class.saa-q-block--open]="selectedQuestionId === q.id">
+            <div class="saa-q-block__head">
+              <button
+                type="button"
+                class="saa-q-block__chev"
+                (click)="toggleQuestionExpand(q.id)"
+                [attr.aria-expanded]="selectedQuestionId === q.id"
+                [attr.aria-label]="selectedQuestionId === q.id ? 'Collapse choices' : 'Expand choices'"
+              >
+                <lucide-icon [name]="selectedQuestionId === q.id ? 'chevron-down' : 'chevron-right'" [size]="18"></lucide-icon>
+              </button>
+              <button type="button" class="saa-q-block__main" (click)="toggleQuestionExpand(q.id)">
+                <span class="saa-chip saa-chip--diff">{{ q.difficulty }}</span>
+                @if (q.topic) {
+                  <span class="saa-chip saa-chip--topic">{{ q.topic }}</span>
+                }
+                <span class="saa-q-block__prompt">{{ q.prompt }}</span>
+                <span class="saa-q-block__meta">{{ q.choices.length }} choices</span>
+              </button>
+              <div class="saa-q-block__actions" (click)="$event.stopPropagation()">
+                <button type="button" class="saa-icon-btn" (click)="editQuestion(q)" title="Edit question text">
+                  <lucide-icon name="square-pen" [size]="16"></lucide-icon>
+                </button>
+                <button type="button" class="saa-icon-btn saa-icon-btn--danger" (click)="deleteQuestion(q)" title="Delete question">
+                  <lucide-icon name="circle-x" [size]="16"></lucide-icon>
+                </button>
+              </div>
+            </div>
+
+            @if (selectedQuestionId === q.id) {
+              <div class="saa-q-block__body">
+                <p class="saa-q-block__lead">
+                  <lucide-icon name="layers" [size]="16"></lucide-icon>
+                  Answer choices — mark exactly one as <span class="saa-chip saa-chip--ok">correct</span> for auto-scoring.
+                </p>
+
+                <form class="saa-form saa-form--inline" (ngSubmit)="saveChoice()">
+                  <div class="saa-choice-form">
+                    <input
+                      class="saa-input"
+                      name="chLabel"
+                      [(ngModel)]="choiceForm.label"
+                      placeholder="Answer option text"
+                    />
+                    <input
+                      class="saa-input saa-input--narrow"
+                      type="number"
+                      name="chOrd"
+                      [(ngModel)]="choiceForm.sortOrder"
+                      title="Order"
+                    />
+                    <label class="saa-check">
+                      <input type="checkbox" name="chCor" [(ngModel)]="choiceForm.correct" />
+                      Correct
+                    </label>
+                    <button type="submit" class="saa-btn saa-btn--gradient saa-btn--sm" [disabled]="loading">
+                      {{ editingChoiceId == null ? 'Add choice' : 'Update' }}
+                    </button>
+                  </div>
+                </form>
+
+                <ul class="saa-choice-list">
+                  @for (ch of q.choices; track ch.id) {
+                    <li class="saa-choice-row">
+                      <span class="saa-chip" [class.saa-chip--ok]="ch.correct">{{ ch.correct ? 'Correct' : '—' }}</span>
+                      <span class="saa-choice-row__label">{{ ch.label }}</span>
+                      <span class="saa-choice-row__order">#{{ ch.sortOrder }}</span>
+                      <div class="saa-choice-row__actions">
+                        <button type="button" class="saa-icon-btn" (click)="editChoice(ch)" title="Edit choice">
+                          <lucide-icon name="square-pen" [size]="16"></lucide-icon>
+                        </button>
+                        <button type="button" class="saa-icon-btn saa-icon-btn--danger" (click)="deleteChoice(ch)" title="Remove choice">
+                          <lucide-icon name="circle-x" [size]="16"></lucide-icon>
+                        </button>
+                      </div>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </li>
+        }
+      </ul>
+
+      @if (questions.length === 0) {
+        <p class="saa-empty saa-empty--pad">No questions in this category yet. Write one in the form above, then add choices below each question.</p>
+      }
+    </section>
+  } @else {
+    <section class="saa-placeholder">
+      <div class="saa-placeholder__icon">
+        <lucide-icon name="layers" [size]="36"></lucide-icon>
+      </div>
+      <h3 class="saa-placeholder__title">Select a category</h3>
+      <p class="saa-placeholder__text">Click any row in the table to load its questions and manage answer options.</p>
+    </section>
+  }
+
+  @if (reviewOpen) {
+    <div class="saa-modal-backdrop" (click)="closeReview()">
+      <div class="saa-modal" role="dialog" aria-modal="true" aria-labelledby="saa-modal-title" (click)="$event.stopPropagation()">
+        <div class="saa-modal__head">
+          <h2 id="saa-modal-title" class="saa-modal__title">Candidate responses</h2>
+          <button type="button" class="saa-modal__close" (click)="closeReview()" aria-label="Close">
+            <lucide-icon name="x" [size]="20"></lucide-icon>
+          </button>
+        </div>
+        @if (reviewLoading) {
+          <p class="saa-modal__loading">Loading…</p>
+        } @else if (reviewDetail) {
+          <div class="saa-modal__meta">
+            <span class="saa-modal__badge">{{ reviewDetail!.session.categoryTitle }}</span>
+            <span class="saa-modal__score">{{ reviewDetail!.session.scorePercent ?? '—' }}%</span>
+            <span class="saa-modal__uid" title="User id">{{ reviewDetail!.session.userId }}</span>
+          </div>
+          <ul class="saa-modal__answers">
+            @for (a of reviewDetail!.answers; track a.questionId) {
+              <li class="saa-modal-ans" [class.saa-modal-ans--ok]="a.correct" [class.saa-modal-ans--bad]="!a.correct">
+                <div class="saa-modal-ans__top">
+                  <span class="saa-modal-ans__pts">{{ a.pointsEarned }} / {{ a.questionPoints }} pts</span>
+                  <span class="saa-chip saa-chip--diff">{{ a.difficulty }}</span>
+                </div>
+                <p class="saa-modal-ans__prompt">{{ a.prompt }}</p>
+                <p class="saa-modal-ans__line">
+                  <strong>Selected:</strong> {{ a.selectedLabel }}
+                </p>
+                @if (!a.correct) {
+                  <p class="saa-modal-ans__line saa-modal-ans__correct">
+                    <strong>Correct:</strong> {{ a.correctLabel }}
+                  </p>
+                }
+              </li>
+            }
+          </ul>
+          @if (reviewDetail && !reviewDetail.session.scoreReleased) {
+            <div class="saa-modal__footer">
+              <button type="button" class="saa-btn saa-btn--gradient" [disabled]="loading" (click)="openPublishFromReview()">
+                Publish to candidate…
+              </button>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  @if (publishTarget) {
+    <div class="saa-modal-backdrop" (click)="closePublishModal()">
+      <div class="saa-modal saa-publish" role="dialog" aria-modal="true" aria-labelledby="saa-publish-title" (click)="$event.stopPropagation()">
+        <div class="saa-modal__head">
+          <h2 id="saa-publish-title" class="saa-modal__title">Publish to candidate</h2>
+          <button type="button" class="saa-modal__close" (click)="closePublishModal()" aria-label="Close">
+            <lucide-icon name="x" [size]="20"></lucide-icon>
+          </button>
+        </div>
+        <p class="saa-publish__intro">
+          They will see their score and full question review. Optional: add feedback they will read on their results page.
+        </p>
+        <label class="saa-publish__label" for="saa-pub-feedback">Feedback for candidate (optional)</label>
+        <textarea
+          id="saa-pub-feedback"
+          class="saa-publish__ta"
+          rows="4"
+          [(ngModel)]="publishFeedback"
+          placeholder="e.g. Strong on basics; review threading next."
+        ></textarea>
+        <label class="saa-publish__label" for="saa-pub-note">Internal note (optional, staff only)</label>
+        <textarea
+          id="saa-pub-note"
+          class="saa-publish__ta"
+          rows="2"
+          [(ngModel)]="publishInternalNote"
+          placeholder="Appended to session notes for your team"
+        ></textarea>
+        <div class="saa-publish__actions">
+          <button type="button" class="saa-btn saa-btn--ghost" [disabled]="loading" (click)="closePublishModal()">Cancel</button>
+          <button type="button" class="saa-btn saa-btn--gradient" [disabled]="loading" (click)="confirmPublish()">Publish</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

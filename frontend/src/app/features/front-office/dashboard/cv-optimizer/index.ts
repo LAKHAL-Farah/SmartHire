@@ -1,0 +1,1 @@
+export { CvOptimizerComponent } from './cv-optimizer.component';

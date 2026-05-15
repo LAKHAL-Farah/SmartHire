@@ -1,0 +1,61 @@
+<aside class="sidebar">
+  <!-- Logo -->
+  <div class="sidebar__logo">
+    <div class="logo-icon">S</div>
+    <span class="logo-text">SmartHire</span>
+    <span class="logo-badge">Admin</span>
+  </div>
+
+  <!-- Main -->
+  <nav class="sidebar__nav">
+    @for (item of mainItems; track item.label) {
+      <a class="nav-item" [routerLink]="item.route" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: item.route === '/admin' }">
+        <span class="nav-item__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+        <span class="nav-item__label">{{ item.label }}</span>
+      </a>
+    }
+
+    <!-- Users group -->
+    <span class="nav-group">Users</span>
+    @for (item of userItems; track item.label) {
+      <a class="nav-item" [routerLink]="item.route" routerLinkActive="nav-item--active">
+        <span class="nav-item__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+        <span class="nav-item__label">{{ item.label }}</span>
+      </a>
+    }
+
+    <!-- Content group -->
+    <span class="nav-group">Content</span>
+    @for (item of contentItems; track item.label) {
+      <a class="nav-item" [routerLink]="item.route" routerLinkActive="nav-item--active">
+        <span class="nav-item__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+        <span class="nav-item__label">{{ item.label }}</span>
+      </a>
+    }
+
+    <!-- AI & System group -->
+    <span class="nav-group">AI & System</span>
+    @for (item of systemItems; track item.label) {
+      <a class="nav-item" [routerLink]="item.route" routerLinkActive="nav-item--active">
+        <span class="nav-item__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+        <span class="nav-item__label">{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <!-- Bottom -->
+  <div class="sidebar__bottom">
+    @for (item of bottomItems; track item.label) {
+      <a class="nav-item" [routerLink]="item.route" routerLinkActive="nav-item--active">
+        <span class="nav-item__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+        <span class="nav-item__label">{{ item.label }}</span>
+      </a>
+    }
+    <button class="nav-item nav-item--logout" (click)="logout()">
+      <span class="nav-item__icon">
+        <lucide-icon name="log-out" [size]="20" [strokeWidth]="1.8"></lucide-icon>
+      </span>
+      <span class="nav-item__label">Logout</span>
+    </button>
+  </div>
+</aside>

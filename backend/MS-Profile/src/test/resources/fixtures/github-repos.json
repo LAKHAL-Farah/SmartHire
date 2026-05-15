@@ -1,0 +1,24 @@
+[
+  {
+    "name": "smart-api-ci-tests",
+    "html_url": "https://github.com/jane-doe/smart-api-ci-tests",
+    "language": "Java",
+    "stargazers_count": 24,
+    "forks_count": 4,
+    "fork": false,
+    "pushed_at": "2026-01-10T10:15:30Z",
+    "description": "Spring Boot microservice with ci workflow and test coverage",
+    "archived": false
+  },
+  {
+    "name": "frontend-spec-suite",
+    "html_url": "https://github.com/jane-doe/frontend-spec-suite",
+    "language": "TypeScript",
+    "stargazers_count": 8,
+    "forks_count": 1,
+    "fork": false,
+    "pushed_at": "2026-01-11T08:00:00Z",
+    "description": "Angular app with qa spec tests and cd pipeline",
+    "archived": false
+  }
+]

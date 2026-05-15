@@ -1,0 +1,93 @@
+<div class="analytics-page">
+  <a class="back-link" routerLink="/dashboard/roadmap">&larr; Back to roadmap</a>
+
+  <section class="card state" *ngIf="loading()">Loading analytics...</section>
+  <section class="card state error" *ngIf="!loading() && errorMessage()">{{ errorMessage() }}</section>
+
+  <ng-container *ngIf="!loading() && summary() as summaryData">
+    <section class="top-grid">
+      <article class="card stat">
+        <p>Completion</p>
+        <strong>{{ summaryData.progressPercent | number: '1.0-0' }}%</strong>
+        <small>{{ summaryData.completedSteps }} / {{ summaryData.totalSteps }} steps</small>
+      </article>
+
+      <article class="card stat">
+        <p>Current Streak</p>
+        <strong>{{ streak().currentStreak }} days</strong>
+        <small>Longest: {{ streak().longestStreak }} days</small>
+      </article>
+
+      <article class="card stat">
+        <p>Milestones</p>
+        <strong>{{ achievedMilestones() }} / {{ milestones().length }}</strong>
+        <small>{{ milestonePercent() }}% reached</small>
+      </article>
+
+      <article class="card stat accent">
+        <p>Momentum Score</p>
+        <strong>{{ momentumScore() }}</strong>
+        <small>Composite of progress, streak, and milestones</small>
+      </article>
+    </section>
+
+    <section class="card progress-card">
+      <div class="header-row">
+        <h2>Completion Trend</h2>
+        <a routerLink="/dashboard/roadmap/replan">Need adjustment?</a>
+      </div>
+
+      <div class="bar-track">
+        <div class="bar-fill" [style.width.%]="summaryData.progressPercent"></div>
+      </div>
+
+      <div class="meta-row">
+        <span>Current step: {{ summaryData.currentStep?.title || 'N/A' }}</span>
+        <span>{{ summaryData.completedSteps }} completed</span>
+        <span>{{ summaryData.totalSteps - summaryData.completedSteps }} remaining</span>
+      </div>
+    </section>
+
+    <section class="card pace-card" *ngIf="pace() as paceData">
+      <h2>Pace Health</h2>
+      <div class="pace-pill" [class.on-track]="paceData.status.toLowerCase().includes('track')">
+        {{ paceData.status }}
+      </div>
+
+      <div class="pace-grid">
+        <article>
+          <p>Expected completion</p>
+          <strong>{{ paceData.expectedCompletionDays ?? 'N/A' }}</strong>
+        </article>
+        <article>
+          <p>Projected completion</p>
+          <strong>{{ paceData.projectedCompletionDays ?? 'N/A' }}</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="card milestone-card">
+      <div class="header-row">
+        <h2>Milestone Checklist</h2>
+        <a routerLink="/dashboard/roadmap/milestones">View milestone page</a>
+      </div>
+
+      <div class="milestone-list" *ngIf="milestones().length > 0; else noMilestones">
+        <article class="milestone-item" *ngFor="let milestone of milestones(); trackBy: trackMilestone" [class.done]="!!milestone.reachedAt">
+          <div>
+            <h3>{{ milestone.title }}</h3>
+            <p>{{ milestone.description }}</p>
+            <small *ngIf="milestone.reachedAt; else pending">Reached: {{ milestone.reachedAt | date: 'mediumDate' }}</small>
+            <ng-template #pending>
+              <small>Unlock at {{ milestone.stepThreshold }} completed steps</small>
+            </ng-template>
+          </div>
+        </article>
+      </div>
+
+      <ng-template #noMilestones>
+        <p class="empty">No milestones found for this roadmap.</p>
+      </ng-template>
+    </section>
+  </ng-container>
+</div>

@@ -1,0 +1,125 @@
+<div class="post-job-page">
+  <div class="post-job__header">
+    <div class="post-job__title">
+      <lucide-icon name="square-pen" [size]="18" [strokeWidth]="1.8"></lucide-icon>
+      <h1>Post a Job</h1>
+    </div>
+    <p class="post-job__subtitle">Create a new job listing. Company details are entered manually for now.</p>
+  </div>
+
+  <div class="post-job__card">
+    @if (submitError(); as err) {
+      <div class="post-job__error">
+        <lucide-icon name="triangle-alert" [size]="16" [strokeWidth]="1.8"></lucide-icon>
+        <span>{{ err }}</span>
+      </div>
+    }
+
+    <form class="post-job__form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="post-job__grid">
+        <div class="form-field" [class.form-field--error]="fieldInvalid('title')">
+          <label class="form-label">Job Title<span class="req">*</span></label>
+          <input class="form-input" type="text" formControlName="title" placeholder="e.g., Frontend Engineer" />
+          @if (fieldInvalid('title')) {
+            <div class="form-error">Title is required.</div>
+          }
+        </div>
+
+        <div class="form-field" [class.form-field--error]="fieldInvalid('company')">
+          <label class="form-label">Company<span class="req">*</span></label>
+          <input class="form-input" type="text" formControlName="company" placeholder="e.g., TechCorp" />
+          @if (fieldInvalid('company')) {
+            <div class="form-error">Company is required.</div>
+          }
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Company Initials</label>
+          <input class="form-input" type="text" formControlName="companyInitials" placeholder="e.g., TC" />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Company Color</label>
+          <input class="form-input form-input--color" type="color" formControlName="companyColor" />
+        </div>
+
+        <div class="form-field form-field--inline">
+          <label class="form-check">
+            <input type="checkbox" formControlName="verified" />
+            <span class="form-check__box"></span>
+            <span class="form-check__text">Verified employer</span>
+          </label>
+        </div>
+
+        <div class="form-field" [class.form-field--error]="fieldInvalid('locationType')">
+          <label class="form-label">Location Type<span class="req">*</span></label>
+          <select class="form-select" formControlName="locationType">
+            @for (opt of locationOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field" [class.form-field--error]="fieldInvalid('contractType')">
+          <label class="form-label">Contract Type<span class="req">*</span></label>
+          <select class="form-select" formControlName="contractType">
+            @for (opt of contractOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field" [class.form-field--error]="fieldInvalid('experienceLevel')">
+          <label class="form-label">Experience Level<span class="req">*</span></label>
+          <select class="form-select" formControlName="experienceLevel">
+            @for (opt of experienceOptions; track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Salary Range</label>
+          <input class="form-input" type="text" formControlName="salaryRange" placeholder="e.g., $100k – $150k" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Skills</label>
+        <div class="skills-row">
+          <input class="form-input" type="text" [(ngModel)]="skillInput" [ngModelOptions]="{standalone: true}"
+            placeholder="Type a skill and press Enter" (keydown.enter)="$event.preventDefault(); addSkill()" />
+          <button class="btn-secondary" type="button" (click)="addSkill()">Add</button>
+        </div>
+        <div class="skills-tags">
+          @for (s of skills(); track s) {
+            <span class="skill-tag">
+              {{ s }}
+              <button type="button" class="skill-tag__remove" (click)="removeSkill(s)">&times;</button>
+            </span>
+          }
+        </div>
+      </div>
+
+      <div class="form-field" [class.form-field--error]="fieldInvalid('description')">
+        <label class="form-label">Description<span class="req">*</span></label>
+        <textarea class="form-textarea" rows="6" formControlName="description"
+          placeholder="Describe the role, responsibilities, and requirements..."></textarea>
+        @if (fieldInvalid('description')) {
+          <div class="form-error">Description is required.</div>
+        }
+      </div>
+
+      <div class="post-job__actions">
+        <button class="btn-outline" type="button" (click)="cancel()" [disabled]="isSubmitting()">Cancel</button>
+        <button class="btn-primary" type="submit" [disabled]="isSubmitting() || form.invalid">
+          @if (isSubmitting()) {
+            <span>Posting…</span>
+          } @else {
+            <span>Post Job</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

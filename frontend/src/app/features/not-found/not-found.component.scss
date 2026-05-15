@@ -1,0 +1,207 @@
+:host { display: block; }
+
+/* ── Layout ── */
+.nf {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 24px 40px;
+}
+
+/* ── Atmospheric orbs ── */
+.nf__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(130px);
+  pointer-events: none;
+  z-index: 0;
+}
+.nf__orb--teal {
+  width: 600px; height: 600px;
+  background: rgba(46, 232, 165, 0.07);
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+}
+.nf__orb--purple {
+  width: 400px; height: 400px;
+  background: rgba(139, 92, 246, 0.07);
+  bottom: -100px; right: -100px;
+}
+.nf__orb--navy {
+  width: 700px; height: 700px;
+  background: rgba(30, 58, 95, 0.12);
+  top: -100px; left: -250px;
+}
+
+/* ── Logo ── */
+.nf__logo {
+  position: absolute;
+  top: 28px; left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 18px;
+  z-index: 2;
+  transition: opacity 0.2s;
+
+  &:hover { opacity: 0.8; }
+}
+.nf__logo-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2ee8a5, #3b82f6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900;
+  color: #0a0a0f;
+}
+.nf__logo-text {
+  font-family: var(--font-display);
+}
+
+/* ── Main content ── */
+.nf__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  max-width: 600px;
+  animation: nf-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── 404 code row ── */
+.nf__code-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+  margin-bottom: 32px;
+  user-select: none;
+}
+
+.nf__code {
+  font-family: var(--font-display);
+  font-size: clamp(120px, 18vw, 200px);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 0.9;
+}
+
+/* The "0" replaced by AI brain ring */
+.nf__zero {
+  width: clamp(90px, 13.5vw, 150px);
+  height: clamp(90px, 13.5vw, 150px);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 clamp(-8px, -0.8vw, -4px);
+}
+.nf__brain {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: nf-spin-slow 24s linear infinite;
+}
+
+/* Brain rings inside the zero */
+.nf__ring--1 {
+  animation: nf-ring-orbit 18s linear infinite;
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+}
+.nf__ring--2 {
+  animation: nf-ring-orbit 26s linear infinite reverse;
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+}
+.nf__node {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nf-node-pulse 3s ease-in-out infinite;
+}
+.nf__node:nth-child(2)  { animation-delay: 0.4s; }
+.nf__node:nth-child(3)  { animation-delay: 0.8s; }
+.nf__node:nth-child(4)  { animation-delay: 1.2s; }
+.nf__node:nth-child(5)  { animation-delay: 1.6s; }
+.nf__node:nth-child(6)  { animation-delay: 2.0s; }
+
+/* ── Text ── */
+.nf__title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.nf__desc {
+  font-size: clamp(15px, 2vw, 17px);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+/* ── Actions ── */
+.nf__actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.nf__btn {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Bottom hint ── */
+.nf__hint {
+  position: absolute;
+  bottom: 32px;
+  font-size: 13px;
+  color: var(--text-muted);
+  z-index: 2;
+}
+.nf__hint-link {
+  color: var(--accent-teal);
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+/* ── Keyframes ── */
+@keyframes nf-fade-up {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes nf-spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes nf-ring-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes nf-node-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.7); }
+}
+
+@media (max-width: 480px) {
+  .nf__logo { left: 20px; }
+  .nf__actions { flex-direction: column; align-items: center; }
+  .nf__hint { display: none; }
+}

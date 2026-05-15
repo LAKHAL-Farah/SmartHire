@@ -1,0 +1,99 @@
+<div class="milestones-page">
+  <a class="back-link" routerLink="/dashboard/roadmap">&larr; Back to roadmap</a>
+
+  <section class="card state-card" *ngIf="loading()">Loading milestones...</section>
+
+  <section class="card state-card error" *ngIf="!loading() && errorMessage()">
+    {{ errorMessage() }}
+  </section>
+
+  <ng-container *ngIf="!loading()">
+    <section class="stats-grid">
+      <article class="card stat-item">
+        <p>Achieved</p>
+        <strong>{{ achievedCount() }}</strong>
+      </article>
+      <article class="card stat-item">
+        <p>Pending</p>
+        <strong>{{ pendingCount() }}</strong>
+      </article>
+      <article class="card stat-item">
+        <p>Total</p>
+        <strong>{{ milestones().length }}</strong>
+      </article>
+    </section>
+
+    <section class="card next-card" *ngIf="nextMilestone() as next">
+      <p class="eyebrow">Next Milestone</p>
+      <h2>{{ next.title }}</h2>
+      <p>{{ next.description }}</p>
+      <div class="meta">
+        <span>Unlock threshold: {{ next.stepThreshold }} completed steps</span>
+      </div>
+    </section>
+
+    <section class="card timeline-card">
+      <div class="section-header">
+        <h2>Milestone Timeline</h2>
+        <p>Track reached and upcoming roadmap milestones.</p>
+      </div>
+
+      <div class="timeline" *ngIf="milestones().length > 0; else emptyMilestones">
+        <article
+          class="timeline-item"
+          [class.timeline-item--achieved]="isAchieved(milestone)"
+          *ngFor="let milestone of milestones(); trackBy: trackMilestone"
+        >
+          <span class="dot"></span>
+          <div class="body">
+            <h3>{{ milestone.title }}</h3>
+            <p>{{ milestone.description }}</p>
+            <small *ngIf="milestone.reachedAt; else pendingLabel">
+              Reached at: {{ milestone.reachedAt | date: 'mediumDate' }}
+            </small>
+            <ng-template #pendingLabel>
+              <small>Pending at step {{ milestone.stepThreshold }}</small>
+            </ng-template>
+          </div>
+        </article>
+      </div>
+
+      <ng-template #emptyMilestones>
+        <p class="empty">No milestones available yet.</p>
+      </ng-template>
+    </section>
+
+    <section class="card cert-card">
+      <div class="section-header">
+        <h2>Certificates</h2>
+        <p>Your earned certificates and share options.</p>
+      </div>
+
+      <div class="cert-list" *ngIf="certificates().length > 0; else emptyCertificates">
+        <article class="cert-item" *ngFor="let cert of certificates(); trackBy: trackCertificate">
+          <div>
+            <h3>{{ cert.certificateCode }}</h3>
+            <p>Status: {{ cert.status }}</p>
+            <small *ngIf="cert.issuedAt">Issued: {{ cert.issuedAt | date: 'mediumDate' }}</small>
+          </div>
+
+          <div class="actions">
+            <button type="button" (click)="openPdf(cert)">Download PDF</button>
+            <button type="button" (click)="openBadge(cert)">Download Badge</button>
+            <button
+              type="button"
+              [disabled]="sharingCertificateId() === cert.id"
+              (click)="shareLinkedIn(cert)"
+            >
+              {{ cert.linkedInShared ? 'Shared to LinkedIn' : 'Share to LinkedIn' }}
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <ng-template #emptyCertificates>
+        <p class="empty">No certificates yet. Complete milestones to earn them.</p>
+      </ng-template>
+    </section>
+  </ng-container>
+</div>

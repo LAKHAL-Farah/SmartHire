@@ -1,0 +1,66 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# Stored test media and local artifacts
+interview_service_entity_audit\ 1.png
+tools/stress-inference-service/test_face.jpg
+tools/stress-inference-service/any_non_face_image.jpg
+
+
+# Temp audio files
+temp/
+*.wav
+*.mp3
+*.sql
+
+# Local live-mode debug logs
+live-mode-debug*.log
+
+# Kokoro local Python runtime artifacts
+tools/kokoro/venv/
+tools/kokoro/__pycache__/
+tools/kokoro/.cache/
+tools/kokoro/*.pyc
+
+# Stress inference local Python runtime artifacts
+tools/stress-inference-service/venv/
+tools/stress-inference-service/__pycache__/
+tools/stress-inference-service/*.pyc
+
+# Large model assets downloaded locally
+tools/kokoro/*.onnx
+tools/whisper/models/*.bin
+src/main/resources/test.MP3
+
+

@@ -1,0 +1,323 @@
+<section class="li-page">
+  <header class="li-topbar">
+    <div class="li-topbar__left">
+      <span class="li-brand-icon"><lucide-icon name="linkedin" [size]="18"></lucide-icon></span>
+      <div>
+        <p class="li-breadcrumb">Optimizer / LinkedIn</p>
+        <h1>LinkedIn Optimizer</h1>
+      </div>
+    </div>
+
+    <div class="li-topbar__right">
+      <span class="li-score-pill" [ngClass]="'li-score-pill--' + scoreTone(profile()?.globalScore)">
+        <span class="li-score-pill__label">Score</span>
+        <strong>{{ profile()?.globalScore ?? 0 }}/100</strong>
+      </span>
+      <button type="button" class="li-btn li-btn--ghost" (click)="reanalyze()">
+        <lucide-icon name="refresh-cw" [size]="14"></lucide-icon>
+        Re-analyze
+      </button>
+    </div>
+  </header>
+
+  @if (error()) {
+    <p class="li-error"><lucide-icon name="alert-circle" [size]="14"></lucide-icon>{{ error() }}</p>
+  }
+
+  <section [@phaseSwap]="phase()">
+    @if (phase() === 'input') {
+      <section class="li-input-dashboard">
+        <article class="li-card li-wizard-card li-reveal">
+          <div class="li-stepper">
+            <span class="li-step li-step--active">1. Paste Profile</span>
+            <span class="li-step">2. AI Analysis</span>
+            <span class="li-step">3. Optimize</span>
+          </div>
+
+          <div class="li-info-card">
+            <h3><lucide-icon name="circle-question-mark" [size]="14"></lucide-icon> How to copy your LinkedIn profile</h3>
+            <ul>
+              <li><lucide-icon name="globe" [size]="14"></lucide-icon><span>Open your LinkedIn profile in a browser</span></li>
+              <li><lucide-icon name="scan" [size]="14"></lucide-icon><span>Select all text on the page (Ctrl+A / Cmd+A)</span></li>
+              <li><lucide-icon name="upload" [size]="14"></lucide-icon><span>Paste headline, about, experience, skills, recommendations</span></li>
+            </ul>
+          </div>
+        </article>
+
+        <form class="li-card li-form-card li-reveal" [formGroup]="form" (ngSubmit)="analyze()">
+          <div class="li-field" [class.li-field--filled]="!!form.controls.currentHeadline.value">
+            <input type="text" formControlName="currentHeadline" placeholder=" " />
+            <label>Your LinkedIn Headline</label>
+          </div>
+
+          <div class="li-field li-field--textarea" [class.li-field--filled]="!!form.controls.currentSummary.value">
+            <textarea formControlName="currentSummary" rows="4" placeholder=" "></textarea>
+            <label>About / Summary Section</label>
+          </div>
+
+          <div class="li-field li-field--textarea" [class.li-field--filled]="!!form.controls.rawContent.value">
+            <textarea formControlName="rawContent" rows="11" placeholder=" "></textarea>
+            <label>Full Profile Content</label>
+            <small class="li-counter">{{ form.controls.rawContent.value.length }} chars</small>
+          </div>
+
+          <div class="li-field li-field--textarea" [class.li-field--filled]="!!form.controls.currentSkills.value">
+            <textarea formControlName="currentSkills" rows="4" placeholder=" "></textarea>
+            <label>Your Skills</label>
+          </div>
+
+          @if (!loading().analyze) {
+            <button type="submit" class="li-btn li-btn--primary" [disabled]="form.controls.rawContent.invalid">
+              <lucide-icon name="wand2" [size]="16"></lucide-icon>
+              Analyze My Profile
+            </button>
+          } @else {
+            <div class="li-loading">
+              <span class="li-spinner"></span>
+              <p>{{ statusMessage() }}</p>
+              <div class="li-loading__bar"></div>
+            </div>
+          }
+        </form>
+      </section>
+    } @else {
+      <section class="li-dashboard-grid">
+        <aside class="li-col li-col--left">
+          <article class="li-card li-score-card li-reveal">
+            <p class="li-panel-kicker">LinkedIn Performance</p>
+
+            <div class="li-score-ring-wrap" [style.--li-score]="scorePercent(profile()?.globalScore)">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="li-ring-track" cx="60" cy="60" r="45"></circle>
+                <circle class="li-ring-progress" cx="60" cy="60" r="45"></circle>
+              </svg>
+              <div class="li-score-ring-center">
+                <strong>{{ profile()?.globalScore ?? 0 }}</strong>
+                <small>/100</small>
+              </div>
+            </div>
+
+            @if (sectionScores(); as scores) {
+              <div class="li-breakdown-list">
+                <button type="button" class="li-breakdown-row" (click)="toggleFeedback('headline')">
+                  <div class="li-breakdown-row__head">
+                    <span>Headline</span>
+                    <strong class="li-chip" [ngClass]="'li-chip--' + scoreTone(scores.headline)">{{ scores.headline }}</strong>
+                  </div>
+                  <span class="li-breakdown-row__bar"><span [style.width.%]="scorePercent(scores.headline)"></span></span>
+                </button>
+                <div class="li-feedback" [@accordion]="expandedSection() === 'headline' ? 'open' : 'closed'">{{ scores.headlineFeedback }}</div>
+
+                <button type="button" class="li-breakdown-row" (click)="toggleFeedback('summary')">
+                  <div class="li-breakdown-row__head">
+                    <span>Summary</span>
+                    <strong class="li-chip" [ngClass]="'li-chip--' + scoreTone(scores.summary)">{{ scores.summary }}</strong>
+                  </div>
+                  <span class="li-breakdown-row__bar"><span [style.width.%]="scorePercent(scores.summary)"></span></span>
+                </button>
+                <div class="li-feedback" [@accordion]="expandedSection() === 'summary' ? 'open' : 'closed'">{{ scores.summaryFeedback }}</div>
+
+                <button type="button" class="li-breakdown-row" (click)="toggleFeedback('skills')">
+                  <div class="li-breakdown-row__head">
+                    <span>Skills</span>
+                    <strong class="li-chip" [ngClass]="'li-chip--' + scoreTone(scores.skills)">{{ scores.skills }}</strong>
+                  </div>
+                  <span class="li-breakdown-row__bar"><span [style.width.%]="scorePercent(scores.skills)"></span></span>
+                </button>
+                <div class="li-feedback" [@accordion]="expandedSection() === 'skills' ? 'open' : 'closed'">{{ scores.skillsFeedback }}</div>
+
+                <button type="button" class="li-breakdown-row" (click)="toggleFeedback('recommendations')">
+                  <div class="li-breakdown-row__head">
+                    <span>Recommendations</span>
+                    <strong class="li-chip" [ngClass]="'li-chip--' + scoreTone(scores.recommendations)">{{ scores.recommendations }}</strong>
+                  </div>
+                  <span class="li-breakdown-row__bar"><span [style.width.%]="scorePercent(scores.recommendations)"></span></span>
+                </button>
+                <div class="li-feedback" [@accordion]="expandedSection() === 'recommendations' ? 'open' : 'closed'">{{ scores.recommendationsFeedback }}</div>
+              </div>
+            }
+
+            <button type="button" class="li-btn li-btn--primary li-btn--full li-btn--shine" (click)="reanalyze()">
+              Re-analyze Profile
+            </button>
+          </article>
+        </aside>
+
+        <main class="li-col li-col--center">
+          <article class="li-card li-section-card li-reveal" [ngClass]="'li-section-card--' + scoreTone(sectionScores()?.headline)">
+            <header>
+              <h3><lucide-icon name="file-text" [size]="14"></lucide-icon> Headline</h3>
+              <button type="button" class="li-copy" (click)="copyToClipboard(profile()?.optimizedHeadline, 'headline')">
+                <lucide-icon [name]="copiedField() === 'headline' ? 'check' : 'square-pen'" [size]="13"></lucide-icon>
+                {{ copiedField() === 'headline' ? 'Copied!' : 'Copy' }}
+              </button>
+            </header>
+            <div class="li-compare-grid">
+              <section>
+                <span class="li-compare-label">Current</span>
+                <p>{{ profile()?.currentHeadline || 'No headline found in your profile' }}</p>
+              </section>
+              <section class="li-compare-grid__optimized">
+                <span class="li-compare-label">Optimized</span>
+                <p>{{ profile()?.optimizedHeadline || 'No optimized headline yet' }}</p>
+              </section>
+            </div>
+          </article>
+
+          <article class="li-card li-section-card li-reveal" [ngClass]="'li-section-card--' + scoreTone(sectionScores()?.summary)">
+            <header>
+              <h3><lucide-icon name="chart-bar" [size]="14"></lucide-icon> Summary / About</h3>
+              <button type="button" class="li-copy" (click)="copyToClipboard(profile()?.optimizedSummary, 'summary')">
+                <lucide-icon [name]="copiedField() === 'summary' ? 'check' : 'square-pen'" [size]="13"></lucide-icon>
+                {{ copiedField() === 'summary' ? 'Copied!' : 'Copy' }}
+              </button>
+            </header>
+            <div class="li-compare-grid">
+              <section>
+                <span class="li-compare-label">Current</span>
+                <p class="li-scroll">{{ profile()?.currentSummary || 'No summary found in your profile' }}</p>
+              </section>
+              <section class="li-compare-grid__optimized">
+                <span class="li-compare-label">Optimized</span>
+                <p class="li-scroll">{{ profile()?.optimizedSummary || 'No optimized summary yet' }}</p>
+              </section>
+            </div>
+          </article>
+
+          <article class="li-card li-section-card li-reveal" [ngClass]="'li-section-card--' + scoreTone(sectionScores()?.skills)">
+            <header>
+              <h3><lucide-icon name="tags" [size]="14"></lucide-icon> Skills</h3>
+              <button type="button" class="li-copy" (click)="copyToClipboard(optimizedSkills().join(', '), 'skills')">
+                <lucide-icon [name]="copiedField() === 'skills' ? 'check' : 'square-pen'" [size]="13"></lucide-icon>
+                {{ copiedField() === 'skills' ? 'Copied!' : 'Copy' }}
+              </button>
+            </header>
+            <div class="li-compare-grid">
+              <section>
+                <span class="li-compare-label">Current</span>
+                <div class="li-chip-list li-chip-list--current">
+                  @for (skill of currentSkillsList(); track skill) {
+                    <span>{{ skill }}</span>
+                  }
+                </div>
+              </section>
+              <section class="li-compare-grid__optimized">
+                <span class="li-compare-label">Optimized</span>
+                <div class="li-chip-list li-chip-list--optimized">
+                  @for (skill of optimizedSkills(); track skill) {
+                    <span>{{ skill }}</span>
+                  }
+                </div>
+              </section>
+            </div>
+          </article>
+
+          <article class="li-card li-section-card li-reveal" [ngClass]="'li-section-card--' + scoreTone(sectionScores()?.recommendations)">
+            <header>
+              <h3><lucide-icon name="star" [size]="14"></lucide-icon> Recommendations</h3>
+            </header>
+            <div class="li-compare-grid">
+              <section>
+                <span class="li-compare-label">Current</span>
+                <p>
+                  {{ (sectionScores()?.recommendations ?? 0) > 0
+                  ? 'Some recommendation signals detected in your current profile.'
+                  : 'No strong recommendation signals detected in the pasted profile.' }}
+                </p>
+              </section>
+              <section class="li-compare-grid__optimized">
+                <span class="li-compare-label">Optimized Action</span>
+                <p>{{ sectionScores()?.recommendationsFeedback || 'Collect peer and manager recommendations relevant to your target roles.' }}</p>
+              </section>
+            </div>
+          </article>
+        </main>
+
+        <aside class="li-col li-col--right">
+          <article class="li-card li-align-card li-reveal">
+            <header class="li-align-card__header">
+              <h3><lucide-icon name="target" [size]="14"></lucide-icon> Align to Job Offer</h3>
+              <small>Premium Alignment</small>
+            </header>
+
+            @if (profile()?.jobAlignedHeadline && !resetAlignmentMode()) {
+              <p class="li-muted">Aligned for: {{ selectedOffer()?.title || 'Selected offer' }}</p>
+
+              <div class="li-aligned-block">
+                <label>Aligned Headline</label>
+                <p>{{ profile()?.jobAlignedHeadline }}</p>
+              </div>
+
+              <div class="li-aligned-block">
+                <label>Aligned Summary</label>
+                <p class="li-scroll">{{ profile()?.jobAlignedSummary }}</p>
+              </div>
+
+              <div class="li-aligned-block">
+                <label>Aligned Skills</label>
+                <div class="li-chip-list li-chip-list--optimized">
+                  @for (skill of alignedSkills(); track skill) {
+                    <span>{{ skill }}</span>
+                  }
+                </div>
+              </div>
+
+              <div class="li-aligned-block">
+                <label><lucide-icon name="check-circle" [size]="12"></lucide-icon> Keywords incorporated</label>
+                <div class="li-chip-list li-chip-list--green">
+                  @for (keyword of incorporatedKeywords(); track keyword) {
+                    <span>{{ keyword }}</span>
+                  }
+                </div>
+              </div>
+
+              <button type="button" class="li-btn li-btn--ghost li-btn--full" (click)="resetAlignment()">Realign to Another Offer</button>
+            } @else {
+              @if (!jobOffers().length) {
+                <p class="li-muted">No job offers saved</p>
+                <button type="button" class="li-link" (click)="goToJobOffers()">Add a job offer first →</button>
+              } @else {
+                <div class="li-offer-list">
+                  @for (offer of jobOffers(); track offer.id) {
+                    <button type="button" class="li-offer" [class.li-offer--selected]="selectedJobId() === offer.id" (click)="selectedJobId.set(offer.id)">
+                      <span>{{ offer.title }}</span>
+                      <small>{{ offer.company || 'Unknown company' }}</small>
+                    </button>
+                  }
+                </div>
+
+                @if (!loading().align) {
+                  <button type="button" class="li-btn li-btn--primary li-btn--full" [disabled]="!selectedJobId()" (click)="alignToJobOffer()">
+                    <lucide-icon name="wand2" [size]="14"></lucide-icon>
+                    Align My LinkedIn
+                  </button>
+                } @else {
+                  <div class="li-loading">
+                    <span class="li-spinner"></span>
+                    <p>{{ statusMessage() }}</p>
+                    <div class="li-loading__bar"></div>
+                  </div>
+                }
+              }
+            }
+          </article>
+
+          <article class="li-card li-tips-card li-reveal">
+            <h3><lucide-icon name="lightbulb" [size]="14"></lucide-icon> LinkedIn Tips</h3>
+            <div class="li-tip-list">
+              @for (tip of linkedInTips(); track tip.id) {
+                <article>
+                  <span>{{ tip.priority }}</span>
+                  <p>{{ tip.tipText }}</p>
+                </article>
+              }
+            </div>
+            <button type="button" class="li-link" (click)="viewAllTips()">View all tips</button>
+          </article>
+        </aside>
+      </section>
+    }
+  </section>
+
+  <app-toast></app-toast>
+</section>

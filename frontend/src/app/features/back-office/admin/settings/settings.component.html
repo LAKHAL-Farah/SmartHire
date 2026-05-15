@@ -1,0 +1,350 @@
+<!-- ═══════ PLATFORM SETTINGS ═══════ -->
+<div class="settings-page">
+
+  <!-- ╌╌╌ Page Header ╌╌╌ -->
+  <header class="page-hdr">
+    <div class="page-hdr__left">
+      <h1 class="page-hdr__title">Platform Settings</h1>
+      <p class="page-hdr__sub">Global configuration for the SmartHire platform — changes here affect all users.</p>
+    </div>
+    <div class="page-hdr__chip">
+      <lucide-icon name="zap" [size]="13" [strokeWidth]="2.5"></lucide-icon>
+      Changes are applied immediately — no restart required
+    </div>
+  </header>
+
+  <!-- ╌╌╌ Two Column Master-Detail ╌╌╌ -->
+  <div class="settings-body">
+
+    <!-- ══════════ LEFT — Settings Navigation ══════════ -->
+    <nav class="settings-nav">
+      <ng-container *ngFor="let cat of categories; let i = index">
+        <div *ngIf="shouldShowDivider(i)" class="nav-divider"></div>
+        <button class="nav-item"
+                [class.nav-item--active]="activeCategory === cat.id"
+                [class.nav-item--danger]="cat.danger"
+                (click)="selectCategory(cat.id)">
+          <span class="nav-item__icon"><lucide-icon [name]="cat.icon" [size]="16"></lucide-icon></span>
+          <span class="nav-item__label">{{ cat.label }}</span>
+          <span *ngIf="cat.dirty" class="nav-item__dot"></span>
+        </button>
+      </ng-container>
+    </nav>
+
+    <!-- ══════════ RIGHT — Settings Content ══════════ -->
+    <div class="settings-content">
+
+      <!-- ━━━━━━━━━━ GENERAL ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'appearance'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">APPEARANCE &amp; THEME</h3>
+
+          <div class="appearance-grid">
+            <div class="appearance-block">
+              <label class="form-label">Theme Mode</label>
+              <div class="mode-switches">
+                <button class="mode-btn" [class.mode-btn--active]="themeMode === 'light'" (click)="selectThemeMode('light')">Light</button>
+                <button class="mode-btn" [class.mode-btn--active]="themeMode === 'dark'" (click)="selectThemeMode('dark')">Dark</button>
+              </div>
+            </div>
+
+            <div class="appearance-block appearance-block--full">
+              <label class="form-label">Palette</label>
+              <div class="palette-grid">
+                <button *ngFor="let palette of themePalettes"
+                        class="palette-btn"
+                        [class.palette-btn--active]="themePalette === palette"
+                        (click)="selectThemePalette(palette)">
+                  {{ formatPaletteName(palette) }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ GENERAL ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'general'" class="panel">
+
+        <!-- Platform Identity -->
+        <section class="section">
+          <h3 class="section__heading">PLATFORM IDENTITY</h3>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Platform Name</label>
+              <input type="text" class="form-input" [(ngModel)]="identity.name" (ngModelChange)="checkDirty()" />
+              <span class="form-hint">Used in emails, legal documents, and meta tags.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Platform URL</label>
+              <input type="text" class="form-input" [(ngModel)]="identity.url" (ngModelChange)="checkDirty()" />
+              <span class="form-hint">The canonical URL — used in OAuth redirect URIs and email links.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Support Email</label>
+              <input type="email" class="form-input" [(ngModel)]="identity.supportEmail" (ngModelChange)="checkDirty()" />
+              <span class="form-hint">Where user support requests are directed.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Contact Email</label>
+              <input type="email" class="form-input" [(ngModel)]="identity.contactEmail" (ngModelChange)="checkDirty()" />
+              <span class="form-hint">General contact shown on the landing page.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Default Language</label>
+              <select class="form-select" [(ngModel)]="identity.defaultLanguage" (ngModelChange)="checkDirty()">
+                <option *ngFor="let lang of languageOptions" [value]="lang.value">{{ lang.label }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Default Timezone</label>
+              <select class="form-select" [(ngModel)]="identity.defaultTimezone" (ngModelChange)="checkDirty()">
+                <option *ngFor="let tz of timezoneOptions" [value]="tz">{{ tz }}</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- Maintenance Mode -->
+        <section class="section">
+          <div class="section__heading-row">
+            <h3 class="section__heading">MAINTENANCE MODE</h3>
+            <span class="status-chip" [class.status-chip--on]="maintenance.enabled" [class.status-chip--off]="!maintenance.enabled">
+              <span *ngIf="maintenance.enabled" class="pulse-dot pulse-dot--red"></span>
+              <span *ngIf="!maintenance.enabled" class="pulse-dot pulse-dot--green"></span>
+              {{ maintenance.enabled ? 'Currently ON' : 'Currently OFF' }}
+            </span>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-row__text">
+              <span class="toggle-row__label">Enable Maintenance Mode</span>
+              <span class="toggle-row__desc">When enabled, all non-admin users are redirected to the maintenance page. Admins can still access the platform.</span>
+            </div>
+            <button class="toggle-switch" [class.toggle-switch--on]="maintenance.enabled" (click)="onMaintenanceToggle()">
+              <span class="toggle-switch__knob"></span>
+            </button>
+          </div>
+
+          <div class="maintenance-fields">
+            <div class="form-group">
+              <label class="form-label">Maintenance Message</label>
+              <textarea class="form-textarea" rows="3" [(ngModel)]="maintenance.message" (ngModelChange)="checkDirty()" placeholder="Message shown to users on the maintenance page..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Estimated End Time</label>
+              <input type="datetime-local" class="form-input" [(ngModel)]="maintenance.estimatedEnd" (ngModelChange)="checkDirty()" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Localization -->
+        <section class="section">
+          <h3 class="section__heading">LOCALIZATION</h3>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Default Date Format</label>
+              <select class="form-select" [(ngModel)]="localization.dateFormat" (ngModelChange)="checkDirty()">
+                <option *ngFor="let f of dateFormatOptions" [value]="f">{{ f }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Default Currency</label>
+              <select class="form-select" [(ngModel)]="localization.currency" (ngModelChange)="checkDirty()">
+                <option *ngFor="let c of currencyOptions" [value]="c.value">{{ c.label }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group form-group--full">
+            <label class="form-label">Available Languages</label>
+            <div class="tag-input">
+              <span *ngFor="let lang of localization.availableLanguages; let i = index" class="tag">
+                {{ lang }}
+                <button class="tag__remove" (click)="removeLanguage(i)">×</button>
+              </span>
+              <div class="tag-input__field-wrap">
+                <input type="text" class="tag-input__field"
+                       [(ngModel)]="newLanguageInput"
+                       (focus)="onLanguageInputFocus()"
+                       (blur)="onLanguageInputBlur()"
+                       placeholder="Add language..." />
+                <div *ngIf="showLanguageDropdown && filteredLanguageOptions.length > 0" class="tag-dropdown">
+                  <button *ngFor="let opt of filteredLanguageOptions" class="tag-dropdown__item" (mousedown)="addLanguage(opt)">{{ opt }}</button>
+                </div>
+              </div>
+            </div>
+            <span class="form-hint">Adding a new language here enables it in user settings.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ BRANDING ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'branding'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">BRANDING</h3>
+          <div class="placeholder-panel">
+            <lucide-icon name="image" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">Branding Configuration</span>
+            <span class="placeholder-panel__sub">Logo uploads, color schemes, and custom CSS will be configured here.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ AI CONFIGURATION ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'ai'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">AI CONFIGURATION</h3>
+          <div class="placeholder-panel">
+            <lucide-icon name="brain-circuit" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">AI Model Settings</span>
+            <span class="placeholder-panel__sub">OpenAI, Claude, and Hume AI API keys, temperature settings, token limits, and model selection.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ EMAIL & NOTIFICATIONS ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'email'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">EMAIL &amp; NOTIFICATIONS</h3>
+          <div class="placeholder-panel">
+            <lucide-icon name="mail" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">Email &amp; Notification Settings</span>
+            <span class="placeholder-panel__sub">SMTP configuration, email templates, push notification settings, and notification rules.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ AUTH & SECURITY ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'auth'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">AUTHENTICATION &amp; SECURITY</h3>
+          <div class="placeholder-panel">
+            <lucide-icon name="lock" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">Security Settings</span>
+            <span class="placeholder-panel__sub">OAuth providers, MFA policies, password rules, session timeouts, and IP whitelisting.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ SUBSCRIPTION & BILLING ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'billing'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">SUBSCRIPTION &amp; BILLING</h3>
+          <div class="placeholder-panel">
+            <lucide-icon name="credit-card" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">Billing Configuration</span>
+            <span class="placeholder-panel__sub">Stripe keys, subscription plans, pricing tiers, and invoice settings.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ FEATURE FLAGS ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'features'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">FEATURE FLAGS</h3>
+
+          <div class="section__sub">
+            <p class="section__subtext">Toggle experimental features, A/B tests, and gradual rollouts.</p>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-row__text">
+              <span class="toggle-row__label">Enable Face Recognition</span>
+              <span class="toggle-row__desc">Allow users to register facial data for MFA and candidate verification. Toggle globally for the platform.</span>
+            </div>
+            <button class="toggle-switch" [class.toggle-switch--on]="features.faceRecognitionEnabled" (click)="setupFaceRecognition()">
+              <span class="toggle-switch__knob"></span>
+            </button>
+          </div>
+
+          <div class="form-hint" style="margin-top:12px;">When enabled, users will see face recognition as an option during account setup and MFA flows.</div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ INTEGRATIONS ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'integrations'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">INTEGRATIONS</h3>
+          <div class="placeholder-panel">
+            <lucide-icon name="code" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">Third-Party Integrations</span>
+            <span class="placeholder-panel__sub">GitHub, LinkedIn, Google, Slack, and webhook endpoint configuration.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ AUDIT LOG ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'audit'" class="panel">
+        <section class="section">
+          <h3 class="section__heading">AUDIT LOG</h3>
+          <div class="placeholder-panel">
+            <lucide-icon name="file-text" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">Audit Trail</span>
+            <span class="placeholder-panel__sub">View all admin actions, setting changes, and system events with timestamps.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ━━━━━━━━━━ DANGER ZONE ━━━━━━━━━━ -->
+      <div *ngIf="activeCategory === 'danger'" class="panel">
+        <section class="section">
+          <h3 class="section__heading section__heading--danger">DANGER ZONE</h3>
+          <div class="placeholder-panel placeholder-panel--danger">
+            <lucide-icon name="triangle-alert" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+            <span class="placeholder-panel__title">Destructive Actions</span>
+            <span class="placeholder-panel__sub">Reset platform data, purge user accounts, export full database, and delete the platform.</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- ╌╌╌ Sticky Save Bar ╌╌╌ -->
+      <div class="save-bar" [class.save-bar--visible]="isCurrentDirty">
+        <span class="save-bar__text">You have unsaved changes in this section.</span>
+        <div class="save-bar__actions">
+          <button class="btn-ghost btn-ghost--sm" (click)="discardCategory()">Discard</button>
+          <button class="btn-primary" (click)="saveCategory()">Save Changes</button>
+        </div>
+      </div>
+
+    </div><!-- /settings-content -->
+  </div><!-- /settings-body -->
+
+</div><!-- /settings-page -->
+
+<!-- ╌╌╌ Maintenance Confirmation Modal ╌╌╌ -->
+<div class="modal-overlay" *ngIf="showMaintenanceModal" (click)="cancelMaintenance()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal__header">
+      <h3 class="modal__title">Enable Maintenance Mode</h3>
+      <button class="modal__close" (click)="cancelMaintenance()">×</button>
+    </div>
+    <div class="modal__body">
+      <div class="modal__warning">
+        <lucide-icon name="triangle-alert" [size]="20"></lucide-icon>
+        <p>This will immediately log out all active users and show the maintenance page. Are you sure?</p>
+      </div>
+      <label class="form-label" style="margin-top: 16px;">Type <strong>MAINTENANCE</strong> to confirm</label>
+      <input type="text" class="form-input" [(ngModel)]="maintenanceConfirmText" placeholder="MAINTENANCE" />
+    </div>
+    <div class="modal__footer">
+      <button class="btn-ghost" (click)="cancelMaintenance()">Cancel</button>
+      <button class="btn-danger" [disabled]="!maintenanceConfirmValid" (click)="confirmMaintenance()">Enable Maintenance</button>
+    </div>
+  </div>
+</div>
+
+<!-- ╌╌╌ Toast ╌╌╌ -->
+<div class="toast" [class.toast--visible]="toast.visible" [class.toast--success]="toast.type === 'success'" [class.toast--error]="toast.type === 'error'">
+  <lucide-icon *ngIf="toast.type === 'success'" name="check" [size]="16" [strokeWidth]="2.5"></lucide-icon>
+  <lucide-icon *ngIf="toast.type === 'error'" name="circle-x" [size]="16" [strokeWidth]="2.5"></lucide-icon>
+  {{ toast.message }}
+</div>

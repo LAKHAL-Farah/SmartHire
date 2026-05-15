@@ -1,0 +1,309 @@
+<div class="room">
+  <header class="status-bar">
+    <div class="status-bar__left">
+      <span class="logo">SmartHire</span>
+      <span class="badge badge-mode" [class.mode-practice]="isPractice()" [class.mode-test]="isTest()">{{ session()?.mode }}</span>
+      <span class="badge badge-role">{{ session()?.roleType }}</span>
+    </div>
+
+    <div class="status-bar__right">
+      <span class="elapsed">{{ toClock(elapsedSeconds()) }}</span>
+      <span class="connection-pill" [class.connection-pill--live-connected]="isWsConnected()">
+        <span class="dot" [class.dot-online]="isWsConnected()" [class.dot-offline]="!isWsConnected()"></span>
+        {{ isWsConnected() ? 'Live' : 'Connecting...' }}
+      </span>
+      <button class="abandon-btn" type="button" (click)="requestAbandon()" title="Abandon session">
+        🚪
+      </button>
+    </div>
+  </header>
+
+  <div class="progress-strip">
+    <span>{{ questionPositionLabel() }}</span>
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="progressPercent()"></div>
+    </div>
+    <span class="phase-pill" [class]="getPhaseClass(phaseLabel())">{{ phaseLabel() }}</span>
+  </div>
+
+  @if (!isLoaded() && !loadError()) {
+    <div class="loading-state">Loading session...</div>
+  }
+
+  @if (loadError()) {
+    <div class="error-state">{{ loadError() }}</div>
+  }
+
+  @if (isLoaded() && currentQuestion()) {
+    @if (activeView() === 'cloud-canvas') {
+      <div class="room-body room-body--canvas">
+        <main class="main-column main-column--canvas">
+          <section class="answer-section answer-section--canvas">
+            <app-cloud-interview
+              [question]="currentQuestion()"
+              [metadata]="questionMetadata()"
+              [sessionId]="session()?.id || 0"
+              (answerSubmitted)="onAnswerSubmitted($event)"
+            ></app-cloud-interview>
+          </section>
+        </main>
+      </div>
+    } @else if (activeView() === 'ai-ml') {
+      <div class="room-body room-body--canvas">
+        <main class="main-column main-column--canvas">
+          <section class="answer-section answer-section--canvas">
+            <app-ml-pipeline
+              #mlPipeline
+              [sessionId]="session()?.id || 0"
+              [questionId]="currentQuestion()!.id"
+              [answerId]="lastAnswerId()"
+              [questionText]="currentQuestion()!.questionText"
+              [followUpText]="mlFollowUpText()"
+              (answerSubmitted)="onAnswerSubmitted($event)"
+              (resyncRequested)="syncMlWithSession()"
+            ></app-ml-pipeline>
+          </section>
+        </main>
+      </div>
+    } @else {
+      <div class="room-body" [class.room-body--coding]="activeView() === 'coding'">
+        <main class="main-column" [class.main-column--coding]="activeView() === 'coding'">
+          <section class="avatar-panel" [class.avatar-panel--coding]="activeView() === 'coding'">
+            <div class="avatar-panel__identity">
+              <div class="avatar-ring"></div>
+              <div class="avatar-core">🤖</div>
+              <p class="avatar-title">AI Interviewer</p>
+              <p class="avatar-status">{{ avatarStatus() }}</p>
+            </div>
+
+            @if (activeView() === 'coding') {
+              <aside class="timer-inline" [class]="getTimerToneClass()">
+                @if (isTest()) {
+                  <svg class="timer-ring" viewBox="0 0 140 140" aria-hidden="true">
+                    <circle class="ring-bg" cx="70" cy="70" [attr.r]="timerRadius"></circle>
+                    <circle
+                      class="ring-progress"
+                      cx="70"
+                      cy="70"
+                      [attr.r]="timerRadius"
+                      [attr.stroke-dasharray]="timerCircumference"
+                      [attr.stroke-dashoffset]="timerRingOffset()"
+                    ></circle>
+                  </svg>
+                }
+
+                <span class="timer-clock">{{ timerDisplay() }}</span>
+                <span class="timer-label">@if (isTest()) { Time Left } @else { Elapsed }</span>
+              </aside>
+            }
+          </section>
+
+          <article class="question-card" [class.question-card--coding]="activeView() === 'coding'">
+            <div class="question-card__meta">
+              <span class="type-pill" [class]="getPhaseClass(currentQuestion()!.type)">{{ currentQuestion()!.type }}</span>
+              <span class="difficulty-pill" [class]="getDifficultyClass(currentQuestion()!.difficulty)">{{ currentQuestion()!.difficulty }}</span>
+            </div>
+
+            <h2 class="question-text">{{ currentQuestion()!.questionText }}</h2>
+            <button
+              class="question-audio-btn"
+              type="button"
+              [disabled]="!currentQuestion()!.ttsAudioUrl"
+              (click)="playCurrentQuestionAudio()"
+            >
+              Replay audio
+            </button>
+            <p class="question-index">Question {{ currentIndex() + 1 }} of {{ totalQuestions() }}</p>
+          </article>
+
+          <section class="answer-section" [class.answer-section--coding]="activeView() === 'coding'">
+            <app-verbal-interview
+              *ngIf="activeView() === 'verbal'"
+              [question]="currentQuestion()"
+              [sessionId]="session()?.id || 0"
+              [mode]="session()?.mode || 'PRACTICE'"
+              (answerSubmitted)="onAnswerSubmitted($event)"
+            ></app-verbal-interview>
+
+            <app-coding-interview
+              *ngIf="activeView() === 'coding'"
+              [question]="currentQuestion()"
+              [metadata]="questionMetadata()"
+              [sessionId]="session()?.id || 0"
+              (answerSubmitted)="onAnswerSubmitted($event)"
+            ></app-coding-interview>
+
+            <app-coming-soon
+              *ngIf="activeView() === 'coming-soon-ai'"
+              [role]="'AI Engineer'"
+              [feature]="'ML Pipeline Designer & Scenario Evaluation'"
+            ></app-coming-soon>
+          </section>
+        </main>
+
+        @if (activeView() !== 'coding') {
+          <aside class="timer-section" [class]="getTimerToneClass()">
+            @if (isTest()) {
+              <svg class="timer-ring" viewBox="0 0 140 140" aria-hidden="true">
+                <circle class="ring-bg" cx="70" cy="70" [attr.r]="timerRadius"></circle>
+                <circle
+                  class="ring-progress"
+                  cx="70"
+                  cy="70"
+                  [attr.r]="timerRadius"
+                  [attr.stroke-dasharray]="timerCircumference"
+                  [attr.stroke-dashoffset]="timerRingOffset()"
+                ></circle>
+              </svg>
+            }
+
+            <span class="timer-clock">{{ timerDisplay() }}</span>
+            <span class="timer-label">@if (isTest()) { Time Left } @else { Elapsed }</span>
+          </aside>
+        }
+      </div>
+    }
+  }
+
+  @if (feedbackOpen() && isPractice() && feedbackEvaluation()) {
+    <div class="feedback-overlay">
+      <div class="feedback-drawer">
+        <div class="score-badge" [style.color]="scoreTextColor()">
+          {{ animatedScore().toFixed(1) }} / 10
+        </div>
+
+        <div class="gauge-row">
+          <div class="gauge-card">
+            <span>Content</span>
+            <strong>{{ contentScoreLabel() }}</strong>
+          </div>
+          <div class="gauge-card" title="Coming in Phase 2">
+            <span>Voice</span>
+            <strong>--</strong>
+          </div>
+          <div class="gauge-card" title="Coming in Phase 2">
+            <span>Presence</span>
+            <strong>--</strong>
+          </div>
+        </div>
+
+        <section class="feedback-block">
+          <h3>AI Feedback</h3>
+          @if (feedbackEvaluation()!.aiFeedback) {
+            <p>{{ feedbackEvaluation()!.aiFeedback }}</p>
+          } @else {
+            <div class="feedback-skeleton"></div>
+          }
+        </section>
+
+        <section class="feedback-block">
+          <h3>Bookmark this question</h3>
+          <app-bookmark-button
+            [questionId]="currentQuestion()!.id"
+            [userId]="currentUserId"
+          ></app-bookmark-button>
+        </section>
+
+        <section class="feedback-block">
+          <h3>Expected points</h3>
+          <ul class="expected-list">
+            @for (point of expectedPoints(); track point) {
+              <li>✅ {{ point }}</li>
+            }
+          </ul>
+        </section>
+
+        <section class="feedback-block">
+          <button class="collapse-btn" type="button" (click)="toggleIdeal()">See ideal answer</button>
+          @if (idealExpanded()) {
+            <div class="ideal-answer" [class.ideal-answer--blur]="!idealReveal()">
+              {{ currentQuestion()?.idealAnswer || 'No ideal answer available.' }}
+            </div>
+            <button class="reveal-btn" type="button" (click)="toggleIdealReveal()">
+              @if (idealReveal()) { Hide } @else { Reveal }
+            </button>
+          }
+        </section>
+
+        <div class="feedback-actions">
+          <button class="retry-btn" type="button" (click)="tryAgain()">Try Again</button>
+          <button class="next-btn" type="button" (click)="nextQuestion()">Next Question →</button>
+        </div>
+
+        @if (feedbackEvaluation()!.followUpGenerated) {
+          <div class="follow-up">
+            <p class="follow-up__label">Your interviewer would ask:</p>
+            <p class="follow-up__text">{{ feedbackEvaluation()!.followUpGenerated }}</p>
+
+            <button class="follow-up__btn" type="button" (click)="openFollowUpInput()">Answer Follow-up</button>
+
+            @if (followUpState()) {
+              <p class="follow-up__state">{{ followUpState() }}</p>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (showFollowUpDialog() && feedbackEvaluation()!.followUpGenerated) {
+    <div class="follow-up-overlay" (click)="closeFollowUpInput()">
+      <div class="follow-up-dialog" (click)="$event.stopPropagation()">
+        <h3>Follow-up Question</h3>
+        <p class="follow-up-dialog__question">{{ feedbackEvaluation()!.followUpGenerated }}</p>
+        <textarea
+          class="follow-up__textarea"
+          rows="5"
+          placeholder="Write your follow-up answer..."
+          [value]="followUpText()"
+          (input)="followUpText.set($any($event.target).value)"
+        ></textarea>
+        <div class="follow-up-dialog__actions">
+          <button type="button" (click)="closeFollowUpInput()">Cancel</button>
+          <button class="follow-up__btn" type="button" [disabled]="followUpBusy() || !followUpText().trim().length" (click)="submitFollowUp()">
+            @if (followUpBusy()) { Submitting... } @else { Submit Follow-up }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showAbandonConfirm()) {
+    <div class="confirm-overlay" (click)="cancelAbandon()">
+      <div class="confirm-dialog" (click)="$event.stopPropagation()">
+        <h3>Abandon this session?</h3>
+        <p>Your current progress will be marked as abandoned.</p>
+        <div class="confirm-actions">
+          <button type="button" (click)="cancelAbandon()">Cancel</button>
+          <button class="danger" type="button" (click)="confirmAbandon()">Abandon</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showStreakCelebration()) {
+    <div class="streak-celebration-overlay" aria-live="polite">
+      <div class="streak-celebration-card">
+        <p class="streak-celebration-label">Streak Unlocked</p>
+        <h3>🔥 {{ streakCelebrationValue() }} day streak</h3>
+        <p>Momentum updated. Opening your report...</p>
+
+        <div class="confetti-burst" aria-hidden="true">
+          @for (piece of celebrationConfettiPieces; track piece) {
+            <span class="confetti-piece" [style.--piece]="piece"></span>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (reportPreparing()) {
+    <div class="report-preparing-overlay" aria-live="polite" aria-busy="true">
+      <div class="report-preparing-card">
+        <span class="report-preparing-spinner" aria-hidden="true"></span>
+        <h3>Getting the report ready...</h3>
+        <p>{{ reportPreparingMessage() }}</p>
+      </div>
+    </div>
+  }
+</div>

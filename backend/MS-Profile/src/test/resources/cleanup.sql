@@ -1,0 +1,11 @@
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE cv_version;
+TRUNCATE TABLE github_repository;
+TRUNCATE TABLE candidate_cv;
+TRUNCATE TABLE job_offer;
+TRUNCATE TABLE linkedin_profile;
+TRUNCATE TABLE github_profile;
+TRUNCATE TABLE hire_readiness_score;
+TRUNCATE TABLE profile_tip;
+TRUNCATE TABLE audit_log;
+SET FOREIGN_KEY_CHECKS = 1;

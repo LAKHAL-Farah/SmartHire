@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  namespace: smarthire
+data:
+  application.yml: |
+    spring:
+      profiles: prod
+      eureka:
+        client:
+          serviceUrl:
+            defaultZone: ${EUREKA_SERVER_URL}

@@ -1,0 +1,49 @@
+<section class="pricing" id="pricing" #pricingSection>
+  <div class="section-container">
+    <p class="pricing__eyebrow">Pricing</p>
+    <h2 class="pricing__title">Simple, transparent pricing</h2>
+
+    <!-- Toggle -->
+    <div class="pricing__toggle">
+      <span [class.active]="!isAnnual()">Monthly</span>
+      <button class="pricing__switch" [class.on]="isAnnual()" (click)="isAnnual.set(!isAnnual())">
+        <div class="pricing__switch-thumb"></div>
+      </button>
+      <span [class.active]="isAnnual()">
+        Annual
+        <span class="pricing__save-badge">Save 20%</span>
+      </span>
+    </div>
+
+    <div class="pricing__grid">
+      @for (plan of plans; track plan.name) {
+        <div class="pricing__card glass-card" [class.pricing__card--featured]="plan.featured">
+          @if (plan.featured) {
+            <div class="pricing__popular">Most Popular</div>
+          }
+          <h3 class="pricing__plan-name">{{ plan.name }}</h3>
+          <p class="pricing__billing">{{ plan.billing }}</p>
+          <div class="pricing__price">
+            <span class="pricing__currency">{{ plan.price === 0 ? '' : '$' }}</span>
+            <span class="pricing__amount">{{ plan.price === 0 ? 'Free' : (isAnnual() ? (plan.price * 0.8 | number:'1.0-0') : plan.price) }}</span>
+            @if (plan.price > 0) {
+              <span class="pricing__period">/mo</span>
+            }
+          </div>
+          <p class="pricing__plan-desc">{{ plan.desc }}</p>
+          <ul class="pricing__features">
+            @for (feat of plan.features; track feat) {
+              <li>
+                <lucide-icon name="check" [size]="16"></lucide-icon>
+                {{ feat }}
+              </li>
+            }
+          </ul>
+          <button [class]="plan.featured ? 'btn-primary w-full' : 'btn-ghost w-full'">
+            {{ plan.cta }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</section>

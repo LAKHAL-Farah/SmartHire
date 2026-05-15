@@ -1,0 +1,52 @@
+<nav
+  class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
+  [class.scrolled]="isScrolled()"
+>
+  <div class="section-container flex items-center justify-between h-[72px]">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2 text-[var(--text-primary)] font-bold text-xl no-underline">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2ee8a5] to-[#3b82f6] flex items-center justify-center text-sm font-black text-[var(--bg-primary)]">
+        S
+      </div>
+      <span class="font-display">SmartHire</span>
+    </a>
+
+    <!-- Center Links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how-it-works" class="nav-link">How it works</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#testimonials" class="nav-link">For Students</a>
+    </div>
+
+    <!-- Right Actions -->
+    <div class="flex items-center gap-3">
+      <a routerLink="/login" class="hidden sm:block text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors text-sm font-medium no-underline px-4 py-2">
+        Log in
+      </a>
+      <a routerLink="/register" class="btn-primary !py-2.5 !px-5 !text-sm no-underline">
+        Get Started
+      </a>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button
+      class="md:hidden flex flex-col gap-1.5 bg-transparent border-none cursor-pointer p-2"
+      (click)="toggleMobile()"
+    >
+      <span class="block w-5 h-0.5 bg-[var(--text-primary)] transition-transform" [class.rotate-45]="mobileOpen()" [class.translate-y-1]="mobileOpen()"></span>
+      <span class="block w-5 h-0.5 bg-[var(--text-primary)] transition-opacity" [class.opacity-0]="mobileOpen()"></span>
+      <span class="block w-5 h-0.5 bg-[var(--text-primary)] transition-transform" [class.-rotate-45]="mobileOpen()" [class.-translate-y-1]="mobileOpen()"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  @if (mobileOpen()) {
+    <div class="md:hidden bg-[var(--bg-secondary)] border-t border-[var(--border-subtle)] px-6 py-4 flex flex-col gap-3">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how-it-works" class="nav-link">How it works</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#testimonials" class="nav-link">For Students</a>
+    </div>
+  }
+</nav>

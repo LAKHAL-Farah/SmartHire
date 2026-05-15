@@ -1,0 +1,8 @@
+{
+  "id": 42,
+  "liveMode": true,
+  "status": "IN_PROGRESS",
+  "liveSubMode": "PRACTICE_LIVE",
+  "questionCountRequested": 5,
+  "currentQuestionIndex": 0
+}

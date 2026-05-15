@@ -1,0 +1,35 @@
+<section class="features" id="features" #featuresSection>
+  <div class="section-container">
+    <p class="features__eyebrow">Features</p>
+
+    <!-- GitHub-style scroll reveal statement -->
+    <div class="scroll-text features__statement" #scrollText>
+      <span class="word">One</span>
+      <span class="word">platform.</span>
+      <span class="word">Everything</span>
+      <span class="word">you</span>
+      <span class="word">need</span>
+      <span class="word">to</span>
+      <span class="word word--accent">assess,</span>
+      <span class="word word--accent">learn,</span>
+      <span class="word word--accent">practice,</span>
+      <span class="word">and</span>
+      <span class="word word--accent">land</span>
+      <span class="word">your</span>
+      <span class="word">dream</span>
+      <span class="word">role.</span>
+    </div>
+
+    <div class="features__grid">
+      @for (f of features; track f.title) {
+        <div class="features__card glow-border">
+          <div class="features__card-inner">
+            <div class="features__icon">{{ f.icon }}</div>
+            <h3 class="features__card-title">{{ f.title }}</h3>
+            <p class="features__card-desc">{{ f.desc }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

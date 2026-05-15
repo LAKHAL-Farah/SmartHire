@@ -1,0 +1,188 @@
+<div class="rm">
+  <!-- ═══════ PENDING ALERT CARD ═══════ -->
+  @if (pendingCount > 0) {
+    <div class="pending-alert">
+      <div class="pending-alert__left">
+        <lucide-icon name="clock" [size]="18"></lucide-icon>
+        <span class="pending-alert__text">{{ pendingCount }} recruiter{{ pendingCount === 1 ? '' : 's' }} awaiting verification</span>
+      </div>
+      <button class="btn btn--primary btn--sm" (click)="reviewNow()">Review Now</button>
+    </div>
+  }
+
+  <!-- ═══════ TOOLBAR ═══════ -->
+  <div class="toolbar">
+    <div class="toolbar__left">
+      <div class="search-box">
+        <lucide-icon name="search" [size]="15"></lucide-icon>
+        <input type="text" placeholder="Search companies..." [(ngModel)]="searchQuery" class="search-input" />
+      </div>
+
+      <select [(ngModel)]="verificationFilter" class="filter-select">
+        @for (v of verifications; track v) { <option [value]="v">{{ v === 'All' ? 'All Status' : v }}</option> }
+      </select>
+      <select [(ngModel)]="industryFilter" class="filter-select">
+        @for (ind of industries; track ind) { <option [value]="ind">{{ ind === 'All' ? 'All Industries' : ind }}</option> }
+      </select>
+      <select [(ngModel)]="planFilter" class="filter-select">
+        @for (p of plans; track p) { <option [value]="p">{{ p === 'All' ? 'All Plans' : p }}</option> }
+      </select>
+    </div>
+
+    <div class="toolbar__right">
+      <button class="btn btn--outline">
+        <lucide-icon name="download" [size]="15"></lucide-icon>
+        Export CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════ TABLE ═══════ -->
+  <div class="table-wrap">
+    <table class="rec-table">
+      <thead>
+        <tr>
+          <th class="col-check"><input type="checkbox" [checked]="allChecked" (change)="toggleAll()" /></th>
+          <th>Company</th>
+          <th>Contact</th>
+          <th>Industry</th>
+          <th>Plan</th>
+          <th>Verification</th>
+          <th>Active Jobs</th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rec of paginatedRecruiters; track rec.id) {
+          <tr [class.row-selected]="isSelected(rec.id)" [class.row-pending]="rec.verification === 'Pending'">
+            <td class="col-check" (click)="$event.stopPropagation()"><input type="checkbox" [checked]="isSelected(rec.id)" (change)="toggleRow(rec.id)" /></td>
+            <td>
+              <div class="company-cell">
+                <span class="logo-sm" [style.background]="logoGradient(rec.id)">{{ rec.companyLogo }}</span>
+                <div class="company-info">
+                  <span class="company-name">{{ rec.companyName }}</span>
+                  <span class="company-email">{{ rec.email }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-main">{{ rec.contactName }}</td>
+            <td class="text-dim">{{ rec.industry }}</td>
+            <td><span class="pill" [ngClass]="getPlanClass(rec.plan)">{{ rec.plan }}</span></td>
+            <td>
+              <span class="vbadge" [ngClass]="getVerificationClass(rec.verification)">
+                @if (rec.verification === 'Verified') {
+                  <lucide-icon name="shield-check" [size]="14"></lucide-icon>
+                }
+                @if (rec.verification === 'Pending') {
+                  <lucide-icon name="clock" [size]="14"></lucide-icon>
+                }
+                @if (rec.verification === 'Rejected') {
+                  <lucide-icon name="circle-x" [size]="14"></lucide-icon>
+                }
+                {{ rec.verification }}
+              </span>
+            </td>
+            <td class="text-center">
+              <span class="job-count" [class.job-count--zero]="rec.activeJobs === 0">{{ rec.activeJobs }}</span>
+            </td>
+            <td class="col-actions" (click)="$event.stopPropagation()">
+              <div class="actions-wrap">
+                <button class="dots-btn" (click)="toggleMenu(rec.id, $event)">
+                  <lucide-icon name="ellipsis-vertical" [size]="16"></lucide-icon>
+                </button>
+                @if (openMenuId === rec.id) {
+                  <div class="action-menu">
+                    <button class="action-menu__item">View Company Profile</button>
+                    @if (rec.verification !== 'Verified') {
+                      <button class="action-menu__item action-menu__item--teal" (click)="openVerifyModal(rec, $event)">Verify</button>
+                    }
+                    @if (rec.verification !== 'Rejected') {
+                      <button class="action-menu__item" (click)="openVerifyModal(rec, $event)">Reject with Reason</button>
+                    }
+                    <button class="action-menu__item">View Job Offers</button>
+                    <button class="action-menu__item action-menu__item--danger">Suspend</button>
+                    <button class="action-menu__item action-menu__item--danger">Delete</button>
+                  </div>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════ PAGINATION ═══════ -->
+  <div class="pagination">
+    <span class="pagination__info">Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredRecruiters.length ? filteredRecruiters.length : currentPage * pageSize }} of {{ filteredRecruiters.length }}</span>
+    <div class="pagination__btns">
+      <button class="pg-btn" [disabled]="currentPage === 1" (click)="goPage(currentPage - 1)">←</button>
+      @for (p of pageNumbers; track p) {
+        <button class="pg-btn" [class.pg-active]="p === currentPage" (click)="goPage(p)">{{ p }}</button>
+      }
+      <button class="pg-btn" [disabled]="currentPage === totalPages" (click)="goPage(currentPage + 1)">→</button>
+    </div>
+  </div>
+
+  <!-- ═══════ BULK ACTION BAR ═══════ -->
+  @if (selectedIds.size > 0) {
+    <div class="bulk-bar">
+      <span class="bulk-bar__count">{{ selectedIds.size }} recruiter{{ selectedIds.size === 1 ? '' : 's' }} selected</span>
+      <div class="bulk-bar__actions">
+        <button class="btn btn--outline btn--sm">Export Selected</button>
+        <button class="btn btn--outline btn--sm">Bulk Verify</button>
+        <button class="btn btn--danger btn--sm">Suspend Selected</button>
+        <button class="btn btn--ghost btn--sm" (click)="clearSelection()">Clear</button>
+      </div>
+    </div>
+  }
+
+  <!-- ═══════ VERIFICATION MODAL ═══════ -->
+  @if (modalOpen && modalRecruiter) {
+    <div class="modal-overlay" (click)="closeModal()"></div>
+    <div class="modal">
+      <button class="modal__close" (click)="closeModal()">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+
+      <h2 class="modal__title">Verify Recruiter</h2>
+
+      <div class="modal__company">
+        <span class="logo-md" [style.background]="logoGradient(modalRecruiter.id)">{{ modalRecruiter.companyLogo }}</span>
+        <div>
+          <h3 class="modal__company-name">{{ modalRecruiter.companyName }}</h3>
+          <a class="modal__website" [href]="modalRecruiter.website" target="_blank">{{ modalRecruiter.website }}</a>
+        </div>
+      </div>
+
+      <div class="modal__info-grid">
+        <div class="modal__info-row"><span class="modal__info-label">Contact</span><span>{{ modalRecruiter.contactName }}</span></div>
+        <div class="modal__info-row"><span class="modal__info-label">Email</span><span>{{ modalRecruiter.email }}</span></div>
+        <div class="modal__info-row"><span class="modal__info-label">Industry</span><span>{{ modalRecruiter.industry }}</span></div>
+        <div class="modal__info-row"><span class="modal__info-label">Employees</span><span>{{ modalRecruiter.employees }}</span></div>
+        <div class="modal__info-row"><span class="modal__info-label">Joined</span><span>{{ modalRecruiter.joined }}</span></div>
+      </div>
+
+      <div class="modal__desc">
+        <span class="modal__info-label">Company Description</span>
+        <p>{{ modalRecruiter.description }}</p>
+      </div>
+
+      <div class="modal__reason">
+        <label class="modal__info-label" for="reason">Rejection Reason (optional for approval)</label>
+        <textarea id="reason" class="modal__textarea" rows="3" placeholder="Enter reason for rejection..." [(ngModel)]="rejectionReason"></textarea>
+      </div>
+
+      <div class="modal__actions">
+        <button class="modal-btn modal-btn--approve" (click)="approveVerification()">
+          <lucide-icon name="shield-check" [size]="16"></lucide-icon>
+          Approve Verification
+        </button>
+        <button class="modal-btn modal-btn--reject" (click)="rejectVerification()">
+          <lucide-icon name="circle-x" [size]="16"></lucide-icon>
+          Reject
+        </button>
+      </div>
+    </div>
+  }
+</div>

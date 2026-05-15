@@ -1,0 +1,100 @@
+<section class="solution" #solutionSection id="how-it-works-detail">
+  <div class="solution__inner">
+    <!-- Left: text panels -->
+    <div class="solution__text-col">
+      @for (step of steps; track step.id; let i = $index) {
+        <div
+          class="solution__step"
+          [class.active]="activeStep === i"
+          [attr.data-step]="i"
+        >
+          <div class="solution__step-num">{{ step.id }}</div>
+          <h3 class="solution__step-title">{{ step.title }}</h3>
+          <p class="solution__step-desc">{{ step.desc }}</p>
+        </div>
+      }
+    </div>
+
+    <!-- Right: animated mockup area -->
+    <div class="solution__visual-col">
+      <div class="solution__visual-frame glass-card">
+        <!-- Step 0: Radar chart -->
+        <div class="solution__scene" [class.active]="activeStep === 0">
+          <div class="radar-chart">
+            <svg viewBox="0 0 200 200">
+              <polygon class="radar-bg" points="100,20 180,80 160,170 40,170 20,80"/>
+              <polygon class="radar-fill" points="100,45 155,78 145,140 55,140 45,78"/>
+              <circle cx="100" cy="45" r="4" fill="var(--accent-teal)"/>
+              <circle cx="155" cy="78" r="4" fill="var(--accent-teal)"/>
+              <circle cx="145" cy="140" r="4" fill="var(--accent-teal)"/>
+              <circle cx="55" cy="140" r="4" fill="var(--accent-teal)"/>
+              <circle cx="45" cy="78" r="4" fill="var(--accent-teal)"/>
+            </svg>
+            <div class="radar-labels">
+              <span style="top: 5%; left: 50%; transform: translateX(-50%)">React</span>
+              <span style="top: 35%; right: 2%">Node.js</span>
+              <span style="bottom: 10%; right: 10%">SQL</span>
+              <span style="bottom: 10%; left: 10%">Python</span>
+              <span style="top: 35%; left: 2%">System Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 1: Roadmap timeline -->
+        <div class="solution__scene" [class.active]="activeStep === 1">
+          <div class="roadmap">
+            @for (item of roadmapItems; track item.label; let i = $index) {
+              <div class="roadmap__item" [style.animation-delay]="i * 150 + 'ms'">
+                <div class="roadmap__dot" [class.done]="i < 2"></div>
+                <div class="roadmap__content">
+                  <span class="roadmap__label">{{ item.label }}</span>
+                  <span class="roadmap__duration">{{ item.duration }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Step 2: Interview session -->
+        <div class="solution__scene" [class.active]="activeStep === 2">
+          <div class="interview">
+            <div class="interview__header">
+              <span class="interview__badge">Mock Interview</span>
+              <span class="interview__timer">14:32</span>
+            </div>
+            <div class="interview__messages">
+              <div class="interview__msg interview__msg--ai">
+                <span class="interview__msg-label">AI Interviewer</span>
+                Tell me about a time you optimized a database query.
+              </div>
+              <div class="interview__msg interview__msg--user">
+                <span class="interview__msg-label">You</span>
+                I reduced our API response time by 60% by adding composite indexes...
+              </div>
+              <div class="interview__feedback">
+                <span class="interview__score">Score: 8.5/10</span>
+                <span class="interview__tip">Tip: Include specific metrics</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Job match cards -->
+        <div class="solution__scene" [class.active]="activeStep === 3">
+          <div class="jobs">
+            @for (job of jobs; track job.company; let i = $index) {
+              <div class="jobs__card" [style.animation-delay]="i * 120 + 'ms'">
+                <div class="jobs__match">{{ job.match }}% match</div>
+                <div class="jobs__info">
+                  <span class="jobs__role">{{ job.role }}</span>
+                  <span class="jobs__company">{{ job.company }}</span>
+                </div>
+                <button class="jobs__apply">Apply</button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

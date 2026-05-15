@@ -1,0 +1,72 @@
+<header class="topbar">
+  <div class="topbar__greeting">
+    @if (quizMode) {
+      <p class="topbar__quiz-warning">Session in progress — do not close this tab</p>
+    } @else if (pageTitle()) {
+      <h1 class="topbar__page-title">{{ pageTitle() }}</h1>
+    } @else {
+      <h1 class="topbar__name">{{ displayName() }} &#x1F44B;</h1>
+      <p class="topbar__date">{{ formattedDate }}</p>
+    }
+  </div>
+
+  <div class="topbar__search-wrap">
+    <lucide-icon class="topbar__search-icon" name="search" [size]="16"></lucide-icon>
+    <input
+      type="text"
+      class="topbar__search"
+      placeholder="Search anything..."
+      [(ngModel)]="searchQuery"
+      name="search"
+    />
+  </div>
+
+  <div class="topbar__actions">
+    <div class="topbar__notif-wrap">
+      <button class="topbar__icon-btn" (click)="toggleNotif()">
+        <lucide-icon name="bell" [size]="20" [strokeWidth]="1.8"></lucide-icon>
+        <span class="topbar__badge">3</span>
+      </button>
+
+      @if (notifOpen()) {
+        <div class="dropdown dropdown--notif">
+          <span class="dropdown__title">Notifications</span>
+          @for (n of notifications; track n.text) {
+            <div class="dropdown__item">
+              <span class="dropdown__dot" [style.background]="n.color"></span>
+              <div class="dropdown__item-body">
+                <span class="dropdown__item-text">{{ n.text }}</span>
+                <span class="dropdown__item-time">{{ n.time }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="topbar__divider"></div>
+
+    <div class="topbar__avatar-wrap">
+      <button class="topbar__avatar" (click)="toggleAvatar()">
+        <span class="topbar__avatar-initials">{{ displayInitials() }}</span>
+      </button>
+
+      @if (avatarOpen()) {
+        <div class="dropdown dropdown--avatar">
+          <a routerLink="/dashboard/profile" class="dropdown__link" (click)="avatarOpen.set(false)">
+            <lucide-icon name="user" [size]="16"></lucide-icon>
+            Profile
+          </a>
+          <a routerLink="/dashboard/settings" class="dropdown__link" (click)="avatarOpen.set(false)">
+            <lucide-icon name="settings" [size]="16"></lucide-icon>
+            Settings
+          </a>
+          <button class="dropdown__link dropdown__link--danger" (click)="signOut()">
+            <lucide-icon name="log-out" [size]="16"></lucide-icon>
+            Sign Out
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

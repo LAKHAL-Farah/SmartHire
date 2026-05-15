@@ -1,0 +1,512 @@
+<section class="optimizer-page">
+  <header class="po-header card">
+    <div class="po-header__top">
+      <div class="po-header__copy">
+        <p class="po-breadcrumb">
+          <span>Dashboard</span>
+          <lucide-icon name="chevron-right" [size]="14"></lucide-icon>
+          <span>Profile Optimizer</span>
+        </p>
+        <h1>Profile Optimizer</h1>
+        <p class="po-subtitle">
+          Upload a CV, target a real job offer, and generate a tailored version without leaving the dashboard.
+        </p>
+      </div>
+
+      <div class="po-header__actions">
+        <a class="btn-ghost" routerLink="/dashboard/cv-history">
+          <lucide-icon name="archive" [size]="14"></lucide-icon>
+          <span>CV history</span>
+        </a>
+        <button type="button" class="btn-primary" (click)="openJobOfferPanel()">
+          <lucide-icon name="plus" [size]="14"></lucide-icon>
+          <span>New job offer</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="po-stat-grid" @statusBarStagger>
+      <article class="po-stat">
+        <span>Active score</span>
+        <strong>{{ statusScore() }}/100</strong>
+        <small>{{ activeCv()?.originalFileName || 'No active CV yet' }}</small>
+      </article>
+
+      <article class="po-stat">
+        <span>Saved job offers</span>
+        <strong>{{ jobOffers().length }}</strong>
+        <small>{{ selectedJobOffer()?.title || 'Select an offer to tailor against' }}</small>
+      </article>
+
+      <article class="po-stat">
+        <span>CV versions</span>
+        <strong>{{ cvVersions().length }}</strong>
+        <small>{{ tailoredVersions().length }} tailored / {{ originalVersion() ? 1 : 0 }} original</small>
+      </article>
+    </div>
+  </header>
+
+  @if (errors().page) {
+    <div class="po-banner card">
+      <lucide-icon name="triangle-alert" [size]="16"></lucide-icon>
+      <span>{{ errors().page }}</span>
+    </div>
+  }
+
+  <div class="po-grid">
+    <aside class="po-side">
+      <section class="card po-card po-upload" id="po-upload-zone">
+        <div class="po-section-head">
+          <div>
+            <p class="po-kicker">CV intake</p>
+            <h2>Upload and parse</h2>
+          </div>
+          <button type="button" class="btn-ghost btn-ghost--small" (click)="openJobOfferPanel()">
+            <lucide-icon name="wand2" [size]="14"></lucide-icon>
+            <span>Paste a job offer</span>
+          </button>
+        </div>
+
+        <div
+          class="upload-zone"
+          [class.upload-zone--drag]="dragOver()"
+          [class.upload-zone--error]="uploadState() === 'error' || !!errors().upload"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+        >
+          <input #filePicker type="file" accept=".pdf,.docx" (change)="onFilePicked($event)" />
+
+          @if (uploadState() === 'parsing') {
+            <div class="upload-zone__state">
+              <span class="spinner"></span>
+              <strong>Parsing your CV...</strong>
+              <p>We are extracting skills, experience, and keywords.</p>
+            </div>
+          } @else if (uploadState() === 'success') {
+            <div class="upload-zone__state upload-zone__state--success">
+              <lucide-icon name="circle-check" [size]="28"></lucide-icon>
+              <strong>CV uploaded successfully</strong>
+              <p>You will be redirected to the CV detail page shortly.</p>
+            </div>
+          } @else if (uploadState() === 'error') {
+            <div class="upload-zone__state upload-zone__state--error">
+              <lucide-icon name="file-x" [size]="28"></lucide-icon>
+              <strong>Upload failed</strong>
+              <p>{{ uploadErrorMessage() || 'Please try again with a PDF or DOCX file.' }}</p>
+              <button type="button" class="btn-ghost btn-ghost--small" (click)="retryUpload()">Reset</button>
+            </div>
+          } @else {
+            <div class="upload-zone__state">
+              <lucide-icon name="upload-cloud" [size]="34"></lucide-icon>
+              <strong>Drop your CV here</strong>
+              <p>PDF or DOCX, up to 5 MB.</p>
+              <button type="button" class="btn-secondary" (click)="filePicker.click()">Browse files</button>
+            </div>
+          }
+
+          @if (selectedFile()) {
+            <div class="picked-file">
+              <lucide-icon name="file-text" [size]="14"></lucide-icon>
+              <span>{{ selectedFileName }}</span>
+            </div>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="btn-primary po-upload__action"
+          [disabled]="!selectedFile() || loading().upload"
+          (click)="parseSelectedCv()"
+        >
+          @if (loading().upload) {
+            <span class="spinner"></span>
+            <span>Parsing...</span>
+          } @else {
+            <lucide-icon name="scan" [size]="14"></lucide-icon>
+            <span>Upload and parse</span>
+          }
+        </button>
+
+        @if (uploadErrorMessage()) {
+          <p class="inline-error">
+            <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+            <span>{{ uploadErrorMessage() }}</span>
+          </p>
+        }
+      </section>
+
+      <section class="card po-card">
+        <div class="po-section-head">
+          <div>
+            <p class="po-kicker">Recent activity</p>
+            <h2>Your CVs</h2>
+          </div>
+          <a class="btn-ghost btn-ghost--small" routerLink="/dashboard/cv-history">
+            <span>View all</span>
+            <lucide-icon name="arrow-right" [size]="14"></lucide-icon>
+          </a>
+        </div>
+
+        @if (recentCvs().length === 0) {
+          <div class="empty-state">
+            <lucide-icon name="archive" [size]="24"></lucide-icon>
+            <p>No CVs have been uploaded yet.</p>
+            <small>Use the upload zone above to create your first parsed CV.</small>
+          </div>
+        } @else {
+          <div class="cv-list">
+            @for (cv of recentCvs(); track cv.id) {
+              <button
+                type="button"
+                class="cv-card"
+                [class.cv-card--active]="activeCv()?.id === cv.id"
+                (click)="openCvDetail(cv)"
+              >
+                <div class="cv-card__head">
+                  <div>
+                    <p class="cv-card__title">{{ cv.originalFileName }}</p>
+                    <p class="cv-card__meta">{{ formatCvDate(cv.uploadedAt) }} · {{ cv.fileFormat }}</p>
+                  </div>
+                  <span class="status-pill" [ngClass]="'status-pill--' + cv.parseStatus.toLowerCase()">
+                    {{ parseStatusLabel(cv.parseStatus) }}
+                  </span>
+                </div>
+
+                <div class="cv-card__foot">
+                  <span class="score-pill" [ngClass]="'score-pill--' + scoreTone(cv.atsScore)">
+                    {{ cv.atsScore ?? 0 }}/100
+                  </span>
+                  <span class="cv-card__hint">
+                    {{ cv.isActive ? 'Active CV' : 'Archived copy' }}
+                  </span>
+                </div>
+              </button>
+            }
+          </div>
+        }
+      </section>
+    </aside>
+
+    <main class="po-main">
+      <section class="card po-card po-summary">
+        <div class="po-section-head po-section-head--tight">
+          <div>
+            <p class="po-kicker">Current focus</p>
+            <h2>{{ activeCv()?.originalFileName || 'No active CV selected' }}</h2>
+          </div>
+          @if (activeCv()) {
+            <span class="status-pill" [ngClass]="'status-pill--' + activeCv()!.parseStatus.toLowerCase()">
+              {{ parseStatusLabel(activeCv()!.parseStatus) }}
+            </span>
+          }
+        </div>
+
+        @if (activeCv(); as cv) {
+          <div class="summary-grid">
+            <div class="score-card">
+              <div class="score-ring" [ngClass]="'score-ring--' + scoreTone(cv.atsScore)">
+                <div class="score-ring__inner">
+                  <strong>{{ scorePercent() }}</strong>
+                  <span>ATS</span>
+                </div>
+              </div>
+              <p class="summary-note">{{ loading().score ? 'Refreshing score' : 'Matched against your latest parsed CV' }}</p>
+            </div>
+
+            <div class="summary-content">
+              <div class="summary-block">
+                <span class="summary-block__label">Detected skills</span>
+                <div class="chip-list">
+                  @if (cv.parsedContent) {
+                    <span class="chip chip--accent">Parsed content available</span>
+                  } @else {
+                    <span class="chip">No parsed content yet</span>
+                  }
+                </div>
+              </div>
+
+              @if (cv.parseErrorMessage) {
+                <div class="summary-alert">
+                  <lucide-icon name="triangle-alert" [size]="15"></lucide-icon>
+                  <span>{{ cv.parseErrorMessage }}</span>
+                </div>
+              }
+
+              <div class="summary-meta">
+                <div>
+                  <span>Uploaded</span>
+                  <strong>{{ formatCvDate(cv.uploadedAt) }}</strong>
+                </div>
+                <div>
+                  <span>Updated</span>
+                  <strong>{{ formatCvDate(cv.updatedAt) }}</strong>
+                </div>
+                <div>
+                  <span>Format</span>
+                  <strong>{{ cv.fileFormat }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="empty-state empty-state--wide">
+            <lucide-icon name="scan" [size]="30"></lucide-icon>
+            <p>Upload a CV to see the score, parsed keywords, and tailored versions.</p>
+            <small>The page stays focused on the current profile while history lives in its own view.</small>
+          </div>
+        }
+      </section>
+
+      <section class="card po-card">
+        <div class="po-section-head">
+          <div>
+            <p class="po-kicker">Job targets</p>
+            <h2>Saved job offers</h2>
+          </div>
+          <button type="button" class="btn-ghost btn-ghost--small" (click)="openJobOfferPanel()">
+            <lucide-icon name="plus" [size]="14"></lucide-icon>
+            <span>Add offer</span>
+          </button>
+        </div>
+
+        @if (jobOffers().length === 0) {
+          <div class="empty-state">
+            <lucide-icon name="briefcase" [size]="24"></lucide-icon>
+            <p>No job offers saved yet.</p>
+            <small>Add one from the side panel to start tailoring.</small>
+          </div>
+        } @else {
+          <div class="offer-list">
+            @for (offer of jobOffers(); track offer.id) {
+              <article class="offer-row" [class.offer-row--selected]="selectedJobOfferId() === offer.id">
+                <label class="offer-row__pick">
+                  <input
+                    type="radio"
+                    name="selectedOffer"
+                    [checked]="selectedJobOfferId() === offer.id"
+                    (change)="setSelectedJobOfferId(offer.id)"
+                  />
+                </label>
+
+                <button type="button" class="offer-row__body" (click)="setSelectedJobOfferId(offer.id)">
+                  <div class="offer-row__top">
+                    <div>
+                      <p class="offer-title">{{ offer.title }}</p>
+                      <p class="offer-company">{{ offer.company || 'Unknown company' }}</p>
+                    </div>
+                    <span class="offer-date">{{ formatCvDate(offer.createdAt) }}</span>
+                  </div>
+
+                  <div class="chip-list">
+                    @for (keyword of offerKeywords(offer).slice(0, 4); track keyword) {
+                      <span class="chip">{{ keyword }}</span>
+                    }
+                    @if (offerKeywords(offer).length > 4) {
+                      <span class="chip chip--muted">+{{ offerKeywords(offer).length - 4 }} more</span>
+                    }
+                  </div>
+                </button>
+
+                <div class="offer-row__actions">
+                  @if (confirmingDeleteJobOfferId !== offer.id) {
+                    <button type="button" class="icon-btn" (click)="promptDeleteJobOffer(offer.id)" aria-label="Delete offer">
+                      <lucide-icon name="trash-2" [size]="15"></lucide-icon>
+                    </button>
+                  } @else {
+                    <div class="confirm-inline">
+                      <span>Delete?</span>
+                      <button type="button" (click)="confirmDeleteJobOffer(offer.id)">Yes</button>
+                      <button type="button" (click)="cancelDeleteJobOffer()">No</button>
+                    </div>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        }
+      </section>
+
+      <section class="card po-card">
+        <div class="po-section-head po-section-head--tight">
+          <div>
+            <p class="po-kicker">Tailoring</p>
+            <h2>Generated versions</h2>
+          </div>
+          <span class="summary-counter">{{ cvVersions().length }} versions</span>
+        </div>
+
+        <section class="tailor-cta" [class.tailor-cta--disabled]="!canTailor()">
+          <div>
+            <p class="tailor-cta__title">{{ selectedJobOffer()?.title || 'Select a job offer first' }}</p>
+            <p class="tailor-cta__subtitle">
+              {{ canTailor() ? 'Ready to create a tailored version for this target role.' : 'Upload a CV and choose a saved offer to start tailoring.' }}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="btn-primary"
+            [disabled]="!canTailor() || loading().tailor"
+            [attr.title]="!canTailor() ? 'Upload a CV and select a job offer first' : null"
+            (click)="runTailor()"
+          >
+            @if (loading().tailor) {
+              <span class="spinner"></span>
+              <span>Tailoring...</span>
+            } @else {
+              <lucide-icon name="zap" [size]="14"></lucide-icon>
+              <span>Tailor my CV</span>
+            }
+          </button>
+
+          @if (tailorStatus()) {
+            <div class="tailor-overlay">
+              <span class="spinner"></span>
+              <span>{{ tailorStatus() }}</span>
+            </div>
+          }
+        </section>
+
+        @if (errors().tailor) {
+          <p class="inline-error">
+            <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+            <span>{{ errors().tailor }}</span>
+          </p>
+        }
+
+        @if (cvVersions().length === 0) {
+          <div class="empty-state">
+            <lucide-icon name="layers" [size]="24"></lucide-icon>
+            <p>No versions yet.</p>
+            <small>Generate one from the saved job offers above.</small>
+          </div>
+        } @else {
+          <div class="versions-list">
+            @for (version of cvVersions(); track version.id) {
+              <article class="version-card">
+                <div class="version-card__head">
+                  <div>
+                    <span class="version-badge" [ngClass]="'version-badge--' + version.versionType.toLowerCase()">
+                      {{ version.versionType === 'GENERIC_OPTIMIZED' ? 'Optimized' : (version.versionType | titlecase) }}
+                    </span>
+                    <p class="version-meta">{{ version.generatedAt | date:'MMM d, y' }}</p>
+                  </div>
+
+                  <div class="version-score">
+                    <strong>{{ version.atsScore ?? 0 }}</strong>
+                    <span class="score-track" [ngClass]="'score-track--' + scoreTone(version.atsScore)"></span>
+                  </div>
+
+                  <div class="version-actions">
+                    <button
+                      type="button"
+                      class="btn-ghost btn-ghost--small"
+                      [class.download-btn--success]="downloadedVersionId() === version.id"
+                      [disabled]="loading().export === version.id"
+                      (click)="downloadVersion(version)"
+                    >
+                      @if (loading().export === version.id) {
+                        <span class="spinner"></span>
+                      } @else if (downloadedVersionId() === version.id) {
+                        <lucide-icon name="circle-check" [size]="14"></lucide-icon>
+                      } @else {
+                        <lucide-icon name="download" [size]="14"></lucide-icon>
+                      }
+                      <span>PDF</span>
+                    </button>
+
+                    <button type="button" class="icon-btn" (click)="toggleExpandedVersion(version.id)">
+                      <lucide-icon [name]="expandedVersionId() === version.id ? 'chevron-up' : 'chevron-down'" [size]="16"></lucide-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="version-body" [@versionExpand]="expandedVersionId() === version.id ? 'open' : 'closed'">
+                  @if (expandedVersionId() === version.id) {
+                    <p class="tailored-for">
+                      <lucide-icon name="link" [size]="13"></lucide-icon>
+                      <span>Tailored for: {{ versionJobOfferTitle(version) }}</span>
+                    </p>
+                    <pre>{{ version.tailoredContent }}</pre>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        }
+      </section>
+    </main>
+  </div>
+
+  @if (jobOfferPanelOpen()) {
+    <div class="slide-over-backdrop" [@slideOverBackdrop] (click)="closeJobOfferPanel()">
+      <aside class="slide-over-panel" [@slideOverPanel] (click)="$event.stopPropagation()">
+        <div class="slide-over-panel__head">
+          <div>
+            <p class="po-kicker">Job offer builder</p>
+            <h2>Add a target role</h2>
+          </div>
+          <button type="button" class="icon-btn" (click)="closeJobOfferPanel()" aria-label="Close job offer panel">
+            <lucide-icon name="x" [size]="16"></lucide-icon>
+          </button>
+        </div>
+
+        <div class="job-form">
+          <label class="field">
+            <span>Job title</span>
+            <input type="text" placeholder="Senior Full-Stack Engineer" [(ngModel)]="jobTitle" />
+            @if (jobTitleError()) {
+              <small class="field-error">Job title is required.</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Company</span>
+            <input type="text" placeholder="Acme Corp" [(ngModel)]="jobCompany" />
+          </label>
+
+          <label class="field">
+            <span>Job description</span>
+            <textarea rows="9" placeholder="Paste the full description here..." [(ngModel)]="jobDescription"></textarea>
+            <small class="field-meta">{{ jobDescriptionChars() }} characters</small>
+            @if (jobDescriptionError()) {
+              <small class="field-error">Job description is required.</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Source URL</span>
+            <input type="url" placeholder="https://..." [(ngModel)]="jobSourceUrl" />
+          </label>
+
+          <button type="button" class="btn-primary po-upload__action" [disabled]="!canSaveJobOffer()" (click)="saveJobOffer()">
+            @if (loading().jobOffer) {
+              <span class="spinner"></span>
+              <span>Extracting keywords...</span>
+            } @else {
+              <lucide-icon name="scan" [size]="14"></lucide-icon>
+              <span>Save job offer</span>
+            }
+          </button>
+
+          @if (errors().jobOffer) {
+            <p class="inline-error">
+              <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+              <span>{{ errors().jobOffer }}</span>
+            </p>
+          }
+        </div>
+      </aside>
+    </div>
+  }
+
+  <section class="toast-stack">
+    @for (toast of toasts(); track toast.id) {
+      <article class="toast" [ngClass]="'toast--' + toast.type" @toastSlide>
+        <lucide-icon [name]="toast.type === 'success' ? 'circle-check' : 'triangle-alert'" [size]="16"></lucide-icon>
+        <span>{{ toast.message }}</span>
+      </article>
+    }
+  </section>
+</section>

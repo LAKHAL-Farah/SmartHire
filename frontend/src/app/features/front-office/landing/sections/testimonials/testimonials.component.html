@@ -1,0 +1,42 @@
+<section class="testimonials" id="testimonials" #testimonialSection>
+  <div class="section-container">
+    <p class="testimonials__eyebrow">Testimonials</p>
+    <h2 class="testimonials__title">Loved by students everywhere</h2>
+  </div>
+
+  <!-- Row 1 - scrolls left -->
+  <div class="testimonials__track">
+    <div class="testimonials__scroll testimonials__scroll--left">
+      @for (t of row1; track $index) {
+        <div class="testimonials__card glass-card">
+          <p class="testimonials__quote">"{{ t.quote }}"</p>
+          <div class="testimonials__author">
+            <div class="testimonials__avatar" [style.background]="t.color"></div>
+            <div>
+              <span class="testimonials__name">{{ t.name }}</span>
+              <span class="testimonials__info">{{ t.info }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Row 2 - scrolls right -->
+  <div class="testimonials__track">
+    <div class="testimonials__scroll testimonials__scroll--right">
+      @for (t of row2; track $index) {
+        <div class="testimonials__card glass-card">
+          <p class="testimonials__quote">"{{ t.quote }}"</p>
+          <div class="testimonials__author">
+            <div class="testimonials__avatar" [style.background]="t.color"></div>
+            <div>
+              <span class="testimonials__name">{{ t.name }}</span>
+              <span class="testimonials__info">{{ t.info }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

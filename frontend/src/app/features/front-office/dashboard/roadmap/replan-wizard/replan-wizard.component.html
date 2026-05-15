@@ -1,0 +1,112 @@
+<div class="replan-page">
+  <a class="back-link" routerLink="/dashboard/roadmap">&larr; Back to roadmap</a>
+
+  <section class="card" *ngIf="loading()">Loading roadmap context...</section>
+
+  <section class="card error" *ngIf="!loading() && errorMessage()">
+    {{ errorMessage() }}
+  </section>
+
+  <section class="card" *ngIf="!loading() && !roadmapId()">
+    No active roadmap is available for this user yet.
+    <a class="back-link" routerLink="/dashboard/assessment">Go to assessment to generate roadmap</a>
+  </section>
+
+  <ng-container *ngIf="!loading()">
+    <section class="card intro" *ngIf="currentGraph() as graph">
+      <p class="eyebrow">Adaptive Planning</p>
+      <h1>Replan Wizard</h1>
+      <p>
+        Current roadmap: <strong>{{ graph.title }}</strong> with {{ graph.completedNodes }}/{{ graph.totalNodes }}
+        completed steps.
+      </p>
+      <p class="prefill-banner" *ngIf="autoFilledFromAssessment()">
+        Pre-filled from your latest assessment. You can edit before replanning.
+      </p>
+      <div class="metrics">
+        <span>Progress: {{ graph.progressPercent | number: '1.0-0' }}%</span>
+        <span>Streak: {{ graph.streakDays }} days</span>
+      </div>
+    </section>
+
+    <section class="card form-card">
+      <div class="columns">
+        <div class="group">
+          <h2>Skill Gaps</h2>
+          <div class="input-row">
+            <input
+              type="text"
+              [(ngModel)]="skillGapInput"
+              placeholder="Example: System design"
+              (keyup.enter)="addSkillGap()"
+            />
+            <button type="button" (click)="addSkillGap()">Add</button>
+          </div>
+          <div class="chips" *ngIf="skillGaps().length > 0; else emptyGap">
+            <span class="chip" *ngFor="let item of skillGaps(); let i = index; trackBy: trackByValue">
+              {{ item }}
+              <button type="button" (click)="removeSkillGap(i)">x</button>
+            </span>
+          </div>
+          <ng-template #emptyGap>
+            <p class="empty">No gaps selected yet.</p>
+          </ng-template>
+        </div>
+
+        <div class="group">
+          <h2>Strong Skills</h2>
+          <div class="input-row">
+            <input
+              type="text"
+              [(ngModel)]="strongSkillInput"
+              placeholder="Example: Java fundamentals"
+              (keyup.enter)="addStrongSkill()"
+            />
+            <button type="button" (click)="addStrongSkill()">Add</button>
+          </div>
+          <div class="chips" *ngIf="strongSkills().length > 0; else emptyStrong">
+            <span class="chip" *ngFor="let item of strongSkills(); let i = index; trackBy: trackByValue">
+              {{ item }}
+              <button type="button" (click)="removeStrongSkill(i)">x</button>
+            </span>
+          </div>
+          <ng-template #emptyStrong>
+            <p class="empty">No strengths selected yet.</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <label class="level">
+        <span>Experience Level</span>
+        <select [ngModel]="experienceLevel()" (ngModelChange)="experienceLevel.set($event)">
+          <option value="BEGINNER">Beginner</option>
+          <option value="INTERMEDIATE">Intermediate</option>
+          <option value="ADVANCED">Advanced</option>
+        </select>
+      </label>
+
+      <button type="button" class="submit" [disabled]="submitting() || !roadmapId()" (click)="submitReplan()">
+        {{ submitting() ? 'Replanning...' : 'Replan Roadmap' }}
+      </button>
+
+      <p class="success" *ngIf="successMessage()">{{ successMessage() }}</p>
+    </section>
+
+    <section class="card result" *ngIf="replannedGraph() as result">
+      <h2>Updated Roadmap Preview</h2>
+      <div class="metrics">
+        <span>Total nodes: {{ result.totalNodes }}</span>
+        <span>Completed nodes: {{ result.completedNodes }}</span>
+        <span>Progress: {{ result.progressPercent | number: '1.0-0' }}%</span>
+      </div>
+
+      <div class="node-list">
+        <article class="node" *ngFor="let node of result.nodes | slice: 0:8">
+          <h3>{{ node.title }}</h3>
+          <p>{{ node.objective || node.description }}</p>
+          <small>{{ node.difficulty }} • {{ node.status }}</small>
+        </article>
+      </div>
+    </section>
+  </ng-container>
+</div>

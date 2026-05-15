@@ -1,0 +1,155 @@
+<div class="history-page">
+  <div class="history-head">
+    <div>
+      <h1>Interview History</h1>
+      <p>Track progress, review reports, and compare streak momentum.</p>
+    </div>
+    <div class="history-head__actions">
+      <button type="button" (click)="backToHub()">Back to Hub</button>
+    </div>
+  </div>
+
+  <div class="history-top-controls">
+    <div class="user-loader">
+      <label>User</label>
+      <strong>#{{ userId() }}</strong>
+      <button type="button" [disabled]="loading()" (click)="loadHistory()">Refresh</button>
+      <span class="user-loader__meta">{{ activeSessionLabel() }}</span>
+      @if (activeSession() && (activeSession()!.status === 'IN_PROGRESS' || activeSession()!.status === 'PAUSED')) {
+        <button type="button" class="btn-resume" (click)="openSession(activeSession()!)">Resume Active</button>
+      }
+    </div>
+  </div>
+
+  @if (loadError()) {
+    <div class="state state--error">{{ loadError() }}</div>
+  }
+
+  <div class="history-grid">
+    <section class="history-main">
+      <div class="kpis">
+        <article class="kpi-card">
+          <span class="kpi-card__label">Sessions</span>
+          <strong class="kpi-card__value">{{ sessions().length }}</strong>
+          <span class="kpi-card__hint">{{ thisMonthCount() }} this month · {{ bookmarkCount() }} bookmarks</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-card__label">Completion</span>
+          <strong class="kpi-card__value">{{ completionRate() | number: '1.0-0' }}%</strong>
+          <span class="kpi-card__hint">{{ completedSessions().length }} completed</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-card__label">Average Score</span>
+          <strong class="kpi-card__value">
+            @if (avgCompletedScore() === null) { — } @else { {{ avgCompletedScore()! | number: '1.1-1' }} }
+          </strong>
+          <span class="kpi-card__hint">Completed sessions only</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-card__label">Best Score</span>
+          <strong class="kpi-card__value">
+            @if (bestScore() === null) { — } @else { {{ bestScore()! | number: '1.1-1' }} }
+          </strong>
+          <span class="kpi-card__hint">Current streak {{ streak()?.currentStreak ?? 0 }}d</span>
+        </article>
+      </div>
+
+      <div class="filters">
+        <input
+          type="text"
+          placeholder="Search by mode, role, date..."
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+        />
+        <select [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
+          <option value="ALL">All roles</option>
+          <option value="SE">SE</option>
+          <option value="CLOUD">CLOUD</option>
+          <option value="AI">AI</option>
+        </select>
+        <select [ngModel]="modeFilter()" (ngModelChange)="modeFilter.set($event)">
+          <option value="ALL">All modes</option>
+          <option value="PRACTICE">Practice</option>
+          <option value="TEST">Test</option>
+          <option value="LIVE">Live</option>
+        </select>
+        <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+          <option value="ALL">All statuses</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="PAUSED">Paused</option>
+          <option value="EVALUATING">Evaluating</option>
+          <option value="ABANDONED">Abandoned</option>
+        </select>
+        <button type="button" (click)="clearFilters()">Reset</button>
+      </div>
+
+      @if (loading()) {
+        <div class="state">Loading history...</div>
+      } @else if (!filteredSessions().length) {
+        <div class="state">No sessions match your filters.</div>
+      } @else {
+        <div class="history-list">
+          @for (session of filteredSessions(); track session.id) {
+            <article class="row">
+              <div class="row__left">
+                <div class="row__badges">
+                  <span class="badge badge--role">{{ session.roleType }}</span>
+                  <span class="badge" [class.badge--practice]="session.mode === 'PRACTICE'" [class.badge--test]="session.mode === 'TEST'">
+                    {{ session.mode }}
+                  </span>
+                  <span class="badge" [class]="getStatusClass(session.status)">{{ session.status }}</span>
+                </div>
+
+                <div class="row__meta">
+                  <span>{{ formatDate(session.startedAt) }}</span>
+                  <span>{{ session.type }}</span>
+                  <span>{{ getSessionDurationLabel(session) }}</span>
+                </div>
+              </div>
+
+              <div class="row__right">
+                <span class="score">{{ getDisplayScore(session) }}</span>
+                <button type="button" [disabled]="!getReportId(session)" (click)="openReport(getReportId(session))">Report</button>
+                @if (session.status === 'IN_PROGRESS' || session.status === 'PAUSED') {
+                  <button type="button" class="btn-secondary" (click)="openSession(session)">Resume</button>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+
+    <aside class="history-side">
+      <section class="leaderboard">
+        <h2>Streak Leaderboard</h2>
+        @if (!leaderboard().length) {
+          <p class="leaderboard__empty">Leaderboard is not available right now.</p>
+        } @else {
+          <div class="leaderboard__list">
+            @for (entry of leaderboard(); track entry.id; let i = $index) {
+              <div class="leaderboard__row" [class.leaderboard__row--me]="entry.userId === userId()">
+                <span class="leaderboard__rank">{{ getLeaderboardMedal(i) }}</span>
+                <div class="leaderboard__identity">
+                  <strong>User {{ entry.userId }}</strong>
+                  <span>{{ entry.totalSessionsCompleted }} sessions</span>
+                </div>
+                <strong class="leaderboard__streak">{{ entry.currentStreak }}d</strong>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <section class="leaderboard leaderboard--note">
+        <h2>Your Rank</h2>
+        @if (currentUserLeaderboardRank() > 0) {
+          <p class="rank-pill">#{{ currentUserLeaderboardRank() }} on current leaderboard</p>
+        } @else {
+          <p class="leaderboard__empty">You are not in the top leaderboard yet.</p>
+        }
+      </section>
+    </aside>
+  </div>
+</div>

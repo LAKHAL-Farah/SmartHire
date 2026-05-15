@@ -1,0 +1,146 @@
+<div class="assessment-page">
+  <div class="generation-overlay" *ngIf="generatingRoadmap()">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Generating your personalized roadmap...</p>
+  </div>
+
+  <a class="back-link" routerLink="/dashboard/roadmap">&larr; Go to roadmap</a>
+
+  <section class="card controls">
+    <h1>Skill Assessment</h1>
+    <p>Answer targeted questions to generate a stronger roadmap path.</p>
+
+    <div class="row">
+      <label>
+        <span>Career Path</span>
+        <select
+          [ngModel]="careerPathId()"
+          (ngModelChange)="onCareerPathChange($event)"
+          [disabled]="loadingCareerPaths()"
+        >
+          <option [ngValue]="null" disabled>Select a career path</option>
+          <option
+            *ngFor="let path of careerPaths(); trackBy: trackCareerPath"
+            [ngValue]="path.id"
+          >
+            {{ path.title }}
+          </option>
+        </select>
+      </label>
+      <button type="button" (click)="loadQuestions()" [disabled]="loadingQuestions() || !careerPathId()">
+        {{ loadingQuestions() ? 'Refreshing...' : 'Load Questions' }}
+      </button>
+    </div>
+
+    <p class="message" *ngIf="loadingCareerPaths()">Loading career paths from database...</p>
+
+    <p class="message success" *ngIf="successMessage()">{{ successMessage() }}</p>
+    <p class="message error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+  </section>
+
+  <section class="card" *ngIf="loadingQuestions()">Loading assessment questions...</section>
+
+  <section class="card question-card" *ngIf="!loadingQuestions() && currentQuestion() as question">
+    <div class="question-header">
+      <p>Question {{ currentQuestionIndex() + 1 }} / {{ questions().length }}</p>
+      <span>{{ progressPercent() }}% answered</span>
+    </div>
+
+    <h2>{{ question.text || question.question }}</h2>
+    <p class="meta">{{ question.category || 'General' }} • {{ question.difficulty || 'N/A' }}</p>
+
+    <div class="options">
+      <label class="option" *ngFor="let option of question.options; trackBy: trackOption">
+        <input
+          type="radio"
+          [name]="'question-' + question.id"
+          [checked]="getSelectedOption(question.id) === option"
+          (change)="selectOption(question.id, option)"
+        />
+        <span>{{ option }}</span>
+      </label>
+    </div>
+
+    <label class="confidence">
+      <span>Confidence: {{ getConfidence(question.id) }}/5</span>
+      <input
+        type="range"
+        min="1"
+        max="5"
+        [ngModel]="getConfidence(question.id)"
+        (ngModelChange)="setConfidence(question.id, +$event)"
+      />
+    </label>
+
+    <div class="actions">
+      <button type="button" (click)="previousQuestion()" [disabled]="currentQuestionIndex() === 0">Previous</button>
+      <button
+        type="button"
+        *ngIf="currentQuestionIndex() < questions().length - 1"
+        (click)="nextQuestion()"
+      >
+        Next
+      </button>
+      <button
+        type="button"
+        class="submit"
+        *ngIf="currentQuestionIndex() === questions().length - 1"
+        (click)="submitAssessment()"
+        [disabled]="submitting() || !canSubmit()"
+      >
+        {{ submitting() ? 'Submitting...' : 'Submit Assessment' }}
+      </button>
+    </div>
+  </section>
+
+  <section class="card result-card" *ngIf="normalizedScore() > 0">
+    <div class="result-head">
+      <div>
+        <h2>Assessment Result</h2>
+        <p>Overall score: <strong>{{ normalizedScore() }}%</strong></p>
+      </div>
+      <a class="roadmap-link" routerLink="/dashboard/roadmap/visual">Generate / Open Roadmap</a>
+    </div>
+
+    <div class="result-grid">
+      <div class="radar-wrap">
+        <svg viewBox="0 0 200 200" class="radar" aria-label="Radar chart">
+          <polygon points="100,20 180,100 100,180 20,100" class="base"></polygon>
+          <line x1="100" y1="20" x2="100" y2="180"></line>
+          <line x1="20" y1="100" x2="180" y2="100"></line>
+          <polygon [attr.points]="radarPoints()" class="value"></polygon>
+        </svg>
+        <div class="legend">
+          <span>Top: Score</span>
+          <span>Right: Confidence</span>
+          <span>Bottom: Coverage</span>
+          <span>Left: Readiness</span>
+        </div>
+      </div>
+
+      <div class="lists">
+        <article>
+          <h3>Strong Skills</h3>
+          <ul *ngIf="strongSkills().length > 0; else emptyStrong">
+            <li *ngFor="let skill of strongSkills()">{{ skill }}</li>
+          </ul>
+          <ng-template #emptyStrong>
+            <p class="empty">No strengths returned yet.</p>
+          </ng-template>
+        </article>
+
+        <article>
+          <h3>Skill Gaps</h3>
+          <ul *ngIf="skillGaps().length > 0; else emptyGap">
+            <li *ngFor="let gap of skillGaps()">{{ gap }}</li>
+          </ul>
+          <ng-template #emptyGap>
+            <p class="empty">No gaps returned yet.</p>
+          </ng-template>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="card latest" *ngIf="loadingLatest()">Checking latest saved result...</section>
+</div>

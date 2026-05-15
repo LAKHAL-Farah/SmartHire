@@ -1,0 +1,7 @@
+<div class="dashboard">
+  <app-sidebar [disabled]="quizMode()" />
+  <app-topbar [quizMode]="quizMode()" />
+  <main class="dashboard__content">
+    <router-outlet (activate)="onChildActivate($event)" (deactivate)="onChildDeactivate()" />
+  </main>
+</div>

@@ -1,0 +1,50 @@
+<div class="step">
+  <h1 class="step__headline">
+    Quick <span class="step__gradient">skill check</span>
+  </h1>
+  <p class="step__sub">5 questions — no wrong answers. This seeds your AI profile.</p>
+
+  <!-- Progress dots -->
+  <div class="progress-dots">
+    @for (q of questions; track q.text; let i = $index) {
+      <div
+        class="progress-dot"
+        [class.progress-dot--done]="i < currentQuestion()"
+        [class.progress-dot--active]="i === currentQuestion()"
+      ></div>
+    }
+  </div>
+
+  <!-- Question card -->
+  <div class="q-card">
+    <span class="q-card__label">Question {{ currentQuestion() + 1 }} of {{ questions.length }}</span>
+    <h2 class="q-card__text">{{ questions[currentQuestion()].text }}</h2>
+
+    <div class="q-card__options">
+      @for (opt of questions[currentQuestion()].options; track opt.letter) {
+        <button
+          class="q-option"
+          [class.q-option--active]="selectedAnswer() === opt.letter"
+          (click)="selectAnswer(opt.letter)"
+        >
+          <span
+            class="q-option__letter"
+            [class.q-option__letter--active]="selectedAnswer() === opt.letter"
+          >{{ opt.letter }}</span>
+          <span class="q-option__text">{{ opt.text }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Difficulty indicator -->
+    <div class="q-card__diff">
+      @for (d of [1,2,3]; track d) {
+        <span
+          class="diff-dot"
+          [class.diff-dot--filled]="d <= questions[currentQuestion()].difficulty"
+        ></span>
+      }
+      <span class="diff-label">{{ questions[currentQuestion()].difficultyLabel }}</span>
+    </div>
+  </div>
+</div>

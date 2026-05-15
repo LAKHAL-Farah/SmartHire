@@ -1,0 +1,43 @@
+<footer class="footer">
+  <div class="section-container">
+    <div class="footer__grid">
+      <!-- Brand -->
+      <div class="footer__brand">
+        <a href="#" class="footer__logo">
+          <div class="footer__logo-icon">S</div>
+          <span>SmartHire</span>
+        </a>
+        <p class="footer__tagline">AI-powered career platform for the next generation of engineers.</p>
+
+        <!-- Newsletter -->
+        <div class="footer__newsletter">
+          <input type="email" placeholder="Enter your email" class="footer__input">
+          <button class="btn-primary !py-2 !px-4 !text-sm">Subscribe</button>
+        </div>
+      </div>
+
+      <!-- Links columns -->
+      @for (col of columns; track col.title) {
+        <div class="footer__col">
+          <h4 class="footer__col-title">{{ col.title }}</h4>
+          <ul class="footer__links">
+            @for (link of col.links; track link) {
+              <li><a href="#">{{ link }}</a></li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="footer__bottom">
+      <span class="footer__copyright">© 2026 SmartHire. All rights reserved.</span>
+      <div class="footer__socials">
+        @for (social of socials; track social.label) {
+          <a [href]="social.href" class="footer__social" [attr.aria-label]="social.label">
+            <lucide-icon [name]="social.icon" [size]="20"></lucide-icon>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</footer>

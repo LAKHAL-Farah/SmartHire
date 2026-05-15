@@ -1,0 +1,214 @@
+<div class="report">
+  <div class="report-header">
+    <div class="report-header__left">
+      <h1 class="report-header__title">Session Report</h1>
+      <p class="report-header__meta">{{ sessionDate() }} · {{ sessionType() }} · {{ questionType() }}</p>
+    </div>
+    <div class="report-header__actions">
+      <button class="btn-ghost" type="button" (click)="shareReport()">Share</button>
+      <button class="btn-ghost" type="button" (click)="downloadPdf()" [disabled]="downloadingPdf()">
+        @if (downloadingPdf()) { Generating PDF... } @else { Export Visual PDF }
+      </button>
+      <button class="btn-ghost" type="button" (click)="backToHub()">Back to Hub</button>
+      <button class="btn-ghost" type="button" (click)="retakeSession()">Retake This Session</button>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="state-box">Loading report...</div>
+  } @else if (loadError()) {
+    <div class="state-box state-box--error">{{ loadError() }}</div>
+  } @else {
+  @if (processingHint()) {
+    <div class="state-box">{{ processingHint() }}</div>
+  }
+
+  <div class="score-card">
+    <div class="score-card__left">
+      <div class="score-card__score">
+        <span class="score-big">{{ finalScore() === null ? '—' : finalScore()!.toFixed(1) }}</span>
+        <span class="score-denom">@if (finalScore() !== null) { /10 }</span>
+      </div>
+      <div class="score-card__meta">
+        <span class="meta-badge meta-badge--mode">{{ sessionType() }}</span>
+        <span class="meta-badge meta-badge--type">{{ questionType() }}</span>
+        <span class="meta-text">{{ careerPath() }}</span>
+        <span class="meta-text meta-text--muted">{{ duration() }}</span>
+      </div>
+    </div>
+    <div class="score-card__right">
+      <div class="ranking-bar">
+        <div class="ranking-bar__track">
+          <div class="ranking-bar__marker" [style.left.%]="animatedPercentile()"></div>
+        </div>
+        <div class="ranking-bar__labels">
+          <span>0</span><span>50</span><span>100</span>
+        </div>
+      </div>
+      <p class="ranking-text">
+        @if (percentile() === null) {
+          Percentile ranking is not available for this report yet.
+        } @else {
+          You are better than <strong>{{ animatedPercentile().toFixed(0) }}%</strong> of candidates in {{ careerPath() }} interviews.
+        }
+      </p>
+      <p class="verdict-text">{{ recruiterVerdict() }}</p>
+    </div>
+  </div>
+
+  <div class="report-grid">
+    <div class="report-grid__left">
+      <h3 class="section-title">Performance Dimensions</h3>
+
+      <div class="dimension-bars">
+        @for (dim of dimensions(); track dim.label) {
+          <div class="dim-bar-row">
+            <span class="dim-bar-row__label">{{ dim.label }}</span>
+            <div class="dim-bar-row__track">
+              <div class="dim-bar-row__fill" [style.width.%]="(dim.score / dim.outOf) * 100" [style.background]="dim.color"></div>
+            </div>
+            <span class="dim-bar-row__score" [style.color]="dim.color">{{ dim.score.toFixed(1) }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="radar-wrap">
+        <svg viewBox="0 0 200 200" class="radar-svg">
+          @for (s of [0.25, 0.5, 0.75, 1]; track s) {
+            <polygon [attr.points]="getGridPolygon(s)" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+          }
+          @for (ax of getRadarAxisPoints(); track ax.label) {
+            <line x1="100" y1="100" [attr.x2]="ax.x" [attr.y2]="ax.y" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <text [attr.x]="ax.lx" [attr.y]="ax.ly" fill="rgba(255,255,255,.35)" font-size="8" text-anchor="middle" dominant-baseline="central">{{ ax.label }}</text>
+          }
+          @if (radarPoints()) {
+            <polygon [attr.points]="radarPoints()" fill="rgba(46,232,165,.2)" stroke="var(--accent-teal)" stroke-width="1.5"/>
+          }
+        </svg>
+      </div>
+    </div>
+
+    <div class="report-grid__right">
+      <h3 class="section-title">AI Analysis</h3>
+
+      <div class="analysis-block">
+        <h4 class="analysis-label analysis-label--green">Strengths</h4>
+        <ul class="analysis-list">
+          @for (s of strongestAreas(); track s) {
+            <li class="analysis-item analysis-item--green">{{ s }}</li>
+          }
+        </ul>
+      </div>
+
+      <div class="analysis-block">
+        <h4 class="analysis-label analysis-label--orange">Areas to Improve</h4>
+        <ul class="analysis-list">
+          @for (a of improvementAreas(); track a) {
+            <li class="analysis-item analysis-item--orange">{{ a }}</li>
+          }
+        </ul>
+      </div>
+
+      @if (recommendations().length) {
+      <div class="analysis-block">
+        <h4 class="analysis-label">Recommended Next Steps</h4>
+        <div class="rec-cards">
+          @for (rec of recommendations(); track rec.title) {
+            <div class="rec-card">
+              <span class="rec-card__icon">{{ rec.icon }}</span>
+              <div class="rec-card__body">
+                <span class="rec-card__title">{{ rec.title }}</span>
+                <span class="rec-card__desc">{{ rec.description }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="questions-section">
+    <h3 class="section-title">Question-by-Question Breakdown</h3>
+    @if (!questions().length) {
+      <div class="state-box">No question-level review is available for this session yet.</div>
+    } @else {
+    <div class="question-list">
+      @for (q of questions(); track q.number) {
+        <div class="q-card" [class.q-card--expanded]="expandedQuestion() === q.number">
+          <button class="q-card__header" type="button" (click)="toggleQuestion(q.number)">
+            <span class="q-card__number">Q{{ q.number }}</span>
+            <span class="q-card__text">{{ q.text }}</span>
+            <span class="q-card__meta">{{ q.category }} · {{ q.difficulty }}</span>
+            <div class="q-card__dots">
+              @for (d of q.dimensions; track d.label) {
+                <span class="q-dot" [style.background]="d.color"></span>
+              }
+            </div>
+            <lucide-icon class="q-card__chevron" name="chevron-down" [size]="16"></lucide-icon>
+          </button>
+
+          @if (expandedQuestion() === q.number) {
+            <div class="q-card__body">
+              <div class="q-meta-row">
+                <span class="q-meta-pill">Role: {{ q.role }}</span>
+                <span class="q-meta-pill">Submitted: {{ formatDateTime(q.submittedAt) }}</span>
+                <button
+                  class="q-bookmark-btn"
+                  type="button"
+                  [disabled]="bookmarkDisabled(q.questionId)"
+                  (click)="bookmarkQuestion(q)"
+                >
+                  {{ bookmarkLabel(q.questionId) }}
+                </button>
+              </div>
+
+              <div class="q-full-text">
+                <h4 class="q-body-label">Question</h4>
+                <p class="q-body-text">{{ q.text }}</p>
+              </div>
+
+              <div class="q-answer">
+                <h4 class="q-body-label">Your Answer</h4>
+                <div class="q-answer-box">{{ q.answer }}</div>
+              </div>
+
+              <div class="q-dimensions">
+                @if (!q.dimensions.length) {
+                  <p class="q-empty-dim">No dimension scores available for this answer.</p>
+                } @else {
+                  @for (d of q.dimensions; track d.label) {
+                    <div class="q-dim-row">
+                      <span class="q-dim-row__label">{{ d.label }}</span>
+                      <div class="q-dim-row__bar">
+                        <div class="q-dim-row__fill" [style.width.%]="d.score * 10" [style.background]="d.color"></div>
+                      </div>
+                      <span class="q-dim-row__value" [style.color]="d.color">{{ d.score.toFixed(1) }}/10</span>
+                    </div>
+                  }
+                }
+              </div>
+
+              <div class="q-feedback">
+                <p class="q-feedback__text">{{ q.feedback }}</p>
+              </div>
+
+              @if (q.followUp) {
+                <div class="q-follow-up">
+                  <h4 class="q-body-label">Follow-up Generated</h4>
+                  <p class="q-body-text">{{ q.followUp }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+    }
+  </div>
+  }
+
+  @if (actionToast()) {
+    <div class="toast">{{ actionToast() }}</div>
+  }
+</div>

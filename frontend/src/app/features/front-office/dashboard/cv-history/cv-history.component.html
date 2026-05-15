@@ -1,0 +1,151 @@
+<section class="history-page">
+  <header class="page-header card">
+    <div class="page-header__copy">
+      <p class="eyebrow">
+        <span>Dashboard</span>
+        <lucide-icon name="chevron-right" [size]="14"></lucide-icon>
+        <span>CV history</span>
+      </p>
+      <h1>CV history</h1>
+      <p class="page-header__text">
+        Review every uploaded CV, check parsing status, and jump into the detailed view for any version.
+      </p>
+    </div>
+
+    <div class="page-header__actions">
+      <a class="btn-ghost" routerLink="/dashboard/profile-optimizer">
+        <lucide-icon name="arrow-left" [size]="14"></lucide-icon>
+        <span>Back to optimizer</span>
+      </a>
+      <button type="button" class="btn-primary" (click)="loadHistory()">
+        <lucide-icon name="refresh-cw" [size]="14"></lucide-icon>
+        <span>Refresh</span>
+      </button>
+    </div>
+  </header>
+
+  @if (error()) {
+    <div class="page-banner page-banner--error">{{ error() }}</div>
+  }
+
+  <div class="stats-row">
+    <section class="stat-card">
+      <span class="eyebrow">Total CVs</span>
+      <strong>{{ cvs().length }}</strong>
+      <p>All parsed and archived uploads for the current user</p>
+    </section>
+    <section class="stat-card">
+      <span class="eyebrow">Active</span>
+      <strong>{{ activeCount() }}</strong>
+      <p>CVs currently marked as the active profile</p>
+    </section>
+    <section class="stat-card">
+      <span class="eyebrow">Completed parsing</span>
+      <strong>{{ completedCount() }}</strong>
+      <p>{{ failingCount() }} entries still need attention</p>
+    </section>
+  </div>
+
+  <div class="history-layout">
+    <section class="content-card content-card--list">
+      <div class="card-head">
+        <span class="eyebrow">Timeline</span>
+        <span class="meta-subtle">{{ cvs().length }} records</span>
+      </div>
+
+      @if (loading()) {
+        <div class="empty-state">
+          <span class="spinner"></span>
+          <p>Loading CV history...</p>
+        </div>
+      } @else if (cvs().length === 0) {
+        <div class="empty-state">
+          <lucide-icon name="archive" [size]="24"></lucide-icon>
+          <p>No CVs have been uploaded yet.</p>
+          <small>Upload a file from the profile optimizer to populate the history.</small>
+        </div>
+      } @else {
+        <div class="history-list">
+          @for (cv of cvs(); track cv.id) {
+            <button type="button" class="history-card" [class.history-card--active]="selectedCv()?.id === cv.id" (click)="selectCv(cv.id)">
+              <div class="history-card__top">
+                <div>
+                  <p class="history-card__title">{{ cv.originalFileName }}</p>
+                  <p class="history-card__meta">{{ formatDate(cv.uploadedAt) }} · {{ cv.fileFormat }}</p>
+                </div>
+                <span class="score-pill" [ngClass]="'score-pill--' + scoreTone(cv.atsScore)">{{ cv.atsScore ?? 0 }}</span>
+              </div>
+
+              <div class="history-card__mid">
+                <span class="status-pill" [ngClass]="'status-pill--' + cv.parseStatus.toLowerCase()">{{ parseStatusLabel(cv.parseStatus) }}</span>
+                <span class="history-card__hint">{{ cv.isActive ? 'Active profile' : 'Archived copy' }}</span>
+              </div>
+
+              @if (cv.parseErrorMessage) {
+                <p class="history-card__error">
+                  <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+                  <span>{{ cv.parseErrorMessage }}</span>
+                </p>
+              }
+            </button>
+          }
+        </div>
+      }
+    </section>
+
+    <aside class="content-card preview-card">
+      @if (selectedCv(); as cv) {
+        <div class="card-head">
+          <div>
+            <span class="eyebrow">Selected CV</span>
+            <h2>{{ cv.originalFileName }}</h2>
+          </div>
+          <button type="button" class="btn-ghost btn-ghost--small" (click)="openDetail(cv.id)">
+            <span>Open detail</span>
+            <lucide-icon name="arrow-right" [size]="14"></lucide-icon>
+          </button>
+        </div>
+
+        <div class="preview-grid">
+          <div class="preview-score">
+            <div class="score-ring" [ngClass]="'score-ring--' + scoreTone(cv.atsScore)">
+              <div class="score-ring__inner">
+                <strong>{{ cv.atsScore ?? 0 }}</strong>
+                <span>ATS</span>
+              </div>
+            </div>
+            <p>{{ parsedSummary(cv) }}</p>
+          </div>
+
+          <div class="preview-details">
+            <section class="detail-block">
+              <span class="detail-label">Status</span>
+              <div class="detail-row">
+                <span class="status-pill" [ngClass]="'status-pill--' + cv.parseStatus.toLowerCase()">{{ parseStatusLabel(cv.parseStatus) }}</span>
+                <span>{{ formatDate(cv.updatedAt) }}</span>
+              </div>
+            </section>
+
+            <section class="detail-block">
+              <span class="detail-label">Parsed content</span>
+              <p class="detail-copy">
+                {{ cv.parsedContent ? 'Structured parsing data is available for this CV.' : 'No structured parsed content is stored for this CV yet.' }}
+              </p>
+            </section>
+
+            <section class="detail-block">
+              <span class="detail-label">History note</span>
+              <p class="detail-copy">Open the detail page to inspect the raw parsed JSON, version history, and downloadable tailored files.</p>
+            </section>
+          </div>
+        </div>
+      } @else {
+        <div class="empty-state empty-state--wide">
+          <lucide-icon name="scan" [size]="28"></lucide-icon>
+          <p>Select a CV from the list to preview it here.</p>
+          <small>The right panel is a fast way to jump into the full detail view.</small>
+        </div>
+      }
+    </aside>
+  </div>
+</section>

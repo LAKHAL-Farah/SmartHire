@@ -1,0 +1,649 @@
+﻿[
+    {
+        "file":  "src/app/app.component.ts",
+        "class":  "AppComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.ts",
+        "class":  "AiMonitorComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/analytics/analytics.component.ts",
+        "class":  "AnalyticsComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/career-paths/career-paths.component.ts",
+        "class":  "CareerPathsComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.ts",
+        "class":  "AdminSidebarComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.ts",
+        "class":  "AdminTopbarComponent",
+        "injectedServices":  [
+                                 "AutheService",
+                                 "authService"
+                             ],
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.ts",
+        "class":  "AdminDashboardComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/jobs/job-management.component.ts",
+        "class":  "JobManagementComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/layout/admin-layout.component.ts",
+        "class":  "AdminLayoutComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/questions/question-management.component.ts",
+        "class":  "QuestionManagementComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.ts",
+        "class":  "RecruiterManagementComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/settings/settings.component.ts",
+        "class":  "SettingsComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.ts",
+        "class":  "SkillAssessmentAdminComponent",
+        "injectedServices":  "AssessmentAdminApiService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  true
+    },
+    {
+        "file":  "src/app/features/back-office/admin/system-health/system-health.component.ts",
+        "class":  "SystemHealthComponent",
+        "injectedServices":  [
+                                 "PlatformService",
+                                 "rtAuthService"
+                             ],
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/user-management.component.ts",
+        "class":  "UserManagementComponent",
+        "injectedServices":  [
+                                 "UserManagementService",
+                                 "userService"
+                             ],
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.ts",
+        "class":  "EditUserModalComponent",
+        "injectedServices":  [
+                                 "UserManagementService",
+                                 "userService"
+                             ],
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.ts",
+        "class":  "AuthLeftPanelComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/login/login.component.ts",
+        "class":  "LoginComponent",
+        "injectedServices":  [
+                                 "AuthService",
+                                 "AutheService",
+                                 "authService",
+                                 "autheService"
+                             ],
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/register/register.component.ts",
+        "class":  "RegisterComponent",
+        "injectedServices":  "ProfileApiService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  true
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-home.component.ts",
+        "class":  "DashboardHomeComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/dashboard-layout.component.ts",
+        "class":  "DashboardLayoutComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.ts",
+        "class":  "SidebarComponent",
+        "injectedServices":  [
+                                 "AuthService",
+                                 "authService"
+                             ],
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.ts",
+        "class":  "TopbarComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.ts",
+        "class":  "CvOptimizerComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/interview.component.ts",
+        "class":  "InterviewComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.ts",
+        "class":  "InterviewReportComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.ts",
+        "class":  "InterviewSessionComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/jobs/jobs.component.ts",
+        "class":  "JobsComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/profile/profile.component.ts",
+        "class":  "ProfileComponent",
+        "injectedServices":  "ProfileApiService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.ts",
+        "class":  "RoadmapComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/dashboard/settings/settings.component.ts",
+        "class":  "SettingsComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/landing-page.component.ts",
+        "class":  "LandingPageComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/cta/cta.component.ts",
+        "class":  "CtaComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/features/features-grid.component.ts",
+        "class":  "FeaturesGridComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/hero/hero.component.ts",
+        "class":  "HeroComponent",
+        "injectedServices":  [
+                                 "NgParticlesService",
+                                 "ScrollAnimationService",
+                                 "ngParticlesService"
+                             ],
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.ts",
+        "class":  "HowItWorksComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/pricing/pricing.component.ts",
+        "class":  "PricingComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/problem/problem.component.ts",
+        "class":  "ProblemComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/solution/solution.component.ts",
+        "class":  "SolutionComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/stats/stats.component.ts",
+        "class":  "StatsComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.ts",
+        "class":  "TestimonialsComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.ts",
+        "class":  "TrustBarComponent",
+        "injectedServices":  "ScrollAnimationService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/onboarding.component.ts",
+        "class":  "OnboardingComponent",
+        "injectedServices":  "ProfileApiService",
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.ts",
+        "class":  "StepCareerGoalComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-results.component.ts",
+        "class":  "StepResultsComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  true,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-situation.component.ts",
+        "class":  "StepSituationComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.ts",
+        "class":  "StepSkillCheckComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  true,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/not-found/access-denied.component.ts",
+        "class":  "AccessDeniedComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/features/not-found/not-found.component.ts",
+        "class":  "NotFoundComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/shared/footer/footer.component.ts",
+        "class":  "FooterComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  true,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    },
+    {
+        "file":  "src/app/shared/navbar/navbar.component.ts",
+        "class":  "NavbarComponent",
+        "injectedServices":  {
+
+                             },
+        "directHttpClient":  false,
+        "hasLocalArrays":  false,
+        "hasSignalData":  false,
+        "hasHardcodedMetric":  false,
+        "hasRxOf":  false,
+        "usesEnvironment":  false
+    }
+]

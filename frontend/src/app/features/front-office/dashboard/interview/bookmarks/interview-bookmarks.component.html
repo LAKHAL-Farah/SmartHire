@@ -1,0 +1,114 @@
+<div class="bookmarks-page">
+  <header class="bookmarks-header">
+    <div>
+      <h1>Bookmark Library</h1>
+      <p>Review saved questions, update notes, and jump into focused practice.</p>
+    </div>
+    <button type="button" (click)="backToHub()">Back to Hub</button>
+  </header>
+
+  <section class="bookmarks-controls">
+    <input
+      type="text"
+      placeholder="Search bookmarks by question, note, or tag..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <button type="button" (click)="clearFilters()">Reset</button>
+  </section>
+
+  <section class="tag-strip">
+    <button
+      type="button"
+      [class.tag-chip--active]="selectedTag() === 'ALL'"
+      (click)="setTag('ALL')"
+    >
+      All
+    </button>
+    @for (tag of tags(); track tag) {
+      <button
+        type="button"
+        [class.tag-chip--active]="selectedTag() === tag"
+        (click)="setTag(tag)"
+      >
+        {{ tag }}
+      </button>
+    }
+  </section>
+
+  @if (loadError()) {
+    <div class="state state--error">{{ loadError() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="state">Loading bookmarks...</div>
+  } @else if (!filteredBookmarks().length) {
+    <div class="state">No bookmarks match your current filters.</div>
+  } @else {
+    <section class="bookmark-list">
+      @for (bookmark of filteredBookmarks(); track bookmark.id) {
+        <article class="bookmark-card">
+          <div class="bookmark-card__head">
+            <div class="bookmark-badges">
+              <span>{{ bookmark.question?.roleType ?? '—' }}</span>
+              <span>{{ bookmark.question?.type ?? '—' }}</span>
+              <span>{{ bookmark.question?.difficulty ?? '—' }}</span>
+            </div>
+            <span class="bookmark-date">Saved {{ bookmarkDate(bookmark.savedAt) }}</span>
+          </div>
+
+          <h3>{{ bookmark.question?.questionText ?? 'Question unavailable' }}</h3>
+
+          <div class="bookmark-meta">
+            <span class="bookmark-tag">Tag: {{ bookmark.tagLabel ?? 'None' }}</span>
+            <span class="bookmark-category">Category: {{ bookmark.question?.category ?? 'General' }}</span>
+          </div>
+
+          <div class="bookmark-note">
+            <h4>Note</h4>
+            <p>{{ bookmark.note || 'No personal note added yet.' }}</p>
+          </div>
+
+          <div class="bookmark-actions">
+            <button type="button" class="btn-practice" (click)="practiceFromBookmark(bookmark)">Practice</button>
+            <button type="button" (click)="openNoteEditor(bookmark)">Edit Note</button>
+            <button
+              type="button"
+              class="btn-danger"
+              [disabled]="deletingQuestionId() === bookmark.questionId"
+              (click)="removeBookmark(bookmark)"
+            >
+              @if (deletingQuestionId() === bookmark.questionId) { Removing... } @else { Remove }
+            </button>
+          </div>
+        </article>
+      }
+    </section>
+  }
+
+  @if (editingBookmarkId()) {
+    <div class="note-modal-overlay" (click)="closeNoteEditor()">
+      <div class="note-modal" (click)="$event.stopPropagation()">
+        <h3>Edit Bookmark Note</h3>
+        <textarea
+          rows="6"
+          [ngModel]="noteDraft()"
+          (ngModelChange)="setNoteDraft($event)"
+          placeholder="Add context that helps during your next practice run..."
+        ></textarea>
+        <div class="note-meta">
+          <span>{{ noteDraft().length }} / {{ noteMaxLength }}</span>
+          @if (noteError()) {
+            <span class="note-error">{{ noteError() }}</span>
+          }
+        </div>
+        <div class="note-modal__actions">
+          <button type="button" (click)="closeNoteEditor()">Cancel</button>
+          <button type="button" class="btn-practice" [disabled]="noteSaving()" (click)="saveNote()">
+            @if (noteSaving()) { Saving... } @else { Save Note }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

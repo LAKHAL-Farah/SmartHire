@@ -1,0 +1,44 @@
+<div
+  class="tile-wrapper"
+  [class.speaking]="isSpeaking"
+  [class.ai-tile]="isAI"
+  [class.candidate-tile]="!isAI"
+  data-testid="tile-wrapper"
+>
+  <ng-container *ngIf="isAI">
+    <div class="avatar-container">
+      <div class="avatar-ring" [class.pulse]="isSpeaking"></div>
+      <div class="avatar-face">
+        <span class="avatar-initials">AI</span>
+      </div>
+      <div class="sound-bars" *ngIf="isSpeaking" data-testid="sound-bars">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isAI">
+    <video
+      *ngIf="videoStream"
+      [srcObject]="videoStream"
+      autoplay
+      playsinline
+      muted
+      class="webcam-video"
+      data-testid="webcam-video"
+    ></video>
+    <div *ngIf="!videoStream" class="no-camera" data-testid="no-camera">
+      <mat-icon>person</mat-icon>
+      <span>Camera off</span>
+    </div>
+
+    <div class="mic-level-bar" data-testid="mic-level-bar">
+      <div class="mic-level-fill" [style.width.%]="micLevel * 100"></div>
+    </div>
+  </ng-container>
+
+  <div class="name-badge" data-testid="name-badge">
+    <span *ngIf="isSpeaking && isAI" class="speaking-dot"></span>
+    {{ name }}
+  </div>
+</div>

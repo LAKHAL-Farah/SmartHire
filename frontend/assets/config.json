@@ -1,0 +1,4 @@
+{
+  "apiBaseUrl": "http://gateway-service:8887",
+  "msRoadmapUrl": "http://gateway-service:8887/msroadmap/api"
+}

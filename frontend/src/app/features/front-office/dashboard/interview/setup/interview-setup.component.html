@@ -1,0 +1,158 @@
+<div class="setup-page">
+  <div class="setup-shell">
+    <header class="setup-header">
+      <h1>Interview Setup</h1>
+      <p>Configure your session before you start.</p>
+    </header>
+
+    @if (errorMessage()) {
+      <div class="error-toast">{{ errorMessage() }}</div>
+    }
+
+    <section class="step-card">
+      <div class="step-card__header">
+        <span class="step-number">Step 1</span>
+        <h2>Role Selection</h2>
+      </div>
+
+      <div class="role-grid">
+        @for (role of roles; track role.value) {
+          <button class="role-card" type="button" [class.role-card--selected]="selectedRole() === role.value" (click)="setRole(role.value)">
+            <span class="role-card__icon">{{ role.icon }}</span>
+            <span class="role-card__title">{{ role.title }}</span>
+            <span class="role-card__subtitle">{{ role.subtitle }}</span>
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="step-card">
+      <div class="step-card__header">
+        <span class="step-number">Step 2</span>
+        <h2>Interview Type</h2>
+      </div>
+
+      <div class="pill-group">
+        @for (type of types; track type.value) {
+          <button class="pill" type="button" [class.pill--active]="selectedType() === type.value" (click)="setType(type.value)">
+            {{ type.label }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="step-card">
+      <div class="step-card__header">
+        <span class="step-number">Step 3</span>
+        <h2>Mode</h2>
+      </div>
+
+      <div class="mode-grid">
+        <button class="mode-card mode-card--practice" type="button" [class.mode-card--active]="selectedMode() === 'PRACTICE'" (click)="setMode('PRACTICE')">
+          <h3>💬 PRACTICE</h3>
+          <ul>
+            <li>AI feedback after every answer</li>
+            <li>Unlimited retries</li>
+            <li>Hints available</li>
+            <li>Text answers — voice coming in Phase 2</li>
+          </ul>
+        </button>
+
+        <button class="mode-card mode-card--test" type="button" [class.mode-card--active]="selectedMode() === 'TEST'" (click)="setMode('TEST')">
+          <h3>⏱ TEST</h3>
+          <ul>
+            <li>No feedback until the end</li>
+            <li>Timed per question</li>
+            <li>Final score + percentile ranking</li>
+            <li>Pressure events may occur</li>
+          </ul>
+        </button>
+
+        <button class="mode-card mode-card--live" type="button" [class.mode-card--active]="selectedMode() === 'LIVE'" (click)="setMode('LIVE')">
+          <h3>🎙 LIVE</h3>
+          <ul>
+            <li>Realtime interviewer voice</li>
+            <li>Behavioral flow with greeting audio</li>
+            <li>Practice/Test live sub-modes</li>
+            <li>Mic + camera required</li>
+          </ul>
+        </button>
+      </div>
+
+      @if (selectedMode() === 'LIVE') {
+        <div class="pill-group mode-submode-group">
+          <button
+            class="pill"
+            type="button"
+            [class.pill--active]="selectedLiveSubMode() === 'PRACTICE_LIVE'"
+            (click)="setLiveSubMode('PRACTICE_LIVE')"
+          >
+            Practice Live
+          </button>
+          <button
+            class="pill"
+            type="button"
+            [class.pill--active]="selectedLiveSubMode() === 'TEST_LIVE'"
+            (click)="setLiveSubMode('TEST_LIVE')"
+          >
+            Test Live
+          </button>
+        </div>
+      }
+    </section>
+
+    <section class="step-card">
+      <div class="step-card__header">
+        <span class="step-number">Step 4</span>
+        <h2>Question Count</h2>
+      </div>
+
+      <label class="count-label">{{ questionCount() }} questions (~{{ estimatedMinutes() }} min estimated)</label>
+      <input class="count-slider" type="range" [min]="minQuestionCount()" [max]="maxQuestionCount()" [value]="questionCount()" (input)="setQuestionCount($event)" />
+      <div class="slider-boundary">
+        <span>{{ minQuestionCount() }}</span>
+        <span>{{ maxQuestionCount() }}</span>
+      </div>
+    </section>
+
+    <section class="step-card">
+      <div class="step-card__header">
+        <span class="step-number">Step 5</span>
+        <h2>Input Mode</h2>
+      </div>
+
+      <div class="pill-group">
+        @if (selectedMode() === 'LIVE') {
+          <button class="pill pill--active" type="button">🎙 Voice + camera live mode — Active</button>
+          <button class="pill" type="button">📝 Follow-up notes happen in-room</button>
+        } @else {
+          <button class="pill pill--active" type="button">📝 Text Mode — Active</button>
+          <button class="pill pill--disabled" type="button" disabled title="Voice + video analysis is enabled via LIVE mode above">
+            🎙 Voice/Camera via LIVE mode
+          </button>
+        }
+      </div>
+    </section>
+
+    <button class="start-btn" type="button" [disabled]="!canStart()" (click)="startInterview()">
+      @if (isStarting()) {
+        Starting...
+      } @else if (isPreparingLive()) {
+        Preparing your session...
+      } @else {
+        Start Interview →
+      }
+    </button>
+  </div>
+
+  @if (isPreparingLive()) {
+    <div class="prepare-overlay" aria-live="polite" role="status">
+      <div class="prepare-card">
+        <div class="prepare-spinner" aria-hidden="true"></div>
+        <h2>Preparing your session</h2>
+        <p>{{ preparingMessage() }}</p>
+        <span>Please wait while your interviewer audios are getting ready.</span>
+      </div>
+    </div>
+  }
+</div>

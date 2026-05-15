@@ -1,0 +1,248 @@
+<!-- user-management.component.html -->
+<div class="um">
+  <!-- ═══════ TOOLBAR ═══════ -->
+  <div class="toolbar">
+    <div class="toolbar__left">
+      <div class="search-box">
+        <lucide-icon class="search-icon" name="search" [size]="15"></lucide-icon>
+        <input type="text" placeholder="Search users..." [(ngModel)]="searchQuery" class="search-input" />
+      </div>
+
+      <select [(ngModel)]="roleFilter" class="filter-select">
+        @for (r of roles; track r) { 
+          <option [value]="r">{{ r === 'All' ? 'All Roles' : r }}</option>
+        }
+      </select>
+      <select [(ngModel)]="statusFilter" class="filter-select">
+        @for (s of statuses; track s) { 
+          <option [value]="s">{{ s === 'All' ? 'All Status' : s }}</option>
+        }
+      </select>
+      <select [(ngModel)]="planFilter" class="filter-select">
+        @for (p of plans; track p) { 
+          <option [value]="p">{{ p === 'All' ? 'All Plans' : p }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="toolbar__right">
+      <button class="btn btn--outline" (click)="exportCSV()">
+        <lucide-icon name="download" [size]="15"></lucide-icon>
+        Export CSV
+      </button>
+      <button class="btn btn--primary">
+        <lucide-icon name="plus" [size]="15"></lucide-icon>
+        Add User
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════ LOADING STATE ═══════ -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading users...</p>
+    </div>
+  }
+
+  <!-- ═══════ ERROR STATE ═══════ -->
+  @else if (errorMessage) {
+    <div class="error-state">
+      <lucide-icon name="alert-circle" [size]="48"></lucide-icon>
+      <p>{{ errorMessage }}</p>
+      <button class="btn btn--primary" (click)="loadUsers()">Retry</button>
+    </div>
+  }
+
+  <!-- ═══════ EMPTY STATE ═══════ -->
+  @else if (filteredUsers.length === 0) {
+    <div class="empty-state">
+      <lucide-icon name="users" [size]="48"></lucide-icon>
+      <p>No users found</p>
+      <p class="empty-state__sub">Try adjusting your filters</p>
+    </div>
+  }
+
+  <!-- ═══════ TABLE ═══════ -->
+  @else {
+    <div class="table-wrap">
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th class="col-check"><input type="checkbox" [checked]="allChecked" (change)="toggleAll()" /></th>
+            <th>User</th>
+            <th>Role</th>
+            <th>Plan</th>
+            <th>Status</th>
+            <th>Joined</th>
+            <th>Last Active</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of paginatedUsers; track user.id) {
+            <tr [class.row-selected]="isSelected(user.id)" (click)="openDrawer(user)">
+              <td class="col-check" (click)="$event.stopPropagation()">
+                <input type="checkbox" [checked]="isSelected(user.id)" (change)="toggleRow(user.id)" />
+              </td>
+              <td>
+                <div class="user-cell">
+                  @if (user.avatarUrl) {
+                    <img class="avatar-img" [src]="user.avatarUrl" [alt]="user.name" />
+                  } @else {
+                    <span class="avatar-sm" [style.background]="avatarGradient(user.role)">{{ user.avatar }}</span>
+                  }
+                  <div class="user-info">
+                    <span class="user-name">{{ user.name }}</span>
+                    <span class="user-email">{{ user.email }}</span>
+                    @if (user.headline) {
+                      <span class="user-headline">{{ user.headline | slice:0:50 }}{{ user.headline.length > 50 ? '...' : '' }}</span>
+                    }
+                  </div>
+                </div>
+              </td>
+              <td><span class="pill" [ngClass]="getRoleClass(user.role)">{{ user.role }}</span></td>
+              <td><span class="pill" [ngClass]="getPlanClass(user.plan)">{{ user.plan }}</span></td>
+              <td><span class="badge" [ngClass]="getStatusClass(user.status)">{{ user.status }}</span></td>
+              <td class="text-dim">{{ user.joined }}</td>
+              <td class="text-dim">{{ user.lastActive }}</td>
+              <td class="col-actions" (click)="$event.stopPropagation()">
+                <div class="actions-wrap">
+                  <button class="dots-btn" (click)="toggleMenu(user.id, $event)">
+                    <lucide-icon name="ellipsis-vertical" [size]="16"></lucide-icon>
+                  </button>
+                  @if (openMenuId === user.id) {
+                    <div class="action-menu" [ngClass]="{'menu-above': menuPosition === 'above'}" (click)="$event.stopPropagation()">
+                      <button class="action-menu__item" (click)="openDrawer(user)">View Profile</button>
+                      <button class="action-menu__item" (click)="editUser(user)">Edit User</button>
+                      <button class="action-menu__item" (click)="resetPassword(user)">Reset Password</button>
+                      @if (user.status === 'Suspended') {
+                        <button class="action-menu__item action-menu__item--danger" (click)="reactivateUser(user)">
+                          Reactivate
+                        </button>
+                      } @else {
+                        <button class="action-menu__item action-menu__item--danger" (click)="suspendUser(user)">
+                          Suspend
+                        </button>
+                      }
+                      <button class="action-menu__item action-menu__item--danger" (click)="deleteUser(user)">
+                        Delete User
+                      </button>
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══════ PAGINATION ═══════ -->
+    <div class="pagination">
+      <span class="pagination__info">
+        Showing {{ (currentPage - 1) * pageSize + 1 }}–
+        {{ currentPage * pageSize > filteredUsers.length ? filteredUsers.length : currentPage * pageSize }} 
+        of {{ filteredUsers.length }}
+      </span>
+      <div class="pagination__btns">
+        <button class="pg-btn" [disabled]="currentPage === 1" (click)="goPage(currentPage - 1)">←</button>
+        @for (p of pageNumbers; track p) {
+          @if (p === -1) {
+            <span class="pg-dots">...</span>
+          } @else {
+            <button class="pg-btn" [class.pg-active]="p === currentPage" (click)="goPage(p)">{{ p }}</button>
+          }
+        }
+        <button class="pg-btn" [disabled]="currentPage === totalPages" (click)="goPage(currentPage + 1)">→</button>
+      </div>
+    </div>
+  }
+
+  <!-- ═══════ BULK ACTION BAR ═══════ -->
+  @if (selectedIds.size > 0) {
+    <div class="bulk-bar">
+      <span class="bulk-bar__count">{{ selectedIds.size }} user{{ selectedIds.size === 1 ? '' : 's' }} selected</span>
+      <div class="bulk-bar__actions">
+        <button class="btn btn--outline btn--sm" (click)="exportCSV()">Export Selected</button>
+        <button class="btn btn--outline btn--sm">Send Email</button>
+        <button class="btn btn--danger btn--sm">Suspend Selected</button>
+        <button class="btn btn--ghost btn--sm" (click)="clearSelection()">Clear</button>
+      </div>
+    </div>
+  }
+
+  <!-- ═══════ USER DETAIL DRAWER ═══════ -->
+  @if (drawerOpen && drawerUser) {
+    <div class="drawer-overlay" (click)="closeDrawer()"></div>
+    <aside class="drawer">
+      <button class="drawer__close" (click)="closeDrawer()">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+
+      <div class="drawer__header">
+        @if (drawerUser.avatarUrl) {
+          <img class="avatar-lg-img" [src]="drawerUser.avatarUrl" [alt]="drawerUser.name" />
+        } @else {
+          <span class="avatar-lg" [style.background]="avatarGradient(drawerUser.role)">{{ drawerUser.avatar }}</span>
+        }
+        <h2 class="drawer__name">{{ drawerUser.name }}</h2>
+        <span class="drawer__email">{{ drawerUser.email }}</span>
+        <div class="drawer__pills">
+          <span class="pill" [ngClass]="getRoleClass(drawerUser.role)">{{ drawerUser.role }}</span>
+          <span class="pill" [ngClass]="getPlanClass(drawerUser.plan)">{{ drawerUser.plan }}</span>
+          <span class="badge" [ngClass]="getStatusClass(drawerUser.status)">{{ drawerUser.status }}</span>
+        </div>
+      </div>
+
+      <div class="drawer__section">
+        <h4 class="drawer__label">Details</h4>
+        <div class="drawer__row">
+          <span>Location</span>
+          <span>{{ drawerUser.location }}</span>
+        </div>
+        <div class="drawer__row">
+          <span>Headline</span>
+          <span>{{ drawerUser.headline || 'Not specified' }}</span>
+        </div>
+        <div class="drawer__row">
+          <span>Joined</span>
+          <span>{{ drawerUser.joined }}</span>
+        </div>
+        <div class="drawer__row">
+          <span>Last Active</span>
+          <span>{{ drawerUser.lastActive }}</span>
+        </div>
+      </div>
+
+      @if (drawerUser.githubUrl || drawerUser.linkedinUrl) {
+        <div class="drawer__section">
+          <h4 class="drawer__label">Social Links</h4>
+          @if (drawerUser.githubUrl) {
+            <div class="drawer__row">
+              <span>GitHub</span>
+              <a [href]="drawerUser.githubUrl" target="_blank" class="drawer__link">{{ drawerUser.githubUrl }}</a>
+            </div>
+          }
+          @if (drawerUser.linkedinUrl) {
+            <div class="drawer__row">
+              <span>LinkedIn</span>
+              <a [href]="drawerUser.linkedinUrl" target="_blank" class="drawer__link">{{ drawerUser.linkedinUrl }}</a>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="drawer__actions">
+        <button class="btn btn--primary btn--full" (click)="editUser(drawerUser)">Edit User</button>
+        <button class="btn btn--outline btn--full" (click)="resetPassword(drawerUser)">Reset Password</button>
+        @if (drawerUser.status === 'Suspended') {
+          <button class="btn btn--success btn--full" (click)="reactivateUser(drawerUser)">Reactivate Account</button>
+        } @else {
+          <button class="btn btn--danger btn--full" (click)="suspendUser(drawerUser)">Suspend Account</button>
+        }
+        <button class="btn btn--danger btn--full" (click)="deleteUser(drawerUser)">Delete User</button>
+      </div>
+    </aside>
+  }
+</div>

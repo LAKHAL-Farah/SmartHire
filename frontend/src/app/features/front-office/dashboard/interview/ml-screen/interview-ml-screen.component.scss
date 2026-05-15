@@ -1,0 +1,246 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #0f1016;
+  color: #fff;
+}
+
+.ml-room {
+  padding: 16px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.topbar__title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+}
+
+.topbar__timer {
+  font-family: 'Space Grotesk', monospace;
+}
+
+.progress-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2ee8a5, #3b82f6);
+}
+
+.mode-pill {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  background: rgba(46, 232, 165, 0.18);
+  color: #9df7d6;
+}
+
+.scenario-card {
+  display: flex;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.scenario-card__left-border {
+  width: 4px;
+  border-radius: 999px;
+  background: #8b5cf6;
+}
+
+.scenario-title {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.scenario-card h2 {
+  margin: 8px 0;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.dataset-hint {
+  margin: 0;
+  color: #d8b4fe;
+  font-size: 12px;
+}
+
+.content-layout {
+  display: flex;
+  gap: 12px;
+}
+
+.answer-section {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+}
+
+.answer-section textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  padding: 10px;
+  resize: vertical;
+}
+
+.answer-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hint-btn {
+  border: 1px solid rgba(46, 232, 165, 0.45);
+  background: rgba(46, 232, 165, 0.1);
+  color: #9df7d6;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #2ee8a5;
+  color: #061f14;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.live-placeholder {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.hint-panel {
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px dashed rgba(46, 232, 165, 0.4);
+  background: rgba(46, 232, 165, 0.08);
+  color: #cffce9;
+  padding: 10px;
+  font-size: 13px;
+}
+
+.feedback-panel {
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(46, 232, 165, 0.35);
+  background: rgba(46, 232, 165, 0.08);
+  padding: 12px;
+}
+
+.feedback-panel h3,
+.concept-panel h4 {
+  margin: 0;
+}
+
+.feedback-panel p {
+  margin: 8px 0 0;
+}
+
+.concept-panel {
+  margin-top: 10px;
+}
+
+.concept-badges {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.16);
+  color: #bfdbfe;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.badge--missing {
+  border-color: rgba(245, 158, 11, 0.45);
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd08a;
+}
+
+.pipeline-panel {
+  width: 280px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+}
+
+.pipeline-panel h3 {
+  margin: 0 0 8px;
+}
+
+.pipeline-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.stage-box {
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  font-size: 13px;
+}
+
+.stage-box--active {
+  border-color: rgba(46, 232, 165, 0.7);
+  background: rgba(46, 232, 165, 0.2);
+  color: #d8ffe7;
+}
+
+.arrow {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 15px;
+}
+
+@media (max-width: 960px) {
+  .content-layout {
+    flex-direction: column;
+  }
+
+  .pipeline-panel {
+    width: 100%;
+  }
+}

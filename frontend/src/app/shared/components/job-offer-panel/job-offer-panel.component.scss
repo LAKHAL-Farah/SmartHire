@@ -1,0 +1,226 @@
+@use '../../../dashboard/profile-optimizer/po-design-tokens' as po;
+
+.po-job-panel__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(4, 6, 12, 0.72);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.po-job-panel {
+  width: min(660px, 92vw);
+  max-height: 86vh;
+  background: linear-gradient(160deg, rgba(19, 22, 36, 0.98), rgba(14, 16, 25, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.1);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  animation: po-modal-in 220ms ease-out;
+}
+
+.po-job-panel__line {
+  height: 3px;
+  background: var(--po-gradient-primary);
+}
+
+.po-job-panel__header {
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    font-size: var(--po-text-lg);
+    color: var(--po-text-primary);
+  }
+}
+
+.po-job-panel__close {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.84);
+  cursor: pointer;
+}
+
+.po-job-panel__body {
+  overflow-y: auto;
+  padding: 0 20px 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.po-field {
+  display: grid;
+  gap: 6px;
+
+  span {
+    color: var(--po-text-secondary);
+    font-size: var(--po-text-sm);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    color: var(--po-text-primary);
+    font-size: var(--po-text-base);
+    padding: 10px 12px;
+
+    &::placeholder {
+      color: var(--po-text-muted);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: color-mix(in srgb, var(--po-accent-teal) 70%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--po-accent-teal) 20%, transparent);
+    }
+  }
+
+  textarea {
+    min-height: 170px;
+    resize: vertical;
+  }
+
+  small {
+    color: var(--po-score-low);
+    font-size: var(--po-text-xs);
+  }
+}
+
+.po-field--error {
+  border-color: var(--po-score-low) !important;
+}
+
+.po-field__icon-wrap {
+  position: relative;
+
+  lucide-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--po-text-muted);
+  }
+
+  input {
+    padding-left: 32px;
+  }
+}
+
+.po-field__count {
+  justify-self: end;
+}
+
+.po-job-panel__footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 20px;
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(16, 18, 28, 0.85), rgba(16, 18, 28, 0.98));
+}
+
+.po-btn {
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--po-border);
+  font-size: var(--po-text-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 0 14px;
+}
+
+.po-btn--ghost {
+  color: var(--po-text-secondary);
+  background: transparent;
+}
+
+.po-btn--primary {
+  border: 0;
+  color: var(--po-text-primary);
+  background: var(--po-gradient-primary);
+  margin-left: auto;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.po-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid var(--po-spinner-track);
+  border-top-color: var(--po-spinner-head);
+  animation: po-spin 1s linear infinite;
+}
+
+.po-panel-error {
+  color: var(--po-score-low);
+  margin: 0;
+  font-size: var(--po-text-sm);
+}
+
+@keyframes po-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes po-slide-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes po-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .po-job-panel__backdrop {
+    padding: 10px;
+  }
+
+  .po-job-panel {
+    max-height: calc(100vh - 20px);
+    width: 100%;
+  }
+
+  .po-field textarea {
+    min-height: 130px;
+  }
+}

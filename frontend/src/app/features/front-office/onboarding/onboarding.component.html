@@ -1,0 +1,116 @@
+@if (localDemoBanner()) {
+  <div class="ob-local-demo-banner" role="status">
+    <strong>Local demo mode:</strong> MS-User is not connected. Preferences are stored in this browser only.
+  </div>
+}
+
+<!-- ────────────── HEADER ────────────── -->
+<header class="ob-header">
+  <div class="ob-header__inner">
+    <a routerLink="/" class="ob-header__logo">
+      <span class="ob-header__logo-text">SmartHire</span>
+    </a>
+
+    <div class="ob-header__right">
+      <span class="ob-header__step">
+        <span class="ob-header__step-num">Step {{ currentStep() }}</span>
+        <span class="ob-header__step-of"> of {{ totalSteps }}</span>
+      </span>
+      @if (currentStep() === 1) {
+        <a class="ob-header__skip" (click)="skip()">Skip &rarr;</a>
+      }
+    </div>
+  </div>
+</header>
+
+<!-- ────────────── STEPPER ────────────── -->
+<div class="ob-stepper-wrap">
+  <div class="ob-stepper">
+    @for (s of stepMeta; track s.num; let i = $index; let last = $last) {
+      <div class="ob-stepper__node-group">
+        <div
+          class="ob-stepper__node"
+          [class.ob-stepper__node--active]="currentStep() === s.num"
+          [class.ob-stepper__node--done]="currentStep() > s.num"
+        >
+          @if (currentStep() > s.num) {
+            <lucide-icon name="check" [size]="14"></lucide-icon>
+          } @else {
+            <span>{{ s.num }}</span>
+          }
+        </div>
+        <span
+          class="ob-stepper__label"
+          [class.ob-stepper__label--active]="currentStep() === s.num"
+          [class.ob-stepper__label--done]="currentStep() > s.num"
+        >{{ s.label }}</span>
+      </div>
+
+      @if (!last) {
+        <div class="ob-stepper__line-wrap">
+          <div
+            class="ob-stepper__line"
+            [class.ob-stepper__line--done]="currentStep() > s.num"
+          ></div>
+        </div>
+      }
+    }
+  </div>
+</div>
+
+<!-- ────────────── CONTENT ────────────── -->
+<main class="ob-content">
+  @switch (currentStep()) {
+    @case (1) {
+      <app-step-situation
+        [selected]="situationSelection()"
+        (selectionChange)="situationSelection.set($event)"
+      />
+    }
+    @case (2) {
+      <app-step-career-goal
+        [selected]="careerSelection()"
+        (selectionChange)="careerSelection.set($event)"
+      />
+      <p class="ob-after-career-hint">
+        When you continue, your preferences are saved and you’ll open <strong>Skill assessments</strong> while an admin assigns
+        categories that match your goals.
+      </p>
+      @if (saveError(); as err) {
+        <p class="ob-save-error">{{ err }}</p>
+      }
+    }
+  }
+</main>
+
+<!-- ────────────── FOOTER ────────────── -->
+<footer class="ob-footer">
+  <div class="ob-footer__inner">
+    @if (currentStep() > 1) {
+      <button class="ob-footer__back" type="button" (click)="goBack()">
+        <lucide-icon name="arrow-left" [size]="16"></lucide-icon>
+        Back
+      </button>
+    } @else {
+      <div></div>
+    }
+
+    <span class="ob-footer__hint">Then: wait for assignment → take assessments</span>
+
+    <button
+      class="ob-footer__next"
+      type="button"
+      [disabled]="!canProceed() || saving()"
+      (click)="goNext()"
+    >
+      @if (saving()) {
+        Saving…
+      } @else if (currentStep() === 2) {
+        Save &amp; continue
+      } @else {
+        Next
+      }
+      <lucide-icon name="arrow-right" [size]="16"></lucide-icon>
+    </button>
+  </div>
+</footer>

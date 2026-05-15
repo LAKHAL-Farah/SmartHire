@@ -1,0 +1,91 @@
+<div class="report-screen">
+  <div class="report-card">
+    <h1>Interview Report</h1>
+    <p class="session-id">Session #{{ sessionId }}</p>
+
+    <div *ngIf="isLoading" class="loading">Generating your report...</div>
+
+    <div *ngIf="reportError" class="error-msg">{{ reportError }}</div>
+
+    <div *ngIf="report && !isLoading" class="report-data">
+      <div class="score-hero">
+        <span class="score-value">{{ numberField('finalScore') | number:'1.1-1' }}</span>
+        <span class="score-label">/ 10</span>
+      </div>
+
+      <div class="score-breakdown">
+        <div class="score-row">
+          <span>Content Avg</span>
+          <span>{{ numberField('contentAvg') | number:'1.1-1' }}</span>
+        </div>
+        <div class="score-row">
+          <span>Communication Avg</span>
+          <span>{{ communicationScore | number:'1.1-1' }}</span>
+        </div>
+        <div class="score-row">
+          <span>Technical Avg</span>
+          <span>{{ numberField('technicalAvg') | number:'1.1-1' }}</span>
+        </div>
+      </div>
+
+      <div class="recruiter-verdict" *ngIf="textField('recruiterVerdict') as verdict">
+        <h3>Recruiter's Take</h3>
+        <p>{{ verdict }}</p>
+      </div>
+
+      <div class="report-stress-section" *ngIf="avgStressScore !== null">
+        <h3>Stress Analysis</h3>
+        <p class="stress-note">Measured via facial expression analysis throughout the interview.</p>
+
+        <div
+          class="overall-stress"
+          [class.low]="overallStressLevel === 'low'"
+          [class.medium]="overallStressLevel === 'medium'"
+          [class.high]="overallStressLevel === 'high'"
+        >
+          <div>
+            <div class="stress-level-text">{{ (overallStressLevel || 'low') | titlecase }} Stress</div>
+            <div class="stress-score-text">Score: {{ ((avgStressScore || 0) * 100) | number:'1.0-0' }}%</div>
+          </div>
+        </div>
+
+        <div class="per-question-stress" *ngIf="questionStressScores.length">
+          <div class="stress-q-row" *ngFor="let qs of questionStressScores">
+            <span class="q-label">Q{{ qs.questionIndex + 1 }}</span>
+            <div class="q-stress-bar-track">
+              <div
+                class="q-stress-bar-fill"
+                [style.width.%]="qs.score * 100"
+                [class.low]="qs.level === 'low'"
+                [class.medium]="qs.level === 'medium'"
+                [class.high]="qs.level === 'high'"
+              ></div>
+            </div>
+            <span class="q-level" [class.low]="qs.level === 'low'" [class.medium]="qs.level === 'medium'" [class.high]="qs.level === 'high'">
+              {{ qs.level }}
+            </span>
+          </div>
+        </div>
+
+        <p class="stress-interpretation">
+          <ng-container [ngSwitch]="overallStressLevel">
+            <span *ngSwitchCase="'low'">The candidate appeared calm and composed throughout the interview.</span>
+            <span *ngSwitchCase="'medium'">The candidate showed moderate stress levels, which is normal for an interview setting.</span>
+            <span *ngSwitchCase="'high'">The candidate showed elevated stress indicators. Consider this context when reviewing responses.</span>
+            <span *ngSwitchDefault>Stress analysis data is limited for this session.</span>
+          </ng-container>
+        </p>
+      </div>
+    </div>
+
+    <p class="message">
+      You can return to the dashboard at any time to review your latest progress.
+    </p>
+
+    <div class="actions">
+      <button class="btn-secondary" (click)="goToDashboard()">
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
+</div>

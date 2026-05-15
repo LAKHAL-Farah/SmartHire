@@ -1,0 +1,265 @@
+<section class="po-home">
+  <header class="po-header">
+    <div>
+      <p class="po-greeting">{{ greeting() }}</p>
+      <h1>Your Profile Optimizer</h1>
+    </div>
+    <a class="po-primary-btn" routerLink="/dashboard/cv-manager">Manage CVs <span>→</span></a>
+  </header>
+
+  @if (error()) {
+    <p class="po-error">{{ error() }}</p>
+  }
+
+  <section class="po-stats">
+    <article class="po-card po-stat-card">
+      <div class="po-stat-accent"></div>
+      <p>Hire Readiness</p>
+      <lucide-icon name="activity" [size]="28"></lucide-icon>
+      <strong [ngClass]="scoreClass(hireReadiness())">{{ hireReadiness() }}</strong>
+      <div class="po-mini-ring" [ngClass]="scoreClass(hireReadiness())" [style.--po-ring-progress]="hireReadiness()"></div>
+    </article>
+
+    <article class="po-card po-stat-card">
+      <p>Active CV · ATS Score</p>
+      <lucide-icon name="target" [size]="28"></lucide-icon>
+      @if (activeCv()) {
+        <strong [ngClass]="scoreClass(activeCv()!.atsScore)">{{ activeCv()!.atsScore ?? 0 }}<span>/100</span></strong>
+        <div class="po-score-line">
+          <div class="po-score-line__fill" [ngClass]="scoreClass(activeCv()!.atsScore)"></div>
+        </div>
+      } @else {
+        <strong>No active CV</strong>
+      }
+    </article>
+
+    <article class="po-card po-stat-card">
+      <p>CVs Uploaded</p>
+      <lucide-icon name="file-text" [size]="28"></lucide-icon>
+      <strong>{{ cvs().length }}</strong>
+      <small>{{ parsedStats().parsed }} parsed · {{ parsedStats().failed }} failed</small>
+    </article>
+
+    <article class="po-card po-stat-card">
+      <p>Saved Offers</p>
+      <lucide-icon name="briefcase" [size]="28"></lucide-icon>
+      <strong>{{ jobOffers().length }}</strong>
+      <small>Last added: {{ jobOffers().length ? offerAgeDays(jobOffers()[0].createdAt) : 0 }} days ago</small>
+      <button type="button" class="po-outline-btn po-stat-add-btn" (click)="openPanel()">Add new +</button>
+    </article>
+  </section>
+
+  <section class="po-card po-active">
+    <div class="po-active__accent"></div>
+    @if (!activeCv()) {
+      <div class="po-empty-state">
+        <lucide-icon name="zap" [size]="48"></lucide-icon>
+        <h2>No active CV selected</h2>
+        <p>Go to CV Manager to upload and set your active CV</p>
+        <a class="po-primary-btn" routerLink="/dashboard/cv-manager">Go to CV Manager</a>
+      </div>
+    } @else {
+      <div class="po-active-grid">
+        <article>
+          <span class="po-pill">{{ activeCv()!.fileFormat }}</span>
+          <h3>{{ activeCv()!.originalFileName }}</h3>
+          <p>Uploaded {{ activeCv()!.uploadedAt | date:'MMM d, y' }}</p>
+          <span class="po-parse-pill">{{ activeCv()!.parseStatus }}</span>
+          <a routerLink="/dashboard/cv-manager">Change active CV</a>
+        </article>
+
+        <article>
+          <p class="po-muted"><lucide-icon name="tags" [size]="14"></lucide-icon> Top Skills</p>
+          <div class="po-skills">
+            @for (skill of (activeCvParsed()?.skills ?? []).slice(0, 10); track skill) {
+              <span>{{ skill }}</span>
+            }
+            @if ((activeCvParsed()?.skills?.length ?? 0) > 10) {
+              <span>+{{ (activeCvParsed()?.skills?.length ?? 0) - 10 }} more</span>
+            }
+          </div>
+          <p class="po-summary-name">{{ activeCvParsed()?.name || 'Candidate' }}</p>
+          <p class="po-summary-text">{{ activeCvParsed()?.summary || 'No parsed summary available.' }}</p>
+          @if (parsedContentInvalid()) {
+            <p class="po-error">Parsed CV content is invalid JSON.</p>
+          }
+        </article>
+
+        <article class="po-score-wrap">
+          <div class="po-score-ring" [ngClass]="scoreClass(activeCv()!.atsScore)" [style.--po-ring-progress]="activeCv()!.atsScore ?? 0">
+            <div class="po-score-ring__inner">{{ activeCv()!.atsScore ?? 0 }}</div>
+          </div>
+
+          <p>ATS Score</p>
+          <small [ngClass]="scoreClass(activeCv()!.atsScore)">{{ scoreLabel(activeCv()!.atsScore) }}</small>
+
+          <div class="po-score-scale" role="img" aria-label="ATS score percentile scale">
+            <div class="po-score-scale__track"></div>
+            <div class="po-score-scale__marker" [style.left.%]="activeCv()!.atsScore ?? 0"></div>
+            <div class="po-score-scale__labels">
+              <span>0</span>
+              <span>25</span>
+              <span>50</span>
+              <span>75</span>
+              <span>100</span>
+            </div>
+          </div>
+
+          <div class="po-metric-bars" aria-label="ATS sub-metrics">
+            <div class="po-metric-row">
+              <span>Keywords</span>
+              <strong>{{ scoreMetrics().keyword }}</strong>
+              <div class="po-metric-row__track"><div class="po-metric-row__fill" [style.width.%]="scoreMetrics().keyword"></div></div>
+            </div>
+            <div class="po-metric-row">
+              <span>Structure</span>
+              <strong>{{ scoreMetrics().structure }}</strong>
+              <div class="po-metric-row__track"><div class="po-metric-row__fill" [style.width.%]="scoreMetrics().structure"></div></div>
+            </div>
+            <div class="po-metric-row">
+              <span>Formatting</span>
+              <strong>{{ scoreMetrics().formatting }}</strong>
+              <div class="po-metric-row__track"><div class="po-metric-row__fill" [style.width.%]="scoreMetrics().formatting"></div></div>
+            </div>
+          </div>
+
+          <a [routerLink]="['/dashboard/cv-detail', activeCv()!.id]">View full analysis →</a>
+        </article>
+      </div>
+    }
+  </section>
+
+  <section class="po-offers">
+    <div class="po-section-head">
+      <h2><lucide-icon name="briefcase" [size]="16"></lucide-icon> Recent Job Offers</h2>
+      <div>
+        <a routerLink="/dashboard/job-offers">View all →</a>
+        <button type="button" class="po-outline-btn" (click)="openPanel()">Add new +</button>
+      </div>
+    </div>
+
+    @if (!recentOffers().length) {
+      <div class="po-card po-empty-state">
+        <lucide-icon name="archive" [size]="48"></lucide-icon>
+        <h3>No job offers yet</h3>
+        <button type="button" class="po-primary-btn" (click)="openPanel()">Add your first offer</button>
+      </div>
+    } @else {
+      <div class="po-recent-list">
+        @for (offer of recentOffers(); track offer.id; let index = $index) {
+          <article class="po-card po-offer-row" [ngClass]="colorClassByIndex(index)">
+            <div class="po-offer-dot"></div>
+            <div class="po-offer-main">
+              <h3>{{ offer.title }}</h3>
+              <p>{{ offer.company || 'Unknown company' }}</p>
+              <div class="po-skills po-skills--tiny">
+                @for (keyword of jobOfferKeywords(offer).slice(0, 4); track keyword) {
+                  <span>{{ keyword }}</span>
+                }
+              </div>
+              <small>Added {{ offerAgeDays(offer.createdAt) }} days ago</small>
+            </div>
+            <button type="button" class="po-outline-btn" (click)="navigateToOffer(offer.id)">View & Tailor →</button>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="po-pipeline-preview" [@pipelineCardsStagger]="true">
+    @for (pipeline of comingSoonPipelines; track pipeline.id) {
+      <article class="po-card po-pipeline-card" [ngClass]="'po-pipeline-card--' + pipeline.theme">
+        <div class="po-pipeline-card__top">
+          <span class="po-pipeline-card__icon" [ngClass]="'po-pipeline-card__icon--' + pipeline.theme">
+            <lucide-icon [name]="pipeline.icon" [size]="28"></lucide-icon>
+          </span>
+          <span class="po-pipeline-card__badge" [ngClass]="'po-pipeline-card__badge--' + pipeline.theme">{{ pipeline.badge }}</span>
+        </div>
+
+        <h3>{{ pipeline.title }}</h3>
+        <p>{{ pipeline.description }}</p>
+
+        <ul class="po-pipeline-card__features">
+          @for (feature of pipeline.features; track feature) {
+            <li>
+              <lucide-icon name="check-circle" [size]="12"></lucide-icon>
+              <span>{{ feature }}</span>
+            </li>
+          }
+        </ul>
+
+        <button
+          type="button"
+          class="po-pipeline-card__cta"
+          [ngClass]="'po-pipeline-card__cta--' + pipeline.theme"
+          [disabled]="pipeline.disabled"
+          (click)="openPipeline(pipeline.id)"
+        >
+          {{ pipeline.cta }}
+        </button>
+      </article>
+    }
+  </section>
+
+  <section class="po-card po-tips">
+    <div class="po-section-head">
+      <h2><lucide-icon name="sparkles" [size]="16"></lucide-icon> AI Tips</h2>
+      <span class="po-tip-count">{{ activeOpenTips().length }} open · {{ activeTips().length }} total for {{ activeCvName() }}</span>
+    </div>
+
+    @if (!activeTips().length) {
+      <div class="po-empty-state po-empty-state--compact">
+        <lucide-icon name="check-circle" [size]="36"></lucide-icon>
+        <h3>No tips for this CV yet</h3>
+        <p>Generate or refresh the CV analysis to populate the tips list.</p>
+      </div>
+    } @else {
+      <div class="po-tip-list">
+        @for (tip of activeTips(); track tip.id) {
+          <article class="po-tip-item">
+            <div class="po-tip-item__head">
+              <span [ngClass]="'po-tip-pill po-tip-pill--' + tip.priority.toLowerCase()">{{ tip.priority }}</span>
+              @if (tip.isResolved) {
+                <span class="po-tip-pill po-tip-pill--resolved">Resolved</span>
+              } @else {
+                <button type="button" class="po-link-btn" (click)="resolveTip(tip.id)">Resolve</button>
+              }
+            </div>
+            <p>{{ tip.tipText }}</p>
+            <small>{{ tip.createdAt | date:'MMM d, y' }}</small>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="po-quick-actions">
+    <article class="po-card">
+      <lucide-icon name="upload-cloud" [size]="20"></lucide-icon>
+      <h3>Upload a CV</h3>
+      <p>Parse and score a new CV</p>
+      <a class="po-outline-btn" routerLink="/dashboard/cv-manager">Upload</a>
+    </article>
+
+    <article class="po-card">
+      <lucide-icon name="search" [size]="20"></lucide-icon>
+      <h3>Browse Offers</h3>
+      <p>View your saved job descriptions</p>
+      <a class="po-outline-btn" routerLink="/dashboard/job-offers">Browse</a>
+    </article>
+
+    <article class="po-card">
+      <lucide-icon name="chart-bar" [size]="20"></lucide-icon>
+      <h3>CV Analysis</h3>
+      <p>Deep dive into your active CV</p>
+      @if (activeCv()) {
+        <a class="po-outline-btn" [routerLink]="['/dashboard/cv-detail', activeCv()!.id]">Analyse</a>
+      } @else {
+        <button type="button" class="po-outline-btn" disabled>Analyse</button>
+      }
+    </article>
+  </section>
+
+  <app-job-offer-panel [open]="jobOfferPanelOpen()" (closed)="closePanel()" (saved)="onOfferSaved($event)"></app-job-offer-panel>
+  <app-toast></app-toast>
+</section>

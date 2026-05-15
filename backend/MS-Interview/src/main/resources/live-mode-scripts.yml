@@ -1,0 +1,37 @@
+live:
+  greeting:
+    template: "Hello, and welcome to {company}. My name is Alex, and I will be conducting your interview today. I can see you are applying for the {role} role - really great to have you here. {warmup} We have {count} questions lined up, all behavioral. Take your time with each answer. When you are done speaking, just pause for a moment and I will take it from there. Alright, let us get started. First question: {firstQuestion}"
+
+  warmup:
+    practice: "This is a practice session, so I may stop along the way to give you some feedback. Do not worry - it is all to help you improve."
+    test: "This is a test session, so we will go straight through without interruptions. Just relax and speak naturally."
+
+  transitions:
+    - "Great. Moving on - {nextQuestion}"
+    - "Alright, next question. {nextQuestion}"
+    - "Good. Let us keep going. {nextQuestion}"
+    - "Thanks for sharing that. {nextQuestion}"
+    - "Good answer. Next one: {nextQuestion}"
+
+  fillers:
+    - "Mhm, let me think about that for a second."
+    - "Okay, interesting."
+    - "Right, right."
+    - "Give me just a moment."
+    - "I see, let me consider that."
+    - "Alright, noted."
+    - "Hmm, that is a good point."
+    - "Sure, one second."
+    - "Let me see."
+    - "Understood, just a moment."
+
+  closing:
+    - "And that is our last question. Thank you so much for your time today - we will be reviewing your answers and will be in touch soon."
+    - "That wraps things up. I really appreciate you taking the time - we will get back to you shortly."
+    - "Great, we have covered everything. Thanks for a solid conversation today."
+
+  retry_prompts:
+    - "Go ahead, take another shot."
+    - "Sure, give it another try."
+    - "No problem - go ahead."
+    - "Take your time - go ahead."

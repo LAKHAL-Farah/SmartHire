@@ -1,0 +1,66 @@
+<div class="nf">
+  <!-- Atmospheric orbs -->
+  <div class="nf__orb nf__orb--teal"></div>
+  <div class="nf__orb nf__orb--purple"></div>
+  <div class="nf__orb nf__orb--navy"></div>
+
+  <!-- Logo -->
+  <a routerLink="/" class="nf__logo">
+    <div class="nf__logo-icon">S</div>
+    <span class="nf__logo-text">SmartHire</span>
+  </a>
+
+  <!-- Center content -->
+  <div class="nf__content">
+    <!-- Animated 404 -->
+    <div class="nf__code-wrap">
+      <span class="nf__code">4</span>
+      <div class="nf__zero">
+        <!-- Mini AI brain inside the zero -->
+        <svg class="nf__brain" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(46,232,165,0.15)" stroke-width="1"/>
+          <ellipse class="nf__ring nf__ring--1" cx="50" cy="50" rx="36" ry="14" fill="none" stroke="rgba(46,232,165,0.35)" stroke-width="1"/>
+          <ellipse class="nf__ring nf__ring--2" cx="50" cy="50" rx="28" ry="11" fill="none" stroke="rgba(46,134,171,0.3)" stroke-width="1" style="transform: rotate(55deg); transform-origin: 50px 50px;"/>
+          <line x1="50" y1="50" x2="50" y2="28" stroke="#2ee8a5" stroke-width="0.8" opacity="0.4"/>
+          <line x1="50" y1="50" x2="66" y2="41" stroke="#2E86AB" stroke-width="0.8" opacity="0.4"/>
+          <line x1="50" y1="50" x2="66" y2="59" stroke="#2ee8a5" stroke-width="0.8" opacity="0.4"/>
+          <line x1="50" y1="50" x2="50" y2="72" stroke="#8b5cf6" stroke-width="0.8" opacity="0.4"/>
+          <line x1="50" y1="50" x2="34" y2="59" stroke="#2ee8a5" stroke-width="0.8" opacity="0.4"/>
+          <line x1="50" y1="50" x2="34" y2="41" stroke="#2E86AB" stroke-width="0.8" opacity="0.4"/>
+          <circle cx="50" cy="28" r="2.5" fill="#2ee8a5" class="nf__node"/>
+          <circle cx="66" cy="41" r="2" fill="#2E86AB" class="nf__node"/>
+          <circle cx="66" cy="59" r="2.5" fill="#8b5cf6" class="nf__node"/>
+          <circle cx="50" cy="72" r="2" fill="#2ee8a5" class="nf__node"/>
+          <circle cx="34" cy="59" r="2.5" fill="#2E86AB" class="nf__node"/>
+          <circle cx="34" cy="41" r="2" fill="#8b5cf6" class="nf__node"/>
+          <circle cx="50" cy="50" r="7" fill="rgba(10,10,15,0.85)" stroke="#2ee8a5" stroke-width="1.5"/>
+          <circle cx="50" cy="50" r="3.5" fill="#2ee8a5" opacity="0.9"/>
+        </svg>
+      </div>
+      <span class="nf__code">4</span>
+    </div>
+
+    <h1 class="nf__title">Page not found</h1>
+    <p class="nf__desc">
+      Looks like this path doesn't exist in our system.<br>
+      Let's get you back on track.
+    </p>
+
+    <div class="nf__actions">
+      <a routerLink="/" class="btn-primary nf__btn">
+        <lucide-icon name="arrow-left" [size]="16" [strokeWidth]="2"></lucide-icon>
+        Back to Home
+      </a>
+      <a routerLink="/dashboard" class="btn-ghost nf__btn">
+        Go to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom hint -->
+  <p class="nf__hint">
+    Lost? Try the <a routerLink="/#features" class="nf__hint-link">Features</a>,
+    <a routerLink="/login" class="nf__hint-link">Login</a>, or
+    <a routerLink="/#pricing" class="nf__hint-link">Pricing</a> pages.
+  </p>
+</div>

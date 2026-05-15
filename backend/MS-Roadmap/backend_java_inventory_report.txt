@@ -1,0 +1,1678 @@
+MS-ROADMAP JAVA INVENTORY
+TOTAL JAVA FILES: 141
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ai\AiClient.java ===
+PACKAGE: tn.esprit.msroadmap.ai
+CLASS TYPE: Other
+KEY CONTENT:
+- public AiClient(@Qualifier("aiWebClient") WebClient aiWebClient);
+- public String call(String systemPrompt, String userPrompt);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\config\WebClientConfig.java ===
+PACKAGE: tn.esprit.msroadmap.config
+CLASS TYPE: Config
+KEY CONTENT:
+- public WebClient genericWebClient();
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Controllers\RoadmapController.java ===
+PACKAGE: tn.esprit.msroadmap.Controllers
+CLASS TYPE: Controller
+KEY CONTENT:
+- ENDPOINT: POST /api/roadmaps -> public ResponseEntity<RoadmapResponse> create(@RequestBody RoadmapRequest request) {
+- ENDPOINT: GET /api/roadmaps/{id} -> public ResponseEntity<RoadmapResponse> getById(@PathVariable Long id) {
+- ENDPOINT: GET /api/roadmaps -> public ResponseEntity<List<RoadmapResponse>> getAll() {
+- ENDPOINT: PUT /api/roadmaps/{id} -> public ResponseEntity<RoadmapResponse> update(@PathVariable Long id, @RequestBody RoadmapRequest request) {
+- ENDPOINT: DELETE /api/roadmaps/{id} -> public ResponseEntity<Void> delete(@PathVariable Long id) {
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Controllers\RoadmapStepController.java ===
+PACKAGE: tn.esprit.msroadmap.Controllers
+CLASS TYPE: Controller
+KEY CONTENT:
+- ENDPOINT: POST /api/roadmap-steps/{roadmapId} -> public ResponseEntity<StepResponse> addStep(@PathVariable Long roadmapId, @RequestBody StepRequest request) {
+- ENDPOINT: DELETE /api/roadmap-steps/{stepId} -> public ResponseEntity<Void> deleteStep(@PathVariable Long stepId) {
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Controllers\RoadmapVisualController.java ===
+PACKAGE: tn.esprit.msroadmap.Controllers
+CLASS TYPE: Controller
+KEY CONTENT:
+- ENDPOINT: POST /api/roadmaps/visual/generate -> public ResponseEntity<RoadmapVisualResponse> generate(@RequestBody RoadmapGenerationRequestDto request) {
+- ENDPOINT: GET /api/roadmaps/visual/{roadmapId}/graph -> public ResponseEntity<RoadmapVisualResponse> getGraph(@PathVariable Long roadmapId) {
+- ENDPOINT: PUT /api/roadmaps/visual/nodes/{nodeId}/complete -> public ResponseEntity<RoadmapVisualResponse> completeNode(@PathVariable Long nodeId, @RequestParam Long userId) {
+- ENDPOINT: POST /api/roadmaps/visual/{roadmapId}/replan -> public ResponseEntity<RoadmapVisualResponse> replan(@PathVariable Long roadmapId, @RequestBody ReplanRequestDto request) {
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Controllers\UserRoadmapController.java ===
+PACKAGE: tn.esprit.msroadmap.Controllers
+CLASS TYPE: Controller
+KEY CONTENT:
+- ENDPOINT: POST /api/user-roadmaps/start -> public ResponseEntity<UserRoadmapResponse> start(@RequestParam Long userId, @RequestParam Long roadmapId) {
+- ENDPOINT: GET /api/user-roadmaps/progress -> public ResponseEntity<UserRoadmapResponse> getProgress(@RequestParam Long userId, @RequestParam Long roadmapId) {
+- ENDPOINT: DELETE /api/user-roadmaps/{id} -> public ResponseEntity<Void> deleteUserRoadmap(@PathVariable Long id) {
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Controllers\UserStepsProgressController.java ===
+PACKAGE: tn.esprit.msroadmap.Controllers
+CLASS TYPE: Controller
+KEY CONTENT:
+- ENDPOINT: PATCH /api/user-step-progress/{userRoadmapId}/steps/{stepId} -> public ResponseEntity<Void> updateStatus(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\external\CareerPathDTO.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.external
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record CareerPathDTO(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\external\UserProfileDTO.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.external
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record UserProfileDTO(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\AddResourceRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private ResourceType type;
+- private ResourceProvider provider;
+- private String title;
+- private String url;
+- private Double rating;
+- private Double durationHours;
+- private Double price;
+- private boolean isFree;
+- private String externalId;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\CompleteNodeRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long userId;
+- private Long nodeId;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\CreateMilestoneRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private String title;
+- private String description;
+- private int stepThreshold;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\ProjectSubmitRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long userId;
+- private Long projectSuggestionId;
+- private String repoUrl;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\ReplanRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long roadmapId;
+- private List<String> newSkillGaps;
+- private List<String> newStrongSkills;
+- private String experienceLevel;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\RetrySubmissionRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private String repoUrl;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\RoadmapGenerationRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long userId;
+- private Long careerPathId;
+- private String careerPathName;
+- private List<String> skillGaps;
+- private List<String> strongSkills;
+- private String experienceLevel;
+- private int weeklyHoursAvailable;
+- private String preferredLanguage;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\RoadmapRequest.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record RoadmapRequest(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\StepRequest.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record StepRequest(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\StepResourceDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record StepResourceDto(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\request\StudyBuddyChatRequestDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.request
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long userId;
+- private Long stepId;
+- private String message;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\AiReviewDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Integer score;
+- private Integer readmeScore;
+- private Integer structureScore;
+- private Integer testScore;
+- private Integer ciScore;
+- private String feedback;
+- private List<String> recommendations;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\CertificateDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Long milestoneId;
+- private String certificateCode;
+- private String pdfUrl;
+- private String badgeUrl;
+- private CertificateStatus status;
+- private LocalDateTime issuedAt;
+- private boolean linkedInShared;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\MilestoneDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long roadmapId;
+- private String title;
+- private String description;
+- private int stepThreshold;
+- private LocalDateTime reachedAt;
+- private boolean certificateIssued;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\NotificationDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Long roadmapId;
+- private NotificationType type;
+- private String message;
+- private boolean isRead;
+- private LocalDateTime createdAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\PaceSnapshotDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long roadmapId;
+- private LocalDate snapshotDate;
+- private int plannedSteps;
+- private int completedSteps;
+- private int deltaDays;
+- private PaceStatus paceStatus;
+- private String catchUpPlanNote;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\PeerBenchmarkDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long careerPathId;
+- private int stepOrder;
+- private Double avgCompletionDays;
+- private Double p10CompletionDays;
+- private Double p90CompletionDays;
+- private int totalSamples;
+- private LocalDateTime computedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\ProgressSummaryDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long roadmapId;
+- private int totalSteps;
+- private int completedSteps;
+- private double progressPercent;
+- private int streakDays;
+- private StepResponse currentStep;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\ProjectSubmissionDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Long projectSuggestionId;
+- private String repoUrl;
+- private SubmissionStatus status;
+- private Integer score;
+- private String aiFeedback;
+- private Integer readmeScore;
+- private Integer structureScore;
+- private Integer testScore;
+- private Integer ciScore;
+- private List<String> recommendations;
+- private int retryCount;
+- private LocalDateTime submittedAt;
+- private LocalDateTime reviewedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\ProjectSuggestionDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long stepId;
+- private String title;
+- private String description;
+- private DifficultyLevel difficulty;
+- private List<String> githubTopics;
+- private List<String> techStack;
+- private int estimatedHours;
+- private String alignedCareerPath;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\ReplanEventDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long roadmapId;
+- private Long triggerStepId;
+- private String reason;
+- private LocalDateTime replannedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\RoadmapEdgeDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private String fromNodeId;
+- private String toNodeId;
+- private EdgeType type;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\RoadmapNodeDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private String nodeId;
+- private String title;
+- private String description;
+- private String objective;
+- private NodeType type;
+- private DifficultyLevel difficulty;
+- private StepStatus status;
+- private int stepOrder;
+- private int estimatedDays;
+- private Integer actualDays;
+- private String technologies;
+- private Double positionX;
+- private Double positionY;
+- private LocalDateTime unlockedAt;
+- private LocalDateTime completedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\RoadmapResponse.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record RoadmapResponse(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\RoadmapVisualResponse.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long roadmapId;
+- private String title;
+- private String description;
+- private RoadmapStatus status;
+- private int totalNodes;
+- private int completedNodes;
+- private double progressPercent;
+- private int streakDays;
+- private int longestStreak;
+- private List<RoadmapNodeDto> nodes;
+- private List<RoadmapEdgeDto> edges;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\ShareResponseDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private String shareToken;
+- private String shareUrl;
+- private boolean isPublic;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\StepDetailResponse.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Integer stepOrder;
+- private String title;
+- private String objective;
+- private Integer estimatedDays;
+- private Integer actualDays;
+- private String status;
+- private java.time.LocalDateTime unlockedAt;
+- private java.time.LocalDateTime completedAt;
+- private List<StepResourceDto> resources;
+- private List<ProjectSuggestionDto> projectSuggestions;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\StepProgressResponse.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record StepProgressResponse(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\StepResourceDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long stepId;
+- private ResourceType type;
+- private ResourceProvider provider;
+- private String title;
+- private String url;
+- private Double rating;
+- private Double durationHours;
+- private Double price;
+- private boolean isFree;
+- private String externalId;
+- private LocalDateTime createdAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\StepResponse.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record StepResponse(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\StreakDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private int currentStreak;
+- private int longestStreak;
+- private LocalDate lastActivityDate;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\StudyBuddyMessageDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Long stepId;
+- private String role;
+- private String content;
+- private LocalDateTime createdAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\UserRoadmapResponse.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- public record UserRoadmapResponse(
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\DTO\response\UserStepBenchmarkDto.java ===
+PACKAGE: tn.esprit.msroadmap.DTO.response
+CLASS TYPE: DTO
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Long stepId;
+- private int userDays;
+- private Double percentileRank;
+- private PeerBenchmarkDto peerBenchmark;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\MicroCertificate.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private RoadmapMilestone milestone;
+- private String certificateCode;
+- private String pdfUrl;
+- private String badgeUrl;
+- private tn.esprit.msroadmap.Enums.CertificateStatus status = tn.esprit.msroadmap.Enums.CertificateStatus.GENERATED;
+- private LocalDateTime issuedAt;
+- private boolean linkedInShared = false;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\PeerBenchmark.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long careerPathId;
+- private int stepOrder;
+- private double avgCompletionDays;
+- private double p10CompletionDays;
+- private double p90CompletionDays;
+- private double fastest10Percent;
+- private double slowest10Percent;
+- private int totalSamples;
+- private LocalDateTime computedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\ProjectSubmission.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private ProjectSuggestion projectSuggestion;
+- private String repoUrl;
+- private tn.esprit.msroadmap.Enums.SubmissionStatus status = tn.esprit.msroadmap.Enums.SubmissionStatus.PENDING_REVIEW;
+- private Integer score;
+- private String aiFeedback;
+- private Integer readmeScore;
+- private Integer structureScore;
+- private Integer testScore;
+- private Integer ciScore;
+- private String recommendations;
+- private int retryCount = 0;
+- private LocalDateTime submittedAt;
+- private LocalDateTime reviewedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\ProjectSuggestion.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private RoadmapStep step;
+- private String title;
+- private String description;
+- private tn.esprit.msroadmap.Enums.DifficultyLevel difficulty;
+- private List<String> githubTopics;
+- private List<String> techStack;
+- private int estimatedHours;
+- private String alignedCareerPath;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\Roadmap.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Long careerPathId;
+- private String title;
+- private String difficulty;
+- private Integer estimatedWeeks;
+- private tn.esprit.msroadmap.Enums.RoadmapStatus status = tn.esprit.msroadmap.Enums.RoadmapStatus.GENERATING;
+- private int totalSteps = 0;
+- private int completedSteps = 0;
+- private boolean isAiGenerated = false;
+- private int streakDays = 0;
+- private int longestStreak = 0;
+- private LocalDate lastActivityDate;
+- private String shareToken;
+- private boolean isPublic = false;
+- private LocalDateTime generatedAt;
+- private LocalDateTime createdAt;
+- private LocalDateTime updatedAt;
+- private List<RoadmapStep> steps;
+- private List<RoadmapMilestone> milestones;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\RoadmapEdge.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Roadmap roadmap;
+- private String fromNodeId;
+- private String toNodeId;
+- private RoadmapNode fromNode;
+- private EdgeType type = EdgeType.REQUIRED;
+- private LocalDateTime createdAt;
+- private LocalDateTime updatedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\RoadmapMilestone.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Roadmap roadmap;
+- private String title;
+- private String description;
+- private int stepThreshold;
+- private LocalDateTime reachedAt;
+- private boolean certificateIssued = false;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\RoadmapNode.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Roadmap roadmap;
+- private String nodeId;
+- private String title;
+- private String description;
+- private String objective;
+- private NodeType type = NodeType.REQUIRED;
+- private DifficultyLevel difficulty = DifficultyLevel.BEGINNER;
+- private StepStatus status = StepStatus.LOCKED;
+- private int stepOrder;
+- private int estimatedDays;
+- private Integer actualDays;
+- private String technologies;
+- private Double positionX;
+- private Double positionY;
+- private LocalDateTime unlockedAt;
+- private LocalDateTime completedAt;
+- private LocalDateTime createdAt;
+- private LocalDateTime updatedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\RoadmapNotification.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Roadmap roadmap;
+- private tn.esprit.msroadmap.Enums.NotificationType type;
+- private String message;
+- private boolean isRead = false;
+- private LocalDateTime createdAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\RoadmapPaceSnapshot.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Roadmap roadmap;
+- private LocalDate snapshotDate;
+- private int plannedSteps;
+- private int completedSteps;
+- private int timedeltaDays;
+- private tn.esprit.msroadmap.Enums.PaceStatus paceStatus;
+- private String catchUpPlanNote;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\RoadmapReplanEvent.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Roadmap roadmap;
+- private Long triggerStepId;
+- private String reason;
+- private String previousPlan;
+- private String newPlan;
+- private LocalDateTime replannedAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\RoadmapStep.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Roadmap roadmap;
+- private Integer stepOrder;
+- private String title;
+- private String objective;
+- private int estimatedDays;
+- private Integer actualDays;
+- private tn.esprit.msroadmap.Enums.StepStatus status = tn.esprit.msroadmap.Enums.StepStatus.LOCKED;
+- private LocalDateTime unlockedAt;
+- private LocalDateTime completedAt;
+- private List<StepResource> resources;
+- private List<ProjectSuggestion> projectSuggestions;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\StepResource.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private RoadmapStep step;
+- private tn.esprit.msroadmap.Enums.ResourceType type;
+- private tn.esprit.msroadmap.Enums.ResourceProvider provider;
+- private String title;
+- private String url;
+- private Double rating;
+- private Double durationHours;
+- private Double price;
+- private boolean isFree = false;
+- private String externalId;
+- private LocalDateTime createdAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\StudyBuddyMessage.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private RoadmapStep step;
+- private String role;
+- private String content;
+- private LocalDateTime createdAt;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\UserRoadmap.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private Long roadmapId;
+- private Integer progressPercent;
+- private LocalDateTime startedAt;
+- private List<UserStepProgress> stepProgressions;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\UserStepBenchmark.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long userId;
+- private RoadmapStep roadmapStep;
+- private PeerBenchmark peerBenchmark;
+- private int userDays;
+- private Double percentileRank;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Entities\UserStepProgress.java ===
+PACKAGE: tn.esprit.msroadmap.Entities
+CLASS TYPE: Entity
+KEY CONTENT:
+- private Long id;
+- private Long stepId;
+- private String status;
+- private LocalDateTime completeAt;
+- private UserRoadmap userRoadmap;
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\CertificateStatus.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- GENERATED
+- SHARED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\DifficultyLevel.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- BEGINNER
+- INTERMEDIATE
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\EdgeType.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- REQUIRED
+- RECOMMENDED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\GenerationStatus.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- PENDING
+- IN_PROGRESS
+- COMPLETED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\NodeType.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- REQUIRED
+- OPTIONAL
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\NotificationType.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- STREAK_REMINDER
+- STEP_UNLOCK
+- MILESTONE_REACHED
+- BEHIND_SCHEDULE
+- SUBMISSION_REVIEWED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\PaceStatus.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- ON_TRACK
+- BEHIND
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\ProjectStatus.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- NOT_STARTED
+- IN_PROGRESS
+- SUBMITTED
+- REVIEWED
+- PASSED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\ResourceProvider.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- UDEMY
+- COURSERA
+- YOUTUBE
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\ResourceType.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- COURSE
+- VIDEO
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\RoadmapStatus.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- GENERATING
+- ACTIVE
+- COMPLETED
+- PAUSED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\StepStatus.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- LOCKED
+- AVAILABLE
+- IN_PROGRESS
+- COMPLETED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Enums\SubmissionStatus.java ===
+PACKAGE: tn.esprit.msroadmap.Enums
+CLASS TYPE: Enum
+KEY CONTENT:
+- PENDING_REVIEW
+- REVIEWING
+- REVIEWED
+- PASSED
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Exception\BusinessException.java ===
+PACKAGE: tn.esprit.msroadmap.Exception
+CLASS TYPE: Other
+KEY CONTENT:
+- public BusinessException(String message);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Exception\ErrorResponse.java ===
+PACKAGE: tn.esprit.msroadmap.Exception
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Exception\GlobalExceptionHandler.java ===
+PACKAGE: tn.esprit.msroadmap.Exception
+CLASS TYPE: Other
+KEY CONTENT:
+- public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex);
+- public ResponseEntity<ErrorResponse> handleBusiness(BusinessException ex);
+- public ResponseEntity<ErrorResponse> handleServiceUnavailable(ServiceUnavailableException ex);
+- public ResponseEntity<ErrorResponse> handleGlobal(Exception ex);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Exception\ResourceNotFoundException.java ===
+PACKAGE: tn.esprit.msroadmap.Exception
+CLASS TYPE: Other
+KEY CONTENT:
+- public ResourceNotFoundException(String message);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Exception\ServiceUnavailableException.java ===
+PACKAGE: tn.esprit.msroadmap.Exception
+CLASS TYPE: Other
+KEY CONTENT:
+- public ServiceUnavailableException(String message);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\CertificateMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\MilestoneMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\NotificationMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\PaceSnapshotMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\PeerBenchmarkMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\ProjectSubmissionMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- default List<String> map(String value);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\ProjectSuggestionMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\ReplanEventMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\RoadmapMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\RoadmapStepMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\StepResourceMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\StudyBuddyMessageMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Mapper\UserStepBenchmarkMapper.java ===
+PACKAGE: tn.esprit.msroadmap.Mapper
+CLASS TYPE: Other
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\MsRoadmapApplication.java ===
+PACKAGE: tn.esprit.msroadmap
+CLASS TYPE: Other
+KEY CONTENT:
+- public static void main(String[] args);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\MicroCertificateRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\PeerBenchmarkRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\ProjectSubmissionRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\ProjectSuggestionRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapEdgeRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapMilestoneRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapNodeRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapNotificationRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapPaceSnapshotRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapReplanEventRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\RoadmapStepRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\StepResourceRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\StudyBuddyMessageRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\UserRoadmapRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\UserStepBenchmarkRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Repositories\UserStepProgressRepository.java ===
+PACKAGE: tn.esprit.msroadmap.Repositories
+CLASS TYPE: Repository
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\MicroCertificateServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public MicroCertificate generateCertificate(Long userId, Long milestoneId);
+- public List<MicroCertificate> getCertificatesByUserId(Long userId);
+- public MicroCertificate getCertificateByCertificateCode(String code);
+- public MicroCertificate markLinkedInShared(Long certificateId);
+- public void revokeCertificate(Long certificateId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\PeerBenchmarkServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public PeerBenchmark getBenchmarkForStep(Long careerPathId, int stepOrder);
+- public List<PeerBenchmark> getBenchmarksForCareerPath(Long careerPathId);
+- public String getBenchmarkForUser(Long userId, Long stepId);
+- public void recordUserStepCompletion(Long userId, Long stepId, int actualDays);
+- public void recomputeBenchmarks(Long careerPathId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\ProjectSubmissionServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public ProjectSubmission submitProject(Long userId, Long suggestionId, String repoUrl);
+- public List<ProjectSubmission> getSubmissionsByUserId(Long userId);
+- public ProjectSubmission getSubmissionById(Long submissionId);
+- public ProjectSubmission retrySubmission(Long submissionId, String newRepoUrl);
+- public String getAiReviewResult(Long submissionId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\ProjectSuggestionServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public List<ProjectSuggestion> getSuggestionsByStepId(Long stepId);
+- public List<ProjectSuggestion> getSuggestionsByDifficulty(DifficultyLevel difficulty);
+- public List<ProjectSuggestion> browseSuggestions(DifficultyLevel difficulty, String tech, int page, int size);
+- public List<ProjectSuggestion> generateProjectSuggestions(Long stepId, String domain, String level);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\RoadmapMilestoneServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public List<RoadmapMilestone> getMilestonesByRoadmapId(Long roadmapId);
+- public void checkAndUnlockMilestones(Long roadmapId);
+- public RoadmapMilestone createMilestone(Long roadmapId, RoadmapMilestone milestone);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\RoadmapNotificationServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public List<RoadmapNotification> getNotificationsForUser(Long userId);
+- public long getUnreadCount(Long userId);
+- public RoadmapNotification markAsRead(Long notificationId);
+- public void markAllAsRead(Long userId);
+- public RoadmapNotification createNotification(Long userId, Long roadmapId, NotificationType type, String message);
+- public void deleteNotification(Long notificationId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\RoadmapPaceServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public RoadmapPaceSnapshot takeSnapshot(Long roadmapId);
+- public List<RoadmapPaceSnapshot> getSnapshotHistory(Long roadmapId);
+- public RoadmapPaceSnapshot getLatestSnapshot(Long roadmapId);
+- public String computeCatchUpPlan(Long roadmapId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\RoadmapReplanServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public RoadmapReplanEvent replanRoadmap(Long roadmapId, String reason, String newPlan);
+- public List<RoadmapReplanEvent> getReplanHistory(Long roadmapId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\RoadmapServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public RoadmapResponse createRoadmap(RoadmapRequest request);
+- public RoadmapResponse getRoadmapById(Long id);
+- public List<RoadmapResponse> getAllRoadmaps();
+- public RoadmapResponse updateRoadmap(Long id, RoadmapRequest request);
+- public void deleteRoadmap(Long id);
+- public RoadmapResponse generateRoadmap(Object generationRequest);
+- public RoadmapResponse getRoadmapByUserId(Long userId);
+- public List<RoadmapResponse> getRoadmapsByCareerPath(Long careerPathId);
+- public void pauseRoadmap(Long id);
+- public void resumeRoadmap(Long id);
+- public String shareRoadmap(Long id);
+- public void unshareRoadmap(Long id);
+- public RoadmapResponse getRoadmapByShareToken(String token);
+- public void updateProgress(Long roadmapId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\RoadmapStepServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public StepResponse addStepToRoadmap(Long roadmapId, StepRequest request);
+- public void deleteStep(Long stepId);
+- public List<StepResponse> getStepsByRoadmapId(Long roadmapId);
+- public StepResponse getStepById(Long stepId);
+- public void completeStep(Long stepId, Long userId);
+- public StepResponse getNextAvailableStep(Long roadmapId);
+- public List<StepResponse> getStepsByStatus(Long roadmapId, StepStatus status);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\RoadmapVisualServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public RoadmapVisualResponse generateVisualRoadmap(RoadmapGenerationRequestDto request);
+- public RoadmapVisualResponse getRoadmapGraph(Long roadmapId);
+- public RoadmapVisualResponse completeNode(Long nodeId, Long userId);
+- public RoadmapVisualResponse replanVisualRoadmap(Long roadmapId, ReplanRequestDto request);
+- private RoadmapVisualResponse buildVisualResponse(Roadmap roadmap);
+- private RoadmapNodeDto toNodeDto(RoadmapNode n);
+- private RoadmapEdgeDto toEdgeDto(RoadmapEdge e);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\StepResourceServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public List<StepResource> getResourcesByStepId(Long stepId);
+- public List<StepResource> getResourcesByStepIdAndType(Long stepId, String type);
+- public List<StepResource> searchResources(String topic, String provider, String type);
+- public StepResource addResourceToStep(Long stepId, StepResourceDto dto);
+- public void deleteResource(Long resourceId);
+- public void syncResourcesForStep(Long stepId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\StudyBuddyServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public StudyBuddyMessage chat(Long userId, Long stepId, String userMessage);
+- public List<StudyBuddyMessage> getChatHistory(Long userId, Long stepId);
+- public void clearChatHistory(Long userId, Long stepId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\UserRoadmapServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public UserRoadmapResponse startRoadmap(Long userId, Long roadmapId);
+- public UserRoadmapResponse getUserProgress(Long userId, Long roadmapId);
+- public void deleteUserRoadmap(Long id);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\UserStepBenchmarkServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public List<UserStepBenchmark> getByUserId(Long userId);
+- public UserStepBenchmark getByUserIdAndStepId(Long userId, Long stepId);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\Services\UserStepProgressServiceImpl.java ===
+PACKAGE: tn.esprit.msroadmap.Services
+CLASS TYPE: Service Impl
+KEY CONTENT:
+- public void updateStepStatus(Long userRoadmapId, Long stepId, String status);
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IMicroCertificateService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IPeerBenchmarkService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IProjectSubmissionService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IProjectSuggestionService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IRoadmapMilestoneService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IRoadmapNotificationService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IRoadmapPaceService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IRoadmapReplanService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IRoadmapService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IRoadmapStepService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IRoadmapVisualService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IStepResourceService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IStudyBuddyService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IUserRoadmapService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IUserStepBenchmarkService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+=== C:\Users\MSI\Desktop\New folder\SmartHire\MS-Roadmap\src\main\java\tn\esprit\msroadmap\ServicesImpl\IUserStepProgressService.java ===
+PACKAGE: tn.esprit.msroadmap.ServicesImpl
+CLASS TYPE: Service Interface
+KEY CONTENT:
+- (no methods detected)
+=== END ===
+
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+BACKEND ENDPOINTS INVENTORY
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+METHOD | PATH | CONTROLLER | SERVICE METHOD | STATUS
+POST | /api/roadmaps | RoadmapController | deleteRoadmap | IMPLEMENTED
+GET | /api/roadmaps/{id} | RoadmapController | deleteRoadmap | IMPLEMENTED
+GET | /api/roadmaps | RoadmapController | deleteRoadmap | IMPLEMENTED
+PUT | /api/roadmaps/{id} | RoadmapController | deleteRoadmap | IMPLEMENTED
+DELETE | /api/roadmaps/{id} | RoadmapController | deleteRoadmap | IMPLEMENTED
+POST | /api/roadmap-steps/{roadmapId} | RoadmapStepController | deleteStep | IMPLEMENTED
+DELETE | /api/roadmap-steps/{stepId} | RoadmapStepController | deleteStep | IMPLEMENTED
+POST | /api/roadmaps/visual/generate | RoadmapVisualController | (not-resolved) | IMPLEMENTED
+GET | /api/roadmaps/visual/{roadmapId}/graph | RoadmapVisualController | (not-resolved) | IMPLEMENTED
+PUT | /api/roadmaps/visual/nodes/{nodeId}/complete | RoadmapVisualController | (not-resolved) | IMPLEMENTED
+POST | /api/roadmaps/visual/{roadmapId}/replan | RoadmapVisualController | (not-resolved) | IMPLEMENTED
+POST | /api/user-roadmaps/start | UserRoadmapController | deleteUserRoadmap | IMPLEMENTED
+GET | /api/user-roadmaps/progress | UserRoadmapController | deleteUserRoadmap | IMPLEMENTED
+DELETE | /api/user-roadmaps/{id} | UserRoadmapController | deleteUserRoadmap | IMPLEMENTED
+PATCH | /api/user-step-progress/{userRoadmapId}/steps/{stepId} | UserStepsProgressController | updateStepStatus | IMPLEMENTED
+
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+MISSING ENDPOINTS VS PDF SPEC
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+METHOD | PATH | PURPOSE
+GET | /api/roadmaps/{roadmapId}/milestones | Fetch roadmap milestones for visual timeline
+GET | /api/roadmaps/{roadmapId}/notifications | List roadmap notifications by roadmap
+POST | /api/roadmaps/{roadmapId}/nodes/{nodeId}/start | Mark node as in-progress
+GET | /api/roadmaps/{roadmapId}/progress/summary | Dashboard progress summary card
+GET | /api/roadmaps/{roadmapId}/pace/latest | Latest pace snapshot for dashboard
+POST | /api/roadmaps/{roadmapId}/projects/suggestions/generate | Trigger AI generation of project suggestions
+POST | /api/roadmaps/{roadmapId}/resources/sync | Trigger external learning resource sync
+
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+VISUAL ROADMAP ENDPOINTS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+[ ] POST /api/roadmaps/visual/generate
+[ ] GET  /api/roadmaps/visual/{id}/graph
+[ ] PUT  /api/roadmaps/visual/nodes/{nodeId}/complete
+[ ] POST /api/roadmaps/visual/{id}/replan
+
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ENTITIES THAT EXIST
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+MicroCertificate:
+  - id: Long = (none)
+  - userId: Long = (none)
+  - milestone: RoadmapMilestone = (none)
+  - certificateCode: String = (none)
+  - pdfUrl: String = (none)
+  - badgeUrl: String = (none)
+  - status: tn.esprit.msroadmap.Enums.CertificateStatus = tn.esprit.msroadmap.Enums.CertificateStatus.GENERATED
+  - issuedAt: LocalDateTime = (none)
+  - linkedInShared: boolean = false
+PeerBenchmark:
+  - id: Long = (none)
+  - careerPathId: Long = (none)
+  - stepOrder: int = (none)
+  - avgCompletionDays: double = (none)
+  - p10CompletionDays: double = (none)
+  - p90CompletionDays: double = (none)
+  - fastest10Percent: double = (none)
+  - slowest10Percent: double = (none)
+  - totalSamples: int = (none)
+  - computedAt: LocalDateTime = (none)
+ProjectSubmission:
+  - id: Long = (none)
+  - userId: Long = (none)
+  - projectSuggestion: ProjectSuggestion = (none)
+  - repoUrl: String = (none)
+  - status: tn.esprit.msroadmap.Enums.SubmissionStatus = tn.esprit.msroadmap.Enums.SubmissionStatus.PENDING_REVIEW
+  - score: Integer = (none)
+  - aiFeedback: String = (none)
+  - readmeScore: Integer = (none)
+  - structureScore: Integer = (none)
+  - testScore: Integer = (none)
+  - ciScore: Integer = (none)
+  - recommendations: String = (none)
+  - retryCount: int = 0
+  - submittedAt: LocalDateTime = (none)
+  - reviewedAt: LocalDateTime = (none)
+ProjectSuggestion:
+  - id: Long = (none)
+  - step: RoadmapStep = (none)
+  - title: String = (none)
+  - description: String = (none)
+  - difficulty: tn.esprit.msroadmap.Enums.DifficultyLevel = (none)
+  - githubTopics: List<String> = (none)
+  - techStack: List<String> = (none)
+  - estimatedHours: int = (none)
+  - alignedCareerPath: String = (none)
+Roadmap:
+  - id: Long = (none)
+  - userId: Long = (none)
+  - careerPathId: Long = (none)
+  - title: String = (none)
+  - difficulty: String = (none)
+  - estimatedWeeks: Integer = (none)
+  - status: tn.esprit.msroadmap.Enums.RoadmapStatus = tn.esprit.msroadmap.Enums.RoadmapStatus.GENERATING
+  - totalSteps: int = 0
+  - completedSteps: int = 0
+  - isAiGenerated: boolean = false
+  - streakDays: int = 0
+  - longestStreak: int = 0
+  - lastActivityDate: LocalDate = (none)
+  - shareToken: String = (none)
+  - isPublic: boolean = false
+  - generatedAt: LocalDateTime = (none)
+  - createdAt: LocalDateTime = (none)
+  - updatedAt: LocalDateTime = (none)
+  - steps: List<RoadmapStep> = (none)
+  - milestones: List<RoadmapMilestone> = (none)
+RoadmapEdge:
+  - id: Long = (none)
+  - roadmap: Roadmap = (none)
+  - fromNodeId: String = (none)
+  - toNodeId: String = (none)
+  - fromNode: RoadmapNode = (none)
+  - type: EdgeType = EdgeType.REQUIRED
+  - createdAt: LocalDateTime = (none)
+  - updatedAt: LocalDateTime = (none)
+RoadmapMilestone:
+  - id: Long = (none)
+  - roadmap: Roadmap = (none)
+  - title: String = (none)
+  - description: String = (none)
+  - stepThreshold: int = (none)
+  - reachedAt: LocalDateTime = (none)
+  - certificateIssued: boolean = false
+RoadmapNode:
+  - id: Long = (none)
+  - roadmap: Roadmap = (none)
+  - nodeId: String = (none)
+  - title: String = (none)
+  - description: String = (none)
+  - objective: String = (none)
+  - type: NodeType = NodeType.REQUIRED
+  - difficulty: DifficultyLevel = DifficultyLevel.BEGINNER
+  - status: StepStatus = StepStatus.LOCKED
+  - stepOrder: int = (none)
+  - estimatedDays: int = (none)
+  - actualDays: Integer = (none)
+  - technologies: String = (none)
+  - positionX: Double = (none)
+  - positionY: Double = (none)
+  - unlockedAt: LocalDateTime = (none)
+  - completedAt: LocalDateTime = (none)
+  - createdAt: LocalDateTime = (none)
+  - updatedAt: LocalDateTime = (none)
+RoadmapNotification:
+  - id: Long = (none)
+  - userId: Long = (none)
+  - roadmap: Roadmap = (none)
+  - type: tn.esprit.msroadmap.Enums.NotificationType = (none)
+  - message: String = (none)
+  - isRead: boolean = false
+  - createdAt: LocalDateTime = (none)
+RoadmapPaceSnapshot:
+  - id: Long = (none)
+  - roadmap: Roadmap = (none)
+  - snapshotDate: LocalDate = (none)
+  - plannedSteps: int = (none)
+  - completedSteps: int = (none)
+  - timedeltaDays: int = (none)
+  - paceStatus: tn.esprit.msroadmap.Enums.PaceStatus = (none)
+  - catchUpPlanNote: String = (none)
+RoadmapReplanEvent:
+  - id: Long = (none)
+  - roadmap: Roadmap = (none)
+  - triggerStepId: Long = (none)
+  - reason: String = (none)
+  - previousPlan: String = (none)
+  - newPlan: String = (none)
+  - replannedAt: LocalDateTime = (none)
+RoadmapStep:
+  - id: Long = (none)
+  - roadmap: Roadmap = (none)
+  - stepOrder: Integer = (none)
+  - title: String = (none)
+  - objective: String = (none)
+  - estimatedDays: int = (none)
+  - actualDays: Integer = (none)
+  - status: tn.esprit.msroadmap.Enums.StepStatus = tn.esprit.msroadmap.Enums.StepStatus.LOCKED
+  - unlockedAt: LocalDateTime = (none)
+  - completedAt: LocalDateTime = (none)
+  - resources: List<StepResource> = (none)
+  - projectSuggestions: List<ProjectSuggestion> = (none)
+StepResource:
+  - id: Long = (none)
+  - step: RoadmapStep = (none)
+  - type: tn.esprit.msroadmap.Enums.ResourceType = (none)
+  - provider: tn.esprit.msroadmap.Enums.ResourceProvider = (none)
+  - title: String = (none)
+  - url: String = (none)
+  - rating: Double = (none)
+  - durationHours: Double = (none)
+  - price: Double = (none)
+  - isFree: boolean = false
+  - externalId: String = (none)
+  - createdAt: LocalDateTime = (none)
+StudyBuddyMessage:
+  - id: Long = (none)
+  - userId: Long = (none)
+  - step: RoadmapStep = (none)
+  - role: String = (none)
+  - content: String = (none)
+  - createdAt: LocalDateTime = (none)
+UserRoadmap:
+  - id: Long = (none)
+  - userId: Long = (none)
+  - roadmapId: Long = (none)
+  - progressPercent: Integer = (none)
+  - startedAt: LocalDateTime = (none)
+  - stepProgressions: List<UserStepProgress> = (none)
+UserStepBenchmark:
+  - id: Long = (none)
+  - userId: Long = (none)
+  - roadmapStep: RoadmapStep = (none)
+  - peerBenchmark: PeerBenchmark = (none)
+  - userDays: int = (none)
+  - percentileRank: Double = (none)
+UserStepProgress:
+  - id: Long = (none)
+  - stepId: Long = (none)
+  - status: String = (none)
+  - completeAt: LocalDateTime = (none)
+  - userRoadmap: UserRoadmap = (none)
+
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+SERVICE METHODS THAT ARE STUBS
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+PeerBenchmarkServiceImpl.recomputeBenchmarks -> contains TODO/stub logic
+ProjectSuggestionServiceImpl.generateProjectSuggestions -> throws UnsupportedOperationException
+RoadmapPaceServiceImpl.computeCatchUpPlan -> contains TODO/stub logic
+RoadmapServiceImpl.generateRoadmap -> throws UnsupportedOperationException
+RoadmapStepServiceImpl.completeStep -> contains TODO/stub logic
+StepResourceServiceImpl.syncResourcesForStep -> contains TODO/stub logic
+
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+WHAT IS READY TO CONNECT TO FRONTEND
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+- POST /api/roadmaps -> controller returns service response
+- GET /api/roadmaps/{id} -> controller returns service response
+- GET /api/roadmaps -> controller returns service response
+- PUT /api/roadmaps/{id} -> controller returns service response
+- DELETE /api/roadmaps/{id} -> controller returns service response
+- POST /api/roadmap-steps/{roadmapId} -> controller returns service response
+- DELETE /api/roadmap-steps/{stepId} -> controller returns service response
+- POST /api/roadmaps/visual/generate -> controller returns service response
+- GET /api/roadmaps/visual/{roadmapId}/graph -> controller returns service response
+- PUT /api/roadmaps/visual/nodes/{nodeId}/complete -> controller returns service response
+- POST /api/roadmaps/visual/{roadmapId}/replan -> controller returns service response
+- POST /api/user-roadmaps/start -> controller returns service response
+- GET /api/user-roadmaps/progress -> controller returns service response
+- DELETE /api/user-roadmaps/{id} -> controller returns service response
+- PATCH /api/user-step-progress/{userRoadmapId}/steps/{stepId} -> controller returns service response
+
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+WHAT NEEDS TO BE BUILT FIRST
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+Based on the Angular frontend structure:
+- /dashboard/roadmap needs these endpoints: graph read/update, node start/complete, pace, milestones
+- /dashboard/assessment needs these endpoints: skill-gap assessment submit and score retrieval
+- /dashboard/jobs needs these endpoints: job feed/search/recommendations
+- /dashboard/profile needs these endpoints: profile read/update, skills update
+- /dashboard/interview needs these endpoints: mock interview session create, question stream, scoring
+- /admin/careers needs these endpoints: CRUD for career paths and templates
+
+Rank the top 10 things to build next to make the frontend functional:
+1. Add assessment APIs to produce skill gaps used by visual roadmap generation
+2. Add roadmap node start endpoint and progress summary endpoint
+3. Add milestone read endpoints and certificate trigger endpoints for dashboard milestones
+4. Add roadmap notifications-by-roadmap and mark-read batch endpoints
+5. Add resource sync endpoint and provider status endpoint
+6. Add project suggestion generation endpoint and filtering/search endpoint
+7. Add jobs module APIs (search, recommendations, save/apply tracking)
+8. Add interview module APIs (session lifecycle and AI evaluation)
+9. Add profile/skills bridge APIs between MS-User and MS-Roadmap
+10. Add admin career-path management endpoints and template publishing

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: smarthire
+data:
+  config.json: |
+    {
+      "apiBaseUrl": "http://gateway-service:8887",
+      "msRoadmapUrl": "http://gateway-service:8887/msroadmap/api"
+    }

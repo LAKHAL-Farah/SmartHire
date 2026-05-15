@@ -1,0 +1,15 @@
+## MS-Assessment example properties (DO NOT COMMIT real secrets)
+spring.application.name=MS-Assessment
+
+# Admin API key for backoffice
+smarthire.assessment.admin-api-key=${ASSESSMENT_ADMIN_API_KEY:change_me}
+
+# MySQL
+spring.datasource.url=jdbc:mysql://localhost:3307/smarthire_assesment?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=${MYSQL_PASSWORD:change_me}
+
+# AI & external keys
+smarthire.groq.enabled=true
+smarthire.groq.api-key=${GROQ_API_KEY:}
+smarthire.groq.model=llama-3.1-8b-instant

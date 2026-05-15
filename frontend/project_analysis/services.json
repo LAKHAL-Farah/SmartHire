@@ -1,0 +1,126 @@
+﻿[
+    {
+        "file":  "src/app/features/back-office/service/assessment-admin-api.service.ts",
+        "class":  "AssessmentAdminApiService",
+        "methods":  [
+                        "base",
+                        "adminHeaders",
+                        "listCategories",
+                        "deleteCategory",
+                        "listQuestions",
+                        "deleteQuestion",
+                        "deleteChoice"
+                    ],
+        "usesHttpClient":  true,
+        "httpVerbs":  {
+
+                      },
+        "usesEnvironment":  true,
+        "hasMockSignals":  false
+    },
+    {
+        "file":  "src/app/features/back-office/service/user-management.service.ts",
+        "class":  "UserManagementService",
+        "methods":  [
+                        "getAllUsers",
+                        "getUserById",
+                        "transformToDisplayUser",
+                        "updateUser",
+                        "deleteUser",
+                        "handleError"
+                    ],
+        "usesHttpClient":  true,
+        "httpVerbs":  {
+
+                      },
+        "usesEnvironment":  true,
+        "hasMockSignals":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/auth.service.ts",
+        "class":  "AuthService",
+        "methods":  [
+                        "login",
+                        "logout",
+                        "getUser",
+                        "getUserId",
+                        "isAuthenticated",
+                        "loadSession"
+                    ],
+        "usesHttpClient":  true,
+        "httpVerbs":  {
+
+                      },
+        "usesEnvironment":  true,
+        "hasMockSignals":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/authe.service.ts",
+        "class":  "AutheService",
+        "methods":  [
+                        "getToken",
+                        "isLoggedIn",
+                        "redirectAfterLogin",
+                        "getRole"
+                    ],
+        "usesHttpClient":  true,
+        "httpVerbs":  {
+
+                      },
+        "usesEnvironment":  false,
+        "hasMockSignals":  false
+    },
+    {
+        "file":  "src/app/features/front-office/auth/user.service.ts",
+        "class":  "UserService",
+        "methods":  [
+                        "getAllUsers",
+                        "getUserById",
+                        "getUserByEmail",
+                        "createUser",
+                        "getAvatarUrl",
+                        "handleError"
+                    ],
+        "usesHttpClient":  true,
+        "httpVerbs":  {
+
+                      },
+        "usesEnvironment":  true,
+        "hasMockSignals":  false
+    },
+    {
+        "file":  "src/app/features/front-office/landing/services/scroll-animation.service.ts",
+        "class":  "ScrollAnimationService",
+        "methods":  [
+                        "initLenis",
+                        "refreshScrollTrigger",
+                        "ngOnDestroy",
+                        "killAll"
+                    ],
+        "usesHttpClient":  false,
+        "httpVerbs":  {
+
+                      },
+        "usesEnvironment":  false,
+        "hasMockSignals":  false
+    },
+    {
+        "file":  "src/app/features/front-office/profile/profile-api.service.ts",
+        "class":  "ProfileApiService",
+        "methods":  [
+                        "getProfile",
+                        "completeOnboarding",
+                        "getUserByEmail",
+                        "hasLocalProfileFor",
+                        "readLocalProfile",
+                        "writeLocalProfile",
+                        "persistLocalOnboarding"
+                    ],
+        "usesHttpClient":  true,
+        "httpVerbs":  {
+
+                      },
+        "usesEnvironment":  true,
+        "hasMockSignals":  true
+    }
+]

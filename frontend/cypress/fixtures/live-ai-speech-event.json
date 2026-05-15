@@ -1,0 +1,14 @@
+{
+  "type": "LIVE_AI_SPEECH",
+  "payload": {
+    "audioUrl": "/audio/q2.wav",
+    "text": "Great, next question...",
+    "isFollowUp": false,
+    "isRetry": false,
+    "isClosing": false,
+    "nextQuestionId": 2,
+    "nextQuestionText": "Tell me about a challenge.",
+    "currentQuestionIndex": 1,
+    "totalQuestions": 5
+  }
+}

@@ -1,0 +1,5 @@
+# Install all Python dependencies for MS-Interview auxiliary tools
+# Usage: pip install -r tools/requirements.txt
+
+-r stress-inference-service/requirements.txt
+-r kokoro/requirements.txt

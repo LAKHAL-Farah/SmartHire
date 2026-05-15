@@ -1,0 +1,363 @@
+<div class="admin-interview">
+  <header class="admin-interview__header">
+    <div>
+      <h1>Interview Hub Admin</h1>
+      <p>Monitor interview health, maintain question bank quality, and inspect user outcomes.</p>
+    </div>
+    <button type="button" (click)="loadOverview()">Refresh Overview</button>
+  </header>
+
+  @if (error()) {
+    <div class="state state--error">{{ error() }}</div>
+  }
+
+  <nav class="tab-nav">
+    <button type="button" [class.active]="tab() === 'overview'" (click)="setTab('overview')">Overview</button>
+    <button type="button" [class.active]="tab() === 'question-bank'" (click)="setTab('question-bank')">Question Bank</button>
+    <button type="button" [class.active]="tab() === 'sessions'" (click)="setTab('sessions')">Sessions Monitor</button>
+    <button type="button" [class.active]="tab() === 'reports'" (click)="setTab('reports')">Reports</button>
+  </nav>
+
+  @if (tab() === 'overview') {
+    <section class="panel">
+      @if (overviewLoading()) {
+        <div class="state">Loading overview...</div>
+      } @else {
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Total Questions</span>
+            <strong>{{ questions().length }}</strong>
+          </article>
+          <article class="stat-card">
+            <span>Active Questions</span>
+            <strong>{{ activeQuestionsCount() }}</strong>
+          </article>
+          <article class="stat-card">
+            <span>Coverage Sum</span>
+            <strong>{{ totalCoverageCount() }}</strong>
+          </article>
+          <article class="stat-card">
+            <span>Top Streak</span>
+            <strong>@if (leaderboard().length) { {{ leaderboard()[0].currentStreak }}d } @else { — }</strong>
+          </article>
+        </div>
+
+        <div class="split-grid">
+          <article class="card">
+            <h3>Coverage Snapshot</h3>
+            @if (!coverageEntries().length) {
+              <p class="muted">No coverage metrics returned by backend.</p>
+            } @else {
+              <div class="coverage-list">
+                @for (entry of coverageEntries(); track entry.key) {
+                  <div class="coverage-row">
+                    <span>{{ entry.key }}</span>
+                    <strong>{{ entry.value }}</strong>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="card">
+            <h3>Role Breakdown</h3>
+            <div class="coverage-list">
+              <div class="coverage-row"><span>SE</span><strong>{{ roleBreakdown().SE }}</strong></div>
+              <div class="coverage-row"><span>CLOUD</span><strong>{{ roleBreakdown().CLOUD }}</strong></div>
+              <div class="coverage-row"><span>AI</span><strong>{{ roleBreakdown().AI }}</strong></div>
+              <div class="coverage-row"><span>ALL</span><strong>{{ roleBreakdown().ALL }}</strong></div>
+            </div>
+
+            <h3 class="mt">Leaderboard</h3>
+            @if (!leaderboard().length) {
+              <p class="muted">No leaderboard data available.</p>
+            } @else {
+              <div class="leaderboard-list">
+                @for (entry of leaderboard(); track entry.id; let i = $index) {
+                  <div class="leaderboard-row">
+                    <span>#{{ i + 1 }} · User {{ entry.userId }}</span>
+                    <strong>{{ entry.currentStreak }}d</strong>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+        </div>
+      }
+    </section>
+  }
+
+  @if (tab() === 'question-bank') {
+    <section class="panel">
+      <div class="toolbar">
+        <input
+          type="text"
+          placeholder="Search questions..."
+          [ngModel]="questionSearch()"
+          (ngModelChange)="questionSearch.set($event)"
+        />
+        <select [ngModel]="questionRole()" (ngModelChange)="questionRole.set($event)">
+          <option value="ALL">All roles</option>
+          <option value="SE">SE</option>
+          <option value="CLOUD">CLOUD</option>
+          <option value="AI">AI</option>
+          <option value="ALL">ALL</option>
+        </select>
+        <select [ngModel]="questionType()" (ngModelChange)="questionType.set($event)">
+          <option value="ALL">All types</option>
+          <option value="TECHNICAL">TECHNICAL</option>
+          <option value="BEHAVIORAL">BEHAVIORAL</option>
+          <option value="SITUATIONAL">SITUATIONAL</option>
+          <option value="CODING">CODING</option>
+        </select>
+        <select [ngModel]="questionDifficulty()" (ngModelChange)="questionDifficulty.set($event)">
+          <option value="ALL">All difficulties</option>
+          <option value="BEGINNER">BEGINNER</option>
+          <option value="INTERMEDIATE">INTERMEDIATE</option>
+          <option value="ADVANCED">ADVANCED</option>
+          <option value="EXPERT">EXPERT</option>
+        </select>
+        <button type="button" (click)="beginCreateQuestion()">New Question</button>
+      </div>
+
+      @if (questionLoading()) {
+        <div class="state">Loading question bank...</div>
+      } @else {
+        <div class="table-wrap">
+          <table class="question-bank-table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Role</th>
+                <th>Type</th>
+                <th>Difficulty</th>
+                <th>Tags</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (!filteredQuestions().length) {
+                <tr>
+                  <td colspan="6" class="muted">No questions found for current filters.</td>
+                </tr>
+              } @else {
+                @for (question of filteredQuestions(); track question.id) {
+                  <tr>
+                    <td class="question-cell">{{ question.questionText }}</td>
+                    <td>{{ question.roleType }}</td>
+                    <td>{{ question.type }}</td>
+                    <td>{{ question.difficulty }}</td>
+                    <td>{{ question.tags || '—' }}</td>
+                    <td>
+                      <div class="row-actions">
+                        <button type="button" (click)="beginEditQuestion(question)">Edit</button>
+                        <button type="button" (click)="openTagDialog(question.id)">Tag</button>
+                        <button type="button" class="danger" (click)="deleteQuestion(question.id)">Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <article class="form-card">
+        <h3>@if (editingQuestionId()) { Edit Question #{{ editingQuestionId() }} } @else { Create Question }</h3>
+        @if (questionFormError()) {
+          <p class="form-error">{{ questionFormError() }}</p>
+        }
+
+        <div class="form-grid">
+          <label>
+            Career Path ID
+            <input type="number" min="1" [ngModel]="questionForm().careerPathId" (ngModelChange)="updateQuestionFormField('careerPathId', +$event)" />
+          </label>
+          <label>
+            Role
+            <select [ngModel]="questionForm().roleType" (ngModelChange)="updateQuestionFormField('roleType', $event)">
+              <option value="SE">SE</option>
+              <option value="CLOUD">CLOUD</option>
+              <option value="AI">AI</option>
+              <option value="ALL">ALL</option>
+            </select>
+          </label>
+          <label>
+            Type
+            <select [ngModel]="questionForm().type" (ngModelChange)="updateQuestionFormField('type', $event)">
+              <option value="TECHNICAL">TECHNICAL</option>
+              <option value="BEHAVIORAL">BEHAVIORAL</option>
+              <option value="SITUATIONAL">SITUATIONAL</option>
+              <option value="CODING">CODING</option>
+            </select>
+          </label>
+          <label>
+            Difficulty
+            <select [ngModel]="questionForm().difficulty" (ngModelChange)="updateQuestionFormField('difficulty', $event)">
+              <option value="BEGINNER">BEGINNER</option>
+              <option value="INTERMEDIATE">INTERMEDIATE</option>
+              <option value="ADVANCED">ADVANCED</option>
+              <option value="EXPERT">EXPERT</option>
+            </select>
+          </label>
+          <label>
+            Category
+            <input [ngModel]="questionForm().category" (ngModelChange)="updateQuestionFormField('category', $event)" />
+          </label>
+          <label>
+            Domain
+            <input [ngModel]="questionForm().domain" (ngModelChange)="updateQuestionFormField('domain', $event)" />
+          </label>
+        </div>
+
+        <label>
+          Question Text
+          <textarea rows="3" [ngModel]="questionForm().questionText" (ngModelChange)="updateQuestionFormField('questionText', $event)"></textarea>
+        </label>
+
+        <div class="form-grid">
+          <label>
+            Expected Points
+            <textarea rows="2" [ngModel]="questionForm().expectedPoints" (ngModelChange)="updateQuestionFormField('expectedPoints', $event)"></textarea>
+          </label>
+          <label>
+            Hints
+            <textarea rows="2" [ngModel]="questionForm().hints" (ngModelChange)="updateQuestionFormField('hints', $event)"></textarea>
+          </label>
+          <label>
+            Follow Ups
+            <textarea rows="2" [ngModel]="questionForm().followUps" (ngModelChange)="updateQuestionFormField('followUps', $event)"></textarea>
+          </label>
+          <label>
+            Ideal Answer
+            <textarea rows="2" [ngModel]="questionForm().idealAnswer" (ngModelChange)="updateQuestionFormField('idealAnswer', $event)"></textarea>
+          </label>
+        </div>
+
+        <label>
+          Tags (comma separated)
+          <input [ngModel]="questionForm().tags" (ngModelChange)="updateQuestionFormField('tags', $event)" />
+        </label>
+
+        <div class="form-actions">
+          <button type="button" [disabled]="questionSaving()" (click)="saveQuestion()">
+            @if (questionSaving()) { Saving... } @else { Save Question }
+          </button>
+        </div>
+      </article>
+    </section>
+  }
+
+  @if (tab() === 'sessions') {
+    <section class="panel">
+      <div class="toolbar">
+        <input type="number" min="1" [ngModel]="monitorUserInput()" (ngModelChange)="setMonitorUserInput($event)" />
+        <button type="button" [disabled]="!isMonitorUserValid()" (click)="loadMonitoredSessions()">Load Sessions</button>
+        <select [ngModel]="sessionStatusFilter()" (ngModelChange)="sessionStatusFilter.set($event)">
+          <option value="ALL">All statuses</option>
+          <option value="COMPLETED">COMPLETED</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="PAUSED">PAUSED</option>
+          <option value="EVALUATING">EVALUATING</option>
+          <option value="ABANDONED">ABANDONED</option>
+        </select>
+      </div>
+      @if (monitorUserError()) {
+        <p class="form-error">{{ monitorUserError() }}</p>
+      }
+
+      @if (sessionsLoading()) {
+        <div class="state">Loading sessions...</div>
+      } @else if (!filteredSessions().length) {
+        <div class="state">No sessions found.</div>
+      } @else {
+        <div class="list">
+          @for (session of filteredSessions(); track session.id) {
+            <article class="list-row">
+              <div>
+                <h4>Session #{{ session.id }}</h4>
+                <p>{{ session.roleType }} · {{ session.mode }} · {{ session.type }}</p>
+                <p>{{ prettyDate(session.startedAt) }}</p>
+              </div>
+              <div class="list-row__right">
+                <span class="status-pill" [class]="getStatusClass(session.status)">{{ session.status }}</span>
+                <span class="score-pill">{{ session.totalScore === null ? '—' : (session.totalScore | number: '1.1-1') }}</span>
+                <button type="button" (click)="openSession(session.id)">Open Session</button>
+                @if (session.report?.id) {
+                  <button type="button" (click)="openCandidateReport(session.report!.id)">Open Report</button>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  @if (tab() === 'reports') {
+    <section class="panel">
+      <div class="toolbar">
+        <input type="number" min="1" [ngModel]="reportsUserInput()" (ngModelChange)="setReportsUserInput($event)" />
+        <button type="button" [disabled]="!isReportsUserValid()" (click)="loadReports()">Load Reports</button>
+        <input
+          type="text"
+          placeholder="Search reports..."
+          [ngModel]="reportSearch()"
+          (ngModelChange)="reportSearch.set($event)"
+        />
+      </div>
+      @if (reportsUserError()) {
+        <p class="form-error">{{ reportsUserError() }}</p>
+      }
+
+      @if (reportsLoading()) {
+        <div class="state">Loading reports...</div>
+      } @else if (!filteredReports().length) {
+        <div class="state">No reports found.</div>
+      } @else {
+        <div class="list">
+          @for (report of filteredReports(); track report.id) {
+            <article class="list-row">
+              <div>
+                <h4>Report #{{ report.id }}</h4>
+                <p>Session {{ report.sessionId }} · Generated {{ prettyDate(report.generatedAt) }}</p>
+                <p>{{ report.recruiterVerdict || 'No recruiter verdict generated.' }}</p>
+              </div>
+              <div class="list-row__right">
+                <span class="score-pill">{{ report.finalScore === null ? '—' : (report.finalScore | number: '1.1-1') }}</span>
+                <span class="score-pill score-pill--secondary">{{ formatPercentile(report.percentileRank) }}</span>
+                <button type="button" (click)="openCandidateReport(report.id)">Open</button>
+                <button type="button" (click)="openReportPdf(report.id)">PDF</button>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  @if (tagDialogQuestionId()) {
+    <div class="modal-overlay" (click)="closeTagDialog()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <h3>Add Question Tag</h3>
+        <p>Question #{{ tagDialogQuestionId() }}</p>
+        <input
+          type="text"
+          [ngModel]="tagDraft()"
+          (ngModelChange)="setTagDraft($event)"
+          placeholder="e.g. API Design"
+        />
+        @if (tagError()) {
+          <p class="form-error">{{ tagError() }}</p>
+        }
+        <div class="modal-actions">
+          <button type="button" (click)="closeTagDialog()">Cancel</button>
+          <button type="button" [disabled]="tagSaving()" (click)="submitTag()">
+            @if (tagSaving()) { Saving... } @else { Add Tag }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

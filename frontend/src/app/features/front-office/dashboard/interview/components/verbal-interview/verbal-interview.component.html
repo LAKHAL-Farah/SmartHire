@@ -1,0 +1,90 @@
+<section class="verbal-answer-section">
+  <div class="input-mode-toggle">
+    <button
+      type="button"
+      [class.active]="submissionMode() === 'text'"
+      [disabled]="isSubmitting()"
+      (click)="toggleInputMode('text')"
+    >
+      Type
+    </button>
+    <button
+      type="button"
+      [class.active]="submissionMode() === 'audio'"
+      [disabled]="isSubmitting()"
+      (click)="toggleInputMode('audio')"
+    >
+      Speak
+    </button>
+  </div>
+
+  @if (submissionMode() === 'text') {
+    <textarea
+      class="answer-text"
+      placeholder="Type your answer here..."
+      rows="6"
+      [value]="answerText()"
+      [disabled]="isSubmitting()"
+      (focus)="isAnswerFocused.set(true)"
+      (blur)="isAnswerFocused.set(false)"
+      (input)="answerText.set($any($event.target).value)"
+    ></textarea>
+    <span class="char-counter">{{ characterCount() }} characters</span>
+
+    <div class="answer-actions">
+      <div>
+        @if (isPractice) {
+          <button class="hint-btn" type="button" (click)="toggleHint()">Hint</button>
+        }
+      </div>
+      <button class="submit-btn" type="button" [disabled]="isSubmitting() || !answerText().trim().length" (click)="submitTextAnswer()">
+        @if (isSubmitting()) {
+          Evaluating...
+        } @else {
+          Submit Answer ->
+        }
+      </button>
+    </div>
+  }
+
+  @if (submissionMode() === 'audio') {
+    <div class="audio-input-area">
+      <app-mic-button
+        [disabled]="isSubmitting()"
+        (audioReady)="onAudioReady($event)"
+      ></app-mic-button>
+
+      @if (isSubmitting()) {
+        <div class="transcribing-indicator">
+          <div class="spinner-small"></div>
+          <span>{{ transcribingMessage() }}</span>
+        </div>
+      }
+
+      @if (audioTranscriptDebug() || audioEvaluationDebug()) {
+        <div class="audio-debug-panel">
+          <h4>Debug Trace</h4>
+
+          @if (audioTranscriptDebug()) {
+            <div class="audio-debug-block">
+              <p class="audio-debug-label">Transcript</p>
+              <p class="audio-debug-text">{{ audioTranscriptDebug() }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  @if (isPractice && hintOpen()) {
+    <div class="hint-panel">
+      <p class="hint-panel__title">Hints for this question</p>
+      <ul>
+        @for (hint of hints(); track hint) {
+          <li>{{ hint }}</li>
+        }
+      </ul>
+      <button class="hint-hide" type="button" (click)="toggleHint()">Hide hints</button>
+    </div>
+  }
+</section>

@@ -1,0 +1,647 @@
+<div class="profile-page">
+  <div class="profile-layout">
+
+    <!-- ═══ LEFT SIDEBAR (35%) ═══ -->
+    <aside class="profile-sidebar">
+      <!-- Avatar -->
+      <div class="avatar-wrap">
+        @if (apiProfile()?.avatarUrl) {
+          <img [src]="apiProfile()!.avatarUrl!" alt="" class="avatar avatar--photo" />
+        } @else {
+          <div class="avatar">
+            <span class="avatar__initials">{{ displayInitials() }}</span>
+          </div>
+        }
+      </div>
+      <h1 class="profile-name">{{ displayName() }}</h1>
+      <p class="profile-headline">{{ displayHeadline() }}</p>
+      @if (displayLocation()) {
+        <div class="profile-location">
+          <lucide-icon name="map-pin" [size]="14"></lucide-icon>
+          {{ displayLocation() }}
+        </div>
+      }
+
+      <!-- Social links -->
+      <div class="social-links">
+        <a class="social-btn" [href]="apiProfile()?.githubUrl || '#'" [attr.target]="apiProfile()?.githubUrl ? '_blank' : null" [attr.rel]="apiProfile()?.githubUrl ? 'noopener' : null" title="GitHub"
+           [class.social-btn--inactive]="!apiProfile()?.githubUrl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a class="social-btn" [href]="apiProfile()?.linkedinUrl || '#'" [attr.target]="apiProfile()?.linkedinUrl ? '_blank' : null" [attr.rel]="apiProfile()?.linkedinUrl ? 'noopener' : null" title="LinkedIn"
+           [class.social-btn--inactive]="!apiProfile()?.linkedinUrl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="social-btn" href="javascript:void(0)" title="Portfolio">
+          <lucide-icon name="globe" [size]="18"></lucide-icon>
+        </a>
+      </div>
+
+      <!-- Readiness Score -->
+      <div class="sidebar-card">
+        <span class="sidebar-card__label">Overall Readiness</span>
+        <div class="readiness-ring" [class.readiness-ring--empty]="readinessPct() === null">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#2ee8a5" stroke-width="6"
+              stroke-linecap="round"
+              [attr.stroke-dasharray]="ringCircum"
+              [attr.stroke-dashoffset]="ringCircum * (1 - readinessRingFill() / 100)"
+              style="transform: rotate(-90deg); transform-origin: center;"/>
+          </svg>
+          <span class="readiness-ring__pct">
+            @if (readinessPct() === null) {
+              <span class="readiness-ring__na" title="Complete a published skill assessment">—</span>
+            } @else {
+              {{ readinessPct() }}%
+            }
+          </span>
+        </div>
+        @if (readinessPct() === null) {
+          <p class="sidebar-card__hint">Based on published quiz scores.</p>
+        }
+      </div>
+
+      <!-- Skills -->
+      <div class="sidebar-card">
+        <span class="sidebar-card__label">Skills</span>
+        @for (group of skillGroupsForSidebar(); track group.category) {
+          <div class="skill-group">
+            <span class="skill-group__cat">{{ group.category }}</span>
+            @for (skill of group.skills; track skill.name) {
+              <div class="skill-row">
+                <span class="skill-row__name">{{ skill.name }}</span>
+                <div class="skill-row__bar">
+                  <div class="skill-row__fill" [style.width.%]="skill.level"></div>
+                </div>
+              </div>
+            }
+          </div>
+        } @empty {
+          <p class="sidebar-skills-empty">
+            No skills yet. Take a
+            <a routerLink="/dashboard/assessments">skill assessment</a>
+            — scores appear after your result is published.
+          </p>
+        }
+      </div>
+
+      <!-- Badges -->
+      <div class="sidebar-card">
+        <span class="sidebar-card__label">Badges</span>
+        <div class="badges-grid">
+          @for (badge of badges; track badge.name) {
+            <div class="badge-chip" [title]="badge.name">
+              <span class="badge-chip__icon">{{ badge.icon }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </aside>
+
+    <!-- ═══ RIGHT: MAIN CONTENT (65%) ═══ -->
+    <main class="profile-main">
+      @if (profileError()) {
+        <div class="profile-banner profile-banner--error">{{ profileError() }}</div>
+      } @else if (profileLoading()) {
+        <div class="profile-banner">Loading your profile…</div>
+      }
+
+      <div class="profile-split">
+        <section class="profile-section profile-section--account">
+          <h2 class="profile-section__title">User account</h2>
+          <p class="profile-section__hint">Sign-in identity and public links stored in SmartHire (MS-User).</p>
+          <dl class="profile-kv">
+            <dt>Email</dt>
+            <dd>{{ apiProfile()?.email ?? '—' }}</dd>
+            <dt>Password</dt>
+            <dd><span class="profile-muted">Protected</span> <span class="profile-note">Password updates via account settings (soon).</span></dd>
+            <dt>GitHub</dt>
+            <dd>
+              @if (apiProfile()?.githubUrl) {
+                <a [href]="apiProfile()!.githubUrl!" target="_blank" rel="noopener">{{ apiProfile()!.githubUrl }}</a>
+              } @else {
+                <span class="profile-muted">Add your GitHub URL in profile settings when available.</span>
+              }
+            </dd>
+            <dt>LinkedIn</dt>
+            <dd>
+              @if (apiProfile()?.linkedinUrl) {
+                <a [href]="apiProfile()!.linkedinUrl!" target="_blank" rel="noopener">{{ apiProfile()!.linkedinUrl }}</a>
+              } @else {
+                <span class="profile-muted">Add your LinkedIn URL in profile settings when available.</span>
+              }
+            </dd>
+          </dl>
+        </section>
+        <section class="profile-section profile-section--learning">
+          <h2 class="profile-section__title">Goals &amp; onboarding</h2>
+          <p class="profile-section__hint">Your situation and career target from onboarding.</p>
+          @if (onboardingSnap(); as ob) {
+            <p class="profile-learning-line">
+              <strong>Onboarding:</strong>
+              {{ ob.situation ?? '—' }} · {{ ob.careerPath ?? '—' }}
+              @if (ob.completedAt) {
+                <span class="profile-note">({{ ob.completedAt | slice:0:10 }})</span>
+              }
+            </p>
+          }
+          @if (developmentPlanText()) {
+            <p class="profile-dev-plan">{{ developmentPlanText() }}</p>
+          } @else if (!onboardingSnap()) {
+            <p class="profile-muted">Complete <a routerLink="/onboarding">onboarding</a> to personalize your profile.</p>
+          }
+        </section>
+      </div>
+
+      <!-- Tab row -->
+      <div class="tab-row">
+        @for (tab of tabs; track tab.id) {
+          <button class="tab-btn"
+            [class.tab-btn--active]="activeTab() === tab.id"
+            (click)="activeTab.set(tab.id)">{{ tab.label }}</button>
+        }
+      </div>
+
+      <!-- ══ OVERVIEW TAB ══ -->
+      @if (activeTab() === 'overview') {
+        <div class="tab-content">
+          <!-- Bio -->
+          <section class="content-card">
+            <h3 class="content-card__title">Bio</h3>
+            <p class="content-card__text">
+              @if (developmentPlanText()) {
+                {{ developmentPlanText() }}
+              } @else if (hasPublishedAssessmentData()) {
+                Your SmartHire skill assessments are summarized below. Overall readiness (sidebar) matches your
+                published category scores.
+              } @else {
+                Your development focus will appear here after onboarding. Complete a
+                <a routerLink="/dashboard/assessments">skill assessment</a>
+                to unlock a live skill overview on this page.
+              }
+            </p>
+          </section>
+
+          @if (hasPublishedAssessmentData()) {
+            <section class="content-card content-card--assessment-overview">
+              <h3 class="content-card__title">Skill assessment overview</h3>
+              <p class="content-card__text">
+                Based on <strong>published</strong> attempts.                 Overall readiness:
+                <strong>{{ readinessPct() }}%</strong>
+                @if (skillProfile(); as sp) {
+                  <span class="profile-muted"> · Updated {{ sp.generatedAt | date : 'mediumDate' }}</span>
+                }
+              </p>
+              <ng-container *ngTemplateOutlet="skillChartsTpl" />
+              <div class="assess-bars assess-bars--overview">
+                @for (row of skillBarRows(); track row.categoryTitle) {
+                  <div class="assess-bar-row">
+                    <span class="assess-bar-row__name">{{ row.categoryTitle }}</span>
+                    <div class="assess-bar-row__track">
+                      <div
+                        class="assess-bar-row__fill"
+                        [style.width.%]="row.score"
+                        [class.assess-bar-row__fill--hi]="row.score >= 70"
+                        [class.assess-bar-row__fill--mid]="row.score >= 50 && row.score < 70"
+                      ></div>
+                    </div>
+                    <span class="assess-bar-row__pct">{{ row.score }}%</span>
+                  </div>
+                }
+              </div>
+              @if (skillProfile(); as sp) {
+                @if (sp.strengths.length || sp.weaknesses.length) {
+                  <div class="overview-sp-grid">
+                    @if (sp.strengths.length) {
+                      <div>
+                        <h4 class="content-card__subtitle">Strengths</h4>
+                        <ul class="skill-profile-list">
+                          @for (line of sp.strengths; track line) {
+                            <li>{{ line }}</li>
+                          }
+                        </ul>
+                      </div>
+                    }
+                    @if (sp.weaknesses.length) {
+                      <div>
+                        <h4 class="content-card__subtitle">Focus areas</h4>
+                        <ul class="skill-profile-list skill-profile-list--gaps">
+                          @for (line of sp.weaknesses; track line) {
+                            <li>{{ line }}</li>
+                          }
+                        </ul>
+                      </div>
+                    }
+                  </div>
+                }
+              }
+              <p class="overview-cta">
+                <button type="button" class="overview-cta__btn" (click)="activeTab.set('assessments')">
+                  Open full assessment details
+                </button>
+                <a routerLink="/dashboard/assessments" class="overview-cta__link">Go to assessments hub</a>
+              </p>
+            </section>
+          } @else if (hasInProgressAssessment()) {
+            <section class="content-card content-card--notice">
+              <h3 class="content-card__title">Assessment in progress</h3>
+              <p class="content-card__text">
+                Finish and submit your quiz. Your skill overview and readiness score will update immediately.
+              </p>
+              <a routerLink="/dashboard/assessments" class="overview-cta__link">Continue on assessments hub</a>
+            </section>
+          } @else if (assessmentSessions().length === 0) {
+            <section class="content-card content-card--notice">
+              <h3 class="content-card__title">No assessments yet</h3>
+              <p class="content-card__text">
+                Start a category quiz to build your skill profile and overall readiness score.
+              </p>
+              <a routerLink="/dashboard/assessments" class="overview-cta__link">Start skill assessments</a>
+            </section>
+          }
+
+          @if (!hasPublishedAssessmentData()) {
+            <!-- Demo portfolio widgets — hidden once real assessment data exists -->
+            <section class="content-card">
+              <h3 class="content-card__title">GitHub Activity</h3>
+              <p class="content-card__text profile-muted">Sample data — shown until your skill assessments populate the overview above.</p>
+              <div class="gh-score-row">
+                <span class="gh-score-label">Contribution Score</span>
+                <span class="gh-score-val">847</span>
+              </div>
+              <div class="lang-bars">
+                @for (lang of languages; track lang.name) {
+                  <div class="lang-bar-row">
+                    <span class="lang-bar-row__name">{{ lang.name }}</span>
+                    <div class="lang-bar-row__track">
+                      <div class="lang-bar-row__fill" [style.width.%]="lang.pct" [style.background]="lang.color"></div>
+                    </div>
+                    <span class="lang-bar-row__pct">{{ lang.pct }}%</span>
+                  </div>
+                }
+              </div>
+              <div class="repos-section">
+                <span class="repos-section__label">Top Repositories</span>
+                @for (repo of topRepos; track repo.name) {
+                  <div class="repo-row">
+                    <lucide-icon name="folder" [size]="14"></lucide-icon>
+                    <span class="repo-row__name">{{ repo.name }}</span>
+                    <span class="repo-row__stars">{{ repo.stars }} &#9733;</span>
+                    <span class="repo-row__lang" [style.color]="repo.color">{{ repo.lang }}</span>
+                  </div>
+                }
+              </div>
+            </section>
+
+            <section class="content-card">
+              <h3 class="content-card__title">LinkedIn Score</h3>
+              <p class="content-card__text profile-muted">Sample data — not connected to your assessments.</p>
+              <div class="li-scores">
+                @for (s of linkedinScores; track s.section) {
+                  <div class="li-score-row">
+                    <span class="li-score-row__label">{{ s.section }}</span>
+                    <div class="li-score-row__track">
+                      <div class="li-score-row__fill" [style.width.%]="s.score"></div>
+                    </div>
+                    <span class="li-score-row__val">{{ s.score }}%</span>
+                  </div>
+                }
+              </div>
+            </section>
+          } @else {
+            <section class="content-card content-card--muted-extra">
+              <h3 class="content-card__title">External profiles</h3>
+              <p class="content-card__text">
+                GitHub and LinkedIn analytics are not wired to this page yet. Your
+                <strong>SmartHire skill overview</strong> above is the live source for readiness and category scores.
+              </p>
+            </section>
+          }
+        </div>
+      }
+
+      <!-- ══ EXPERIENCE TAB ══ -->
+      @if (activeTab() === 'experience') {
+        <div class="tab-content">
+          <div class="exp-timeline">
+            @for (exp of experiences; track exp.company; let last = $last) {
+              <div class="tl-row" [class.tl-row--last]="last">
+                <div class="tl-rail">
+                  <div class="tl-line"></div>
+                  <div class="tl-node"></div>
+                </div>
+                <div class="exp-card">
+                  <div class="exp-card__header">
+                    <span class="exp-card__role">{{ exp.role }}</span>
+                    <span class="exp-card__date">{{ exp.dateRange }}</span>
+                  </div>
+                  <span class="exp-card__company">{{ exp.company }}</span>
+                  <ul class="exp-card__bullets">
+                    @for (b of exp.bullets; track b) {
+                      <li>{{ b }}</li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- ══ PROJECTS TAB ══ -->
+      @if (activeTab() === 'projects') {
+        <div class="tab-content">
+          <div class="projects-grid">
+            @for (proj of projects; track proj.name) {
+              <div class="proj-card">
+                <div class="proj-card__top">
+                  <span class="proj-card__name">{{ proj.name }}</span>
+                  <span class="proj-card__score"
+                    [class.proj-card__score--high]="proj.aiScore >= 70"
+                    [class.proj-card__score--mid]="proj.aiScore >= 50 && proj.aiScore < 70"
+                    [class.proj-card__score--low]="proj.aiScore < 50">
+                    {{ proj.aiScore }}
+                  </span>
+                </div>
+                <div class="proj-card__tags">
+                  @for (t of proj.techStack; track t) {
+                    <span class="proj-tag">{{ t }}</span>
+                  }
+                </div>
+                <a class="proj-card__link" href="javascript:void(0)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                  View on GitHub
+                </a>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- ══ ASSESSMENTS TAB ══ -->
+      @if (activeTab() === 'assessments') {
+        <div class="tab-content tab-content--assessments">
+          <section class="content-card">
+            <h3 class="content-card__title">Skill assessments</h3>
+            <p class="content-card__text">
+              When you open this page, we save your assessment scores and reviewer feedback to your profile. Scores and
+              feedback appear after each attempt is finished and published by your administrator. Your
+              <strong>skill profile</strong> (overall score, strengths, and gaps) is built automatically from
+              published attempts only.
+            </p>
+          </section>
+
+          @if (skillProfile(); as sp) {
+            <section class="content-card">
+              <h3 class="content-card__title">Skill profile snapshot</h3>
+              <p class="content-card__text profile-muted">
+                Updated {{ sp.generatedAt | date : 'medium' }} · v{{ sp.version }}
+              </p>
+              @if (sp.strengths.length) {
+                <h4 class="content-card__subtitle">Strengths</h4>
+                <ul class="skill-profile-list">
+                  @for (line of sp.strengths; track line) {
+                    <li>{{ line }}</li>
+                  }
+                </ul>
+              }
+              @if (sp.weaknesses.length) {
+                <h4 class="content-card__subtitle">Focus areas</h4>
+                <ul class="skill-profile-list skill-profile-list--gaps">
+                  @for (line of sp.weaknesses; track line) {
+                    <li>{{ line }}</li>
+                  }
+                </ul>
+              }
+            </section>
+          }
+
+          @if (assessmentSessions().length === 0) {
+            <section class="content-card">
+              <p class="content-card__text">
+                No attempts yet. Go to
+                <a routerLink="/dashboard/assessments">Skill assessments</a>
+                to start a category.
+              </p>
+            </section>
+          } @else {
+            <ng-container *ngTemplateOutlet="skillChartsTpl" />
+            <section class="content-card assess-viz">
+              <h3 class="content-card__title">Scores by category (best attempt)</h3>
+              <div class="assess-bars">
+                @for (row of skillBarRows(); track row.categoryTitle) {
+                  <div class="assess-bar-row">
+                    <span class="assess-bar-row__name">{{ row.categoryTitle }}</span>
+                    <div class="assess-bar-row__track">
+                      <div
+                        class="assess-bar-row__fill"
+                        [style.width.%]="row.score"
+                        [class.assess-bar-row__fill--hi]="row.score >= 70"
+                        [class.assess-bar-row__fill--mid]="row.score >= 50 && row.score < 70"
+                      ></div>
+                    </div>
+                    <span class="assess-bar-row__pct">{{ row.score }}%</span>
+                  </div>
+                }
+              </div>
+            </section>
+
+            <section class="content-card">
+              <h3 class="content-card__title">History</h3>
+              <ul class="assess-history">
+                @for (s of assessmentSessions(); track s.id) {
+                  <li class="assess-history__item">
+                    <div class="assess-history__main">
+                      <span class="assess-history__cat">{{ s.categoryTitle }}</span>
+                      <span class="assess-history__meta">{{ s.status }} · {{ s.startedAt | date : 'medium' }}</span>
+                    </div>
+                    <div class="assess-history__right">
+                      @if (sessionCompleted(s) && s.scorePercent != null) {
+                        <span class="assess-history__score">{{ s.scorePercent }}%</span>
+                        <a
+                          class="assess-history__link"
+                          [routerLink]="['/dashboard/assessments/session', s.id, 'review']"
+                          [queryParams]="{ userId: s.userId }"
+                        >
+                          View results
+                        </a>
+                      }
+                    </div>
+                    @if (sessionCompleted(s) && sessionPublished(s) && s.adminFeedback) {
+                      <p class="assess-history__feedback">{{ s.adminFeedback }}</p>
+                    }
+                  </li>
+                }
+              </ul>
+            </section>
+          }
+        </div>
+      }
+    </main>
+
+    <!-- Shared: skill radar + bar charts (published categories only) -->
+    <ng-template #skillChartsTpl>
+      @if (skillBarRows().length > 0) {
+        <section class="content-card content-card--skill-charts" aria-label="Skill charts">
+          <h3 class="content-card__title">Skill charts</h3>
+          <p class="content-card__text profile-muted">
+            Visual summary of your best published score per category (0–100%).
+          </p>
+          <div class="profile-skill-charts">
+            @if (showSkillRadar()) {
+              <div class="profile-skill-charts__col">
+                <span class="profile-skill-charts__caption">Radar</span>
+                <div class="profile-radar-wrap">
+                  <svg viewBox="0 0 200 200" class="profile-radar-svg" role="img" aria-label="Radar chart of category scores">
+                    <defs>
+                      <linearGradient id="profileRadarFillGrad" x1="18%" y1="12%" x2="82%" y2="88%">
+                        <stop offset="0%" stop-color="#5fffd1" stop-opacity="0.42" />
+                        <stop offset="45%" stop-color="#2ee8a5" stop-opacity="0.28" />
+                        <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.14" />
+                      </linearGradient>
+                      <linearGradient id="profileRadarStrokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#9fffea" stop-opacity="0.95" />
+                        <stop offset="45%" stop-color="#2ee8a5" stop-opacity="1" />
+                        <stop offset="100%" stop-color="#14b8a6" stop-opacity="0.92" />
+                      </linearGradient>
+                      <filter id="profileRadarGlow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+                        <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#2ee8a5" flood-opacity="0.45" />
+                      </filter>
+                    </defs>
+                    <!-- subtle vignette -->
+                    <circle class="profile-radar-vignette" cx="100" cy="100" r="78" />
+                    @for (s of radarGridScales; track s) {
+                      <polygon
+                        class="profile-radar-grid-ring"
+                        [class.profile-radar-grid-ring--outer]="s === 1"
+                        [attr.points]="getSkillRadarGridPolygon(s)"
+                      />
+                    }
+                    @for (ax of skillRadarAxisPoints(); track ax.fullLabel) {
+                      <line
+                        class="profile-radar-axis"
+                        x1="100"
+                        y1="100"
+                        [attr.x2]="ax.x"
+                        [attr.y2]="ax.y"
+                      />
+                      <g class="profile-radar-label-group">
+                        <title>{{ ax.fullLabel }}</title>
+                        <text
+                          class="profile-radar-label"
+                          [attr.x]="ax.lx"
+                          [attr.y]="ax.ly"
+                          text-anchor="middle"
+                          dominant-baseline="central"
+                        >
+                          {{ ax.label }}
+                        </text>
+                      </g>
+                    }
+                    <polygon
+                      class="profile-radar-area"
+                      [attr.points]="skillRadarPolygon()"
+                      fill="url(#profileRadarFillGrad)"
+                      stroke="url(#profileRadarStrokeGrad)"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      filter="url(#profileRadarGlow)"
+                    />
+                  </svg>
+                </div>
+              </div>
+            }
+            <div
+              class="profile-skill-charts__col profile-skill-charts__col--bars"
+              [class.profile-skill-charts__col--full]="!showSkillRadar()"
+            >
+              <span class="profile-skill-charts__caption">Bar chart</span>
+              <div class="profile-vbar-wrap">
+                <svg viewBox="0 0 400 140" class="profile-vbar-svg" role="img" aria-label="Bar chart of category scores">
+                  <defs>
+                    <linearGradient id="profileVbarFillGrad" x1="0" y1="1" x2="0" y2="0">
+                      <stop offset="0%" stop-color="#0a2620" stop-opacity="0.95" />
+                      <stop offset="35%" stop-color="#145a4a" stop-opacity="0.9" />
+                      <stop offset="100%" stop-color="#2ee8a5" stop-opacity="1" />
+                    </linearGradient>
+                    <linearGradient id="profileVbarShine" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="#ffffff" stop-opacity="0" />
+                      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.14" />
+                      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                    </linearGradient>
+                    <filter id="profileVbarShadow" x="-20%" y="-10%" width="140%" height="130%">
+                      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.35" />
+                    </filter>
+                  </defs>
+                  <!-- % grid -->
+                  <g class="profile-vbar-grid" aria-hidden="true">
+                    <text class="profile-vbar-axis-label" x="10" y="28">100</text>
+                    <line class="profile-vbar-grid-line" x1="28" y1="24" x2="384" y2="24" />
+                    <text class="profile-vbar-axis-label" x="14" y="50">75</text>
+                    <line class="profile-vbar-grid-line profile-vbar-grid-line--soft" x1="28" y1="46" x2="384" y2="46" />
+                    <text class="profile-vbar-axis-label" x="14" y="72">50</text>
+                    <line class="profile-vbar-grid-line profile-vbar-grid-line--soft" x1="28" y1="68" x2="384" y2="68" />
+                    <text class="profile-vbar-axis-label" x="14" y="94">25</text>
+                    <line class="profile-vbar-grid-line profile-vbar-grid-line--soft" x1="28" y1="90" x2="384" y2="90" />
+                    <text class="profile-vbar-axis-label" x="18" y="116">0</text>
+                  </g>
+                  <line class="profile-vbar-baseline" x1="28" y1="112" x2="384" y2="112" />
+                  @for (b of skillVerticalBars(); track $index) {
+                    <g class="profile-vbar-bar-group" filter="url(#profileVbarShadow)">
+                      <title>{{ b.full }}</title>
+                      <rect
+                        class="profile-vbar-bar"
+                        [attr.x]="b.x"
+                        [attr.y]="b.y"
+                        [attr.width]="b.w"
+                        [attr.height]="b.h"
+                        rx="5"
+                        ry="5"
+                        fill="url(#profileVbarFillGrad)"
+                        stroke="rgba(94, 255, 210, 0.35)"
+                        stroke-width="1"
+                      />
+                      <rect
+                        class="profile-vbar-shine"
+                        [attr.x]="b.x"
+                        [attr.y]="b.y"
+                        [attr.width]="b.w * 0.35"
+                        [attr.height]="b.h"
+                        rx="5"
+                        fill="url(#profileVbarShine)"
+                        opacity="0.85"
+                        pointer-events="none"
+                      />
+                      <text
+                        class="profile-vbar-value"
+                        [attr.x]="b.x + b.w / 2"
+                        [attr.y]="b.y - 8"
+                        text-anchor="middle"
+                      >
+                        {{ b.score }}%
+                      </text>
+                      <text
+                        class="profile-vbar-cat"
+                        [attr.x]="b.x + b.w / 2"
+                        y="130"
+                        text-anchor="middle"
+                      >
+                        {{ b.label }}
+                      </text>
+                    </g>
+                  }
+                </svg>
+              </div>
+            </div>
+          </div>
+          @if (!showSkillRadar()) {
+            <p class="profile-skill-charts__hint">
+              Radar chart appears when you have at least three published categories.
+            </p>
+          }
+        </section>
+      }
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+:host { display: block; }
+
+.cta {
+  position: relative;
+  padding: 160px 0 120px;
+  overflow: hidden;
+}
+
+.cta__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.cta__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+.cta__orb--1 {
+  width: 500px;
+  height: 500px;
+  background: rgba(46, 232, 165, 0.08);
+  top: -100px;
+  left: 20%;
+}
+.cta__orb--2 {
+  width: 400px;
+  height: 400px;
+  background: rgba(139, 92, 246, 0.06);
+  bottom: -100px;
+  right: 20%;
+}
+
+.cta__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cta__statement {
+  text-align: center;
+  margin: 0 auto 40px;
+}
+
+.cta__subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.btn-lg {
+  padding: 18px 36px !important;
+  font-size: 16px !important;
+}

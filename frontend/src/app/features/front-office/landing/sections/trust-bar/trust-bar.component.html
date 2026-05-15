@@ -1,0 +1,12 @@
+<section class="trust" #trustSection>
+  <div class="section-container">
+    <p class="trust__label">Trusted by students from</p>
+  </div>
+  <div class="trust__track">
+    <div class="trust__scroll">
+      @for (logo of allLogos; track $index) {
+        <div class="trust__logo">{{ logo }}</div>
+      }
+    </div>
+  </div>
+</section>

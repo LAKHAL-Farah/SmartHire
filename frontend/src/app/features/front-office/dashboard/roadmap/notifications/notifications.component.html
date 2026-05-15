@@ -1,0 +1,53 @@
+<div class="notifications-page">
+  <a class="back-link" routerLink="/dashboard/roadmap">&larr; Back to roadmap</a>
+
+  <header class="header card">
+    <div>
+      <p class="eyebrow">Roadmap Alerts</p>
+      <h1>Notifications</h1>
+      <p>Unread: <strong>{{ unreadCount() }}</strong></p>
+    </div>
+
+    <button type="button" class="mark-all" (click)="markAllAsRead()" [disabled]="markingAll() || unreadCount() === 0">
+      {{ markingAll() ? 'Updating...' : 'Mark all as read' }}
+    </button>
+  </header>
+
+  <section class="card state-card" *ngIf="loading()">Loading notifications...</section>
+
+  <section class="card state-card error" *ngIf="!loading() && errorMessage()">
+    {{ errorMessage() }}
+  </section>
+
+  <section class="list card" *ngIf="!loading() && notifications().length > 0">
+    <article class="item" *ngFor="let notification of notifications(); trackBy: trackNotification" [class.item-read]="notification.isRead">
+      <div class="content">
+        <span class="type-pill" [ngClass]="asTypeClass(notification.type)">{{ notification.type || 'INFO' }}</span>
+        <p>{{ notification.message }}</p>
+        <small>{{ notification.createdAt | date: 'medium' }}</small>
+      </div>
+
+      <div class="actions">
+        <button
+          type="button"
+          (click)="markAsRead(notification)"
+          [disabled]="notification.isRead || actingNotificationId() === notification.id"
+        >
+          {{ notification.isRead ? 'Read' : 'Mark read' }}
+        </button>
+        <button
+          type="button"
+          class="danger"
+          (click)="deleteNotification(notification)"
+          [disabled]="actingNotificationId() === notification.id"
+        >
+          Delete
+        </button>
+      </div>
+    </article>
+  </section>
+
+  <section class="card empty" *ngIf="!loading() && notifications().length === 0">
+    No notifications yet.
+  </section>
+</div>

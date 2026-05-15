@@ -1,0 +1,115 @@
+<section class="po-job-offers">
+  <header class="po-header">
+    <div>
+      <h1>Job Offers <span>{{ filteredOffers().length }}</span></h1>
+    </div>
+    <button type="button" class="po-btn po-btn--primary" (click)="openPanel()">
+      <span>Add new +</span>
+    </button>
+  </header>
+
+  <section class="po-filter">
+    <input type="text" placeholder="Search offers..." [value]="search()" (input)="setSearch($any($event.target).value)" />
+  </section>
+
+  @if (!filteredOffers().length) {
+    <section class="po-card po-empty">
+      <h2>No job offers yet</h2>
+      <p>Start by adding your first job offer</p>
+      <button type="button" class="po-btn po-btn--primary" (click)="openPanel()">Add new +</button>
+    </section>
+  } @else {
+    <section class="po-layout-grid">
+      <section class="po-main-column">
+        @for (offer of mainOffers(); track offer.id; let index = $index) {
+          <article class="po-card po-offer-card" [ngClass]="themeClass(index)">
+            <div class="po-offer-head">
+              <div class="po-dot-group">
+                <span class="po-color-dot"></span>
+              </div>
+              <div class="po-card-meta">
+                <small>Added {{ offerAgeDays(offer.createdAt) }}d ago</small>
+                <button type="button" class="po-delete" (click)="promptDelete(offer.id)">🗑</button>
+              </div>
+            </div>
+
+            <h2>{{ offer.title }}</h2>
+            <p class="po-company">
+              {{ offer.company || 'Unknown company' }}
+              @if (offer.sourceUrl) {
+                <a [href]="offer.sourceUrl" target="_blank" rel="noreferrer" aria-label="Open source URL">↗</a>
+              }
+            </p>
+
+            <p class="po-label">Key Requirements</p>
+            <div class="po-chip-list">
+              @for (keyword of keywords(offer).slice(0, 6); track keyword) {
+                <span>{{ keyword }}</span>
+              }
+              @if (keywords(offer).length > 6) {
+                <span class="po-chip-muted">+{{ keywords(offer).length - 6 }} more</span>
+              }
+            </div>
+
+            <p class="po-preview">{{ previewDescription(offer.rawDescription) }}</p>
+
+            <button type="button" class="po-btn po-btn--tailor" (click)="goToOffer(offer.id)">View & Tailor →</button>
+
+            @if (deletingId() === offer.id) {
+              <div class="po-inline-confirm">
+                <span>Delete?</span>
+                <button type="button" (click)="deleteOffer(offer.id)">Yes</button>
+                <button type="button" (click)="cancelDelete()">No</button>
+              </div>
+            }
+          </article>
+        }
+      </section>
+
+      <aside class="po-side-column">
+        @for (offer of runtimeOffers(); track offer.id; let index = $index) {
+          <article class="po-card po-offer-card po-offer-card--side po-offer-theme--2">
+            <div class="po-offer-head">
+              <div class="po-dot-group">
+                <span class="po-color-dot"></span>
+              </div>
+              <div class="po-card-meta">
+                <small>Added {{ offerAgeDays(offer.createdAt) }}d ago</small>
+                <button type="button" class="po-delete" (click)="promptDelete(offer.id)">🗑</button>
+              </div>
+            </div>
+
+            <h2>{{ offer.title }}</h2>
+            <p class="po-company">
+              {{ offer.company || 'Unknown company' }}
+              @if (offer.sourceUrl) {
+                <a [href]="offer.sourceUrl" target="_blank" rel="noreferrer" aria-label="Open source URL">↗</a>
+              }
+            </p>
+
+            <div class="po-chip-list">
+              @for (keyword of keywords(offer).slice(0, 4); track keyword) {
+                <span>{{ keyword }}</span>
+              }
+            </div>
+
+            <p class="po-preview">{{ previewDescription(offer.rawDescription) }}</p>
+
+            <button type="button" class="po-btn po-btn--tailor po-btn--tailor-ghost" (click)="goToOffer(offer.id)">View & Tailor →</button>
+
+            @if (deletingId() === offer.id) {
+              <div class="po-inline-confirm">
+                <span>Delete?</span>
+                <button type="button" (click)="deleteOffer(offer.id)">Yes</button>
+                <button type="button" (click)="cancelDelete()">No</button>
+              </div>
+            }
+          </article>
+        }
+      </aside>
+    </section>
+  }
+
+  <app-job-offer-panel [open]="panelOpen()" (closed)="closePanel()" (saved)="onSaved($event)"></app-job-offer-panel>
+  <app-toast></app-toast>
+</section>

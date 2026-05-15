@@ -1,0 +1,279 @@
+<section class="po-cv-detail">
+  <section class="po-cover" aria-hidden="true">
+    <div class="po-cover__grid"></div>
+  </section>
+
+  <header class="po-breadcrumb-bar">
+    <button type="button" class="po-link" (click)="backToManager()">
+      <lucide-icon name="chevron-left" [size]="14"></lucide-icon>
+      <span>Back to Manager</span>
+    </button>
+
+    <p class="po-breadcrumb">Optimizer / CV Manager / {{ cv()?.originalFileName || 'CV Detail' }}</p>
+
+    <span class="po-badge po-badge--completed">COMPLETED</span>
+  </header>
+
+  <section class="po-hero">
+    <div class="po-hero__badge">
+      <lucide-icon name="file-text" [size]="24"></lucide-icon>
+    </div>
+
+    <div class="po-hero__content">
+      <h1>{{ parsedContent()?.name || 'Candidate Profile' }}</h1>
+      <p class="po-hero__meta">
+        <span class="po-pill"><lucide-icon name="mail" [size]="12"></lucide-icon> {{ parsedContent()?.email || 'N/A' }}</span>
+        <span class="po-pill"><lucide-icon name="phone" [size]="12"></lucide-icon> {{ parsedContent()?.phone || 'N/A' }}</span>
+      </p>
+      <p class="po-hero__submeta">{{ cv()?.originalFileName || 'Unknown CV' }} · Uploaded {{ cv()?.uploadedAt | date:'MMM d, y' }}</p>
+    </div>
+
+    <div class="po-hero__actions">
+      <button type="button" class="po-btn po-btn--dark" [disabled]="optimizing()" (click)="optimizeCv()">
+        @if (optimizing()) {
+          <span class="po-spinner"></span>
+          <span>Optimizing...</span>
+        } @else {
+          <lucide-icon name="wand2" [size]="14"></lucide-icon>
+          <span>Optimize CV</span>
+        }
+      </button>
+      <button type="button" class="po-btn po-btn--dark" (click)="goToTailor()">
+        <lucide-icon name="wand2" [size]="14"></lucide-icon>
+        <span>Tailor for a Job Offer</span>
+      </button>
+      <button type="button" class="po-btn po-btn--dark" (click)="downloadTailoredPdf()" [disabled]="!isTailoredView()">
+        <lucide-icon name="download" [size]="14"></lucide-icon>
+        <span>Download PDF</span>
+      </button>
+      <button type="button" class="po-btn po-btn--danger" [disabled]="deleting()" (click)="promptDelete()">
+        <lucide-icon name="trash-2" [size]="14"></lucide-icon>
+        <span>Delete CV</span>
+      </button>
+      @if (cv() && !activeCvService.isActive(cv()!.id)) {
+        <button type="button" class="po-btn po-btn--dark" (click)="setAsActive()">
+          <lucide-icon name="star" [size]="14"></lucide-icon>
+          <span>Set as Active</span>
+        </button>
+      }
+    </div>
+
+    <div class="po-hero__chips">
+      @if (isTailoredView()) {
+        <span class="po-chip po-chip--tailored">TAILORED VERSION</span>
+      }
+      @if (cv()?.parseStatus) {
+        <span class="po-chip po-chip--completed">{{ cv()?.parseStatus }}</span>
+      }
+    </div>
+  </section>
+
+  @if (error()) {
+    <p class="po-error">{{ error() }}</p>
+  }
+
+  <section class="po-grid">
+    <aside class="po-col po-col--left">
+      <article class="po-card po-card--file">
+        <div class="po-card__head">
+          <span class="po-pill">{{ cv()?.fileFormat || 'CV' }}</span>
+          <span class="po-chip po-chip--status">{{ cv()?.parseStatus || 'UNKNOWN' }}</span>
+        </div>
+        <h2>{{ cv()?.originalFileName || 'Unknown CV' }}</h2>
+        <p>{{ cv()?.uploadedAt | date:'MMM d, y' }}</p>
+      </article>
+
+      @if (aiDiff()) {
+        <article class="po-card po-card--diff">
+          <div class="po-card__head">
+            <h3>Version Diff</h3>
+            @if (isTailoredView()) {
+              <span class="po-chip po-chip--tailored">TAILORED VERSION</span>
+            }
+          </div>
+
+          <div class="po-diff-stats">
+            <span class="po-stat-pill po-stat-pill--amber">{{ aiDiff()!.totalChanges }} sections changed</span>
+            <span class="po-stat-pill po-stat-pill--green">{{ aiDiff()!.keywordsAdded }} keywords added</span>
+            <span class="po-stat-pill po-stat-pill--red">{{ aiDiff()!.keywordsRemoved }} keywords removed</span>
+          </div>
+
+          <div class="po-diff-list">
+            @for (section of diffSections(); track section.sectionName) {
+              <article class="po-diff-item">
+                <div class="po-diff-item__head">
+                  <strong>{{ section.sectionName }}</strong>
+                  <span [ngClass]="'po-diff-badge po-diff-badge--' + section.diffType.toLowerCase()">{{ section.diffType }}</span>
+                </div>
+                <p>{{ section.changeSummary }}</p>
+                @if (section.addedKeywords.length || section.removedKeywords.length) {
+                  <small>
+                    @if (section.addedKeywords.length) {
+                      + {{ section.addedKeywords.join(', ') }}
+                    }
+                    @if (section.removedKeywords.length) {
+                      @if (section.addedKeywords.length) { · }
+                      - {{ section.removedKeywords.join(', ') }}
+                    }
+                  </small>
+                }
+              </article>
+            }
+          </div>
+        </article>
+      }
+
+      <article class="po-card po-card--summary">
+        <h3>Summary</h3>
+        <p class="po-summary">{{ parsedContent()?.summary || 'No summary available from parsed content.' }}</p>
+      </article>
+
+      <article class="po-card po-card--skills">
+        <div class="po-card__head">
+          <h3>Skills</h3>
+          <span class="po-pill">{{ skills().length }}</span>
+        </div>
+        @if (skills().length) {
+          <div class="po-chip-list">
+            @for (skill of skills(); track skill) {
+              <span>{{ skill }}</span>
+            }
+          </div>
+        } @else {
+          <p class="po-empty-copy">No skills detected yet.</p>
+        }
+      </article>
+
+      <article class="po-card po-card--experience">
+        <h3>Experience</h3>
+        @if (experience().length) {
+          <div class="po-stack">
+            @for (entry of experience(); track entry.title + entry.company) {
+              <article class="po-stack-item">
+                <h4>{{ entry.title }}</h4>
+                <p>{{ entry.company }} · {{ entry.duration }}</p>
+                <small>{{ entry.description }}</small>
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="po-empty-copy">No work experience parsed from this CV.</p>
+        }
+      </article>
+
+      <article class="po-card po-card--education">
+        <h3>Education</h3>
+        @if (education().length) {
+          <div class="po-stack">
+            @for (entry of education(); track entry.degree + entry.institution) {
+              <article class="po-stack-item">
+                <h4>{{ entry.degree }}</h4>
+                <p>{{ entry.institution }} · {{ entry.year }}</p>
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="po-empty-copy">No education section parsed yet.</p>
+        }
+      </article>
+    </aside>
+
+    <aside class="po-col po-col--right">
+      <article class="po-card po-card--score">
+        <div class="po-score-wrap">
+          <svg class="po-score-ring" viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <linearGradient id="po-score-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" [attr.stop-color]="scoreTone(selectedScore()) === 'high' ? '#1D9E75' : scoreTone(selectedScore()) === 'mid' ? '#D4900A' : '#FF6B6B'"></stop>
+                <stop offset="100%" [attr.stop-color]="scoreTone(selectedScore()) === 'high' ? '#4ADE80' : scoreTone(selectedScore()) === 'mid' ? '#F59E0B' : '#FB7185'"></stop>
+              </linearGradient>
+            </defs>
+            <circle class="po-score-ring__track" cx="60" cy="60" r="46"></circle>
+            <circle
+              class="po-score-ring__progress"
+              [ngClass]="'po-score-ring__progress--' + scoreTone(selectedScore())"
+              cx="60"
+              cy="60"
+              r="46"
+              [attr.stroke]="'url(#po-score-gradient)'"
+              [style.--po-ring-length]="2 * 3.1415926535 * 46"
+              [style.--po-ring-offset]="2 * 3.1415926535 * 46 * (1 - (selectedScore() / 100))"
+            ></circle>
+          </svg>
+          <div class="po-score-wrap__inner">
+            <strong>{{ selectedScore() }}</strong>
+          </div>
+        </div>
+
+        <p class="po-section-label">ATS Score</p>
+        <span class="po-chip po-chip--strength" [ngClass]="'po-chip--' + scoreTone(selectedScore())">{{ scoreLabel(selectedScore()) }}</span>
+      </article>
+
+      <article class="po-card po-card--completeness">
+        <p class="po-section-label">AI Completeness</p>
+        <div class="po-completeness-summary">
+          <strong>{{ completenessScore() }}</strong>
+          <span>{{ completenessLabel() }}</span>
+        </div>
+        @if (aiCompleteness()) {
+          <div class="po-completeness-list">
+            @for (entry of completenessEntries(); track entry[0]) {
+              <div class="po-completeness-row">
+                <span>{{ entry[0] }}</span>
+                <div class="po-completeness-bar">
+                  <div
+                    class="po-completeness-bar__fill"
+                    [ngClass]="entry[1].score >= 90 ? 'po-completeness-bar__fill--high' : entry[1].score >= 75 ? 'po-completeness-bar__fill--mid' : 'po-completeness-bar__fill--low'"
+                    [style.--po-bar-width.%]="entry[1].score"
+                  ></div>
+                </div>
+                <strong>{{ entry[1].score }}/100</strong>
+              </div>
+            }
+          </div>
+        } @else {
+          <ul class="po-checklist">
+            <li><lucide-icon [name]="completeness().contact ? 'check-circle' : 'circle-x'" [size]="14"></lucide-icon> Contact info</li>
+            <li><lucide-icon [name]="completeness().summary ? 'check-circle' : 'circle-x'" [size]="14"></lucide-icon> Professional summary</li>
+            <li><lucide-icon [name]="completeness().skills ? 'check-circle' : 'circle-x'" [size]="14"></lucide-icon> Skills section</li>
+            <li><lucide-icon [name]="completeness().experience ? 'check-circle' : 'circle-x'" [size]="14"></lucide-icon> Work experience</li>
+            <li><lucide-icon [name]="completeness().education ? 'check-circle' : 'circle-x'" [size]="14"></lucide-icon> Education</li>
+          </ul>
+        }
+      </article>
+
+      <article class="po-card po-card--actions">
+        <div class="po-card__head">
+            <div class="po-card__titlebar">
+              <lucide-icon name="zap" [size]="14"></lucide-icon>
+              <span>Quick Actions</span>
+            </div>
+            <span class="po-section-label">fast access</span>
+        </div>
+        <div class="po-quick-actions">
+          <button type="button" class="po-action-btn" (click)="goToTailor()">
+            <span class="po-action-btn__icon po-action-btn__icon--purple"><lucide-icon name="sparkles" [size]="14"></lucide-icon></span>
+            <span class="po-action-btn__label">Tailor for a Job Offer</span>
+            <span class="po-ai-pill">AI</span>
+          </button>
+          <a class="po-action-btn" [routerLink]="['/dashboard/cv-manager']">
+            <span class="po-action-btn__icon po-action-btn__icon--teal"><lucide-icon name="upload" [size]="14"></lucide-icon></span>
+            <span class="po-action-btn__label">Upload an Improved Version</span>
+            <span class="po-ai-pill">AI</span>
+          </a>
+          <a class="po-action-btn" [routerLink]="['/dashboard/cv-manager']" [queryParams]="{ tab: 'tailored' }">
+            <span class="po-action-btn__icon po-action-btn__icon--blue"><lucide-icon name="bar-chart-3" [size]="14"></lucide-icon></span>
+            <span class="po-action-btn__label">View All Tailored Versions</span>
+            <span class="po-ai-pill">AI</span>
+          </a>
+        </div>
+      </article>
+    </aside>
+  </section>
+
+  @if (parseError()) {
+    <p class="po-error">{{ parseError() }}</p>
+  }
+
+  <app-toast></app-toast>
+</section>

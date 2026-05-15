@@ -1,0 +1,465 @@
+<!-- ═══════ SYSTEM HEALTH ═══════ -->
+<div class="sh-page">
+
+  <!-- ╌╌╌ Page Header ╌╌╌ -->
+  <header class="page-hdr">
+    <div>
+      <h1 class="page-hdr__title">System Health</h1>
+      <p class="page-hdr__sub">Real-time monitoring of all platform services, APIs, and infrastructure.</p>
+    </div>
+    <div class="page-hdr__right">
+      <span class="refresh-label">
+        <lucide-icon name="refresh-cw" [size]="14" class="refresh-icon" [class.refresh-icon--spinning]="isRefreshing"></lucide-icon>
+        Last refreshed {{ refreshCountdown }}s ago
+      </span>
+      <button class="btn-ghost">
+        <lucide-icon name="download" [size]="15"></lucide-icon>
+        Export Report
+      </button>
+    </div>
+  </header>
+
+  <!-- ╌╌╌ Overall Status Banner ╌╌╌ -->
+  <div class="status-banner" [ngClass]="'banner--' + overallStatus">
+    <!-- Operational -->
+    <ng-container *ngIf="overallStatus === 'operational'">
+      <span class="banner-icon banner-icon--green">
+        <lucide-icon name="check" [size]="28"></lucide-icon>
+      </span>
+      <div class="banner-text">
+        <span class="banner-title">All Systems Operational</span>
+        <span class="banner-sub">Since 14 Feb 2025 — 18 days of clean uptime.</span>
+      </div>
+    </ng-container>
+    <!-- Degraded -->
+    <ng-container *ngIf="overallStatus === 'degraded'">
+      <span class="banner-icon banner-icon--orange">
+        <lucide-icon name="triangle-alert" [size]="28"></lucide-icon>
+      </span>
+      <div class="banner-text">
+        <span class="banner-title">Partial Degradation Detected — {{ degradedServices.length }} service{{ degradedServices.length !== 1 ? 's' : '' }} affected</span>
+        <span class="banner-sub">
+          Affected: <span *ngFor="let s of degradedServices; let last = last">{{ s.name }}<span *ngIf="!last">, </span></span>
+        </span>
+      </div>
+    </ng-container>
+    <!-- Critical -->
+    <ng-container *ngIf="overallStatus === 'critical'">
+      <span class="banner-icon banner-icon--red pulse-dot"></span>
+      <div class="banner-text">
+        <span class="banner-title">Critical Outage — immediate attention required</span>
+        <span class="banner-sub">
+          Affected: <span *ngFor="let s of degradedServices; let last = last">{{ s.name }}<span *ngIf="!last">, </span></span>
+        </span>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- ╌╌╌ Main Two-Column Layout ╌╌╌ -->
+  <div class="sh-body">
+
+    <!-- ══════════ LEFT COLUMN — Services & Logs ══════════ -->
+    <div class="sh-left">
+
+      <!-- PLATFORM SERVICES -->
+      <div class="svc-section">
+        <div class="section-hdr">
+          <span class="section-label">Platform Services</span>
+          <span class="count-pill">{{ totalServiceCount }} services</span>
+        </div>
+
+        <!-- Core API -->
+        <h5 class="subsection-hdr">Core API</h5>
+        <div *ngFor="let svc of coreApi" class="svc-card" [ngClass]="getStatusClass(svc.status)">
+          <div class="svc-card__icon" [ngClass]="getStatusClass(svc.status)">
+            <lucide-icon *ngIf="svc.icon === 'server'" name="server" [size]="20"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'radio'" name="radio" [size]="20"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'shield'" name="shield" [size]="20"></lucide-icon>
+          </div>
+          <div class="svc-card__info">
+            <span class="svc-card__name">{{ svc.name }}</span>
+            <span class="svc-card__desc">{{ svc.description }}</span>
+          </div>
+          <div class="svc-card__metrics">
+            <div *ngFor="let m of svc.metrics" class="metric-chip" [class.metric-chip--amber]="m.amber">
+              <span class="metric-chip__label">{{ m.label }}</span>
+              <span class="metric-chip__value">{{ m.value }}</span>
+              <div *ngIf="m.barValue !== undefined" class="metric-bar">
+                <div class="metric-bar__fill" [style.width.%]="m.barValue" [class.metric-bar__fill--warn]="m.barValue! > 80"></div>
+              </div>
+            </div>
+          </div>
+          <div class="svc-card__right">
+            <span class="status-pill" [ngClass]="getStatusClass(svc.status)">{{ svc.status }}</span>
+            <button class="view-logs-link">View Logs →</button>
+          </div>
+          <div *ngIf="svc.warning" class="svc-card__warning">
+            <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+            {{ svc.warning }}
+          </div>
+        </div>
+
+        <!-- AI Services -->
+        <h5 class="subsection-hdr">AI Services</h5>
+        <div *ngFor="let svc of aiServices" class="svc-card" [ngClass]="getStatusClass(svc.status)">
+          <div class="svc-card__icon" [ngClass]="getStatusClass(svc.status)">
+            <lucide-icon *ngIf="svc.icon === 'cpu'" name="cpu" [size]="20"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'activity'" name="activity" [size]="20"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'film'" name="film" [size]="20"></lucide-icon>
+          </div>
+          <div class="svc-card__info">
+            <span class="svc-card__name">{{ svc.name }}</span>
+            <span class="svc-card__desc">{{ svc.description }}</span>
+          </div>
+          <div class="svc-card__metrics">
+            <div *ngFor="let m of svc.metrics" class="metric-chip" [class.metric-chip--amber]="m.amber">
+              <span class="metric-chip__label">{{ m.label }}</span>
+              <span class="metric-chip__value">{{ m.value }}</span>
+            </div>
+          </div>
+          <div class="svc-card__right">
+            <span class="status-pill" [ngClass]="getStatusClass(svc.status)">{{ svc.status }}</span>
+            <button class="view-logs-link">View Logs →</button>
+          </div>
+          <div *ngIf="svc.warning" class="svc-card__warning">
+            <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+            {{ svc.warning }}
+          </div>
+        </div>
+
+        <!-- External Integrations -->
+        <h5 class="subsection-hdr">External Integrations</h5>
+        <div *ngFor="let svc of integrations" class="svc-card svc-card--compact" [ngClass]="getStatusClass(svc.status)">
+          <div class="svc-card__icon svc-card__icon--sm" [ngClass]="getStatusClass(svc.status)">
+            <lucide-icon *ngIf="svc.icon === 'github'" name="github" [size]="18"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'globe'" name="globe" [size]="18"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'grid'" name="grid-2x2" [size]="18"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'link'" name="link" [size]="18"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'credit-card'" name="credit-card" [size]="18"></lucide-icon>
+          </div>
+          <div class="svc-card__info">
+            <span class="svc-card__name">{{ svc.name }}</span>
+            <span class="svc-card__desc">{{ svc.description }}</span>
+          </div>
+          <div class="svc-card__metrics">
+            <div *ngFor="let m of svc.metrics" class="metric-chip" [class.metric-chip--amber]="m.amber">
+              <span class="metric-chip__label">{{ m.label }}</span>
+              <span class="metric-chip__value">{{ m.value }}</span>
+            </div>
+          </div>
+          <div class="svc-card__right">
+            <span class="status-pill" [ngClass]="getStatusClass(svc.status)">{{ svc.status }}</span>
+            <button class="view-logs-link">View Logs →</button>
+          </div>
+          <div *ngIf="svc.warning" class="svc-card__warning">
+            <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+            {{ svc.warning }}
+          </div>
+        </div>
+
+        <!-- Infrastructure -->
+        <h5 class="subsection-hdr">Infrastructure</h5>
+        <div *ngFor="let svc of infrastructure" class="svc-card" [ngClass]="getStatusClass(svc.status)">
+          <div class="svc-card__icon" [ngClass]="getStatusClass(svc.status)">
+            <lucide-icon *ngIf="svc.icon === 'database'" name="database" [size]="20"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'zap'" name="zap" [size]="20"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'layers'" name="layers" [size]="20"></lucide-icon>
+            <lucide-icon *ngIf="svc.icon === 'hard-drive'" name="hard-drive" [size]="20"></lucide-icon>
+          </div>
+          <div class="svc-card__info">
+            <span class="svc-card__name">{{ svc.name }}</span>
+            <span class="svc-card__desc">{{ svc.description }}</span>
+          </div>
+          <div class="svc-card__metrics">
+            <div *ngFor="let m of svc.metrics" class="metric-chip" [class.metric-chip--amber]="m.amber">
+              <span class="metric-chip__label">{{ m.label }}</span>
+              <span class="metric-chip__value">{{ m.value }}</span>
+              <div *ngIf="m.barValue !== undefined" class="metric-bar">
+                <div class="metric-bar__fill" [style.width.%]="m.barValue" [class.metric-bar__fill--warn]="m.barValue! > 80"></div>
+              </div>
+            </div>
+          </div>
+          <div class="svc-card__right">
+            <span class="status-pill" [ngClass]="getStatusClass(svc.status)">{{ svc.status }}</span>
+            <button class="view-logs-link">View Logs →</button>
+          </div>
+          <div *ngIf="svc.warning" class="svc-card__warning">
+            <lucide-icon name="triangle-alert" [size]="14"></lucide-icon>
+            {{ svc.warning }}
+          </div>
+        </div>
+      </div>
+
+      <!-- INCIDENT HISTORY -->
+      <div class="inc-section">
+        <div class="section-hdr">
+          <span class="section-label">Incident History</span>
+          <button class="view-logs-link">View Full Log →</button>
+        </div>
+
+        <div class="inc-timeline">
+          <div *ngFor="let inc of incidents; let i = index; let last = last" class="inc-entry">
+            <div class="inc-tl">
+              <span class="inc-dot" [ngClass]="getSeverityClass(inc.resolved ? 'Resolved' : inc.severity)"></span>
+              <span *ngIf="!last" class="inc-line"></span>
+            </div>
+            <div class="inc-card">
+              <div class="inc-card__top">
+                <div class="inc-card__left">
+                  <span class="inc-card__title">{{ inc.title }}</span>
+                  <div class="inc-card__meta">
+                    <span class="svc-tag">{{ inc.service }}</span>
+                    <span class="sev-badge" [ngClass]="getSeverityClass(inc.severity)">{{ inc.severity }}</span>
+                    <span class="inc-duration">{{ inc.duration }}</span>
+                  </div>
+                  <p class="inc-card__desc">{{ inc.description }}</p>
+                </div>
+                <div class="inc-card__right">
+                  <span class="inc-ts">{{ inc.timestamp }}</span>
+                  <span *ngIf="inc.resolved" class="resolve-badge resolve-badge--green">Resolved</span>
+                  <span *ngIf="!inc.resolved" class="resolve-badge resolve-badge--red"><span class="pulse-sm"></span>Ongoing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-ghost btn-ghost--full">Create Incident Report</button>
+      </div>
+
+      <!-- LIVE ERROR STREAM -->
+      <div class="error-section">
+        <div class="section-hdr">
+          <span class="section-label">Live Error Stream</span>
+          <div class="stream-controls">
+            <div class="stream-toggle">
+              <button class="stream-pill" [class.stream-pill--active]="streamMode === 'Live'" (click)="streamMode = 'Live'">
+                <span *ngIf="streamMode === 'Live'" class="live-dot"></span>Live
+              </button>
+              <button class="stream-pill" [class.stream-pill--active]="streamMode === 'Paused'" (click)="streamMode = 'Paused'">Paused</button>
+            </div>
+            <select [(ngModel)]="logLevelFilter" class="log-filter">
+              <option value="All">All Levels</option>
+              <option value="Critical">Critical</option>
+              <option value="Error">Error</option>
+              <option value="Warning">Warning</option>
+              <option value="Info">Info</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="error-stream">
+          <div *ngFor="let log of filteredErrorLogs" class="log-line" [ngClass]="getLogClass(log.level)" (click)="toggleLogExpand(log.id)">
+            <span class="log-dot" [ngClass]="getLogClass(log.level)"></span>
+            <span class="log-ts">{{ log.timestamp }}</span>
+            <span class="log-svc" [ngClass]="getLogClass(log.level)">{{ log.service }}</span>
+            <span class="log-msg">{{ log.message }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════ RIGHT COLUMN — Charts & Infra ══════════ -->
+    <div class="sh-right">
+
+      <!-- RESPONSE TIME CHART -->
+      <div class="chart-card">
+        <div class="section-hdr">
+          <span class="section-label">API Response Times</span>
+          <div class="rt-range">
+            <button *ngFor="let r of ['1h','6h','24h','7d']" class="range-pill"
+                    [class.range-pill--active]="rtRange === r" (click)="rtRange = $any(r)">{{ r }}</button>
+          </div>
+        </div>
+        <div class="rt-chart-wrap">
+          <svg class="rt-chart" viewBox="0 0 500 200" preserveAspectRatio="none">
+            <!-- SLA threshold -->
+            <line [attr.x1]="0" [attr.y1]="200 - (rtSlaThreshold / rtMax) * 200"
+                  [attr.x2]="500" [attr.y2]="200 - (rtSlaThreshold / rtMax) * 200"
+                  stroke="#ef4444" stroke-width="1" stroke-dasharray="6 4" opacity="0.6"/>
+            <text [attr.x]="5" [attr.y]="200 - (rtSlaThreshold / rtMax) * 200 - 4" fill="#ef4444" font-size="9" opacity="0.7">SLA 300ms</text>
+            <!-- AI Services (orange, behind) -->
+            <polyline [attr.points]="getLinePoints(rtAiServices, 200, 500)"
+                      fill="none" stroke="#f97316" stroke-width="1.5" opacity="0.7"/>
+            <!-- Auth Service (emerald) -->
+            <polyline [attr.points]="getLinePoints(rtAuthService, 200, 500)"
+                      fill="none" stroke="#34d399" stroke-width="1.5"/>
+            <!-- Main API (teal) -->
+            <polyline [attr.points]="getLinePoints(rtMainApi, 200, 500)"
+                      fill="none" stroke="#2ee8a5" stroke-width="2"/>
+          </svg>
+          <div class="rt-legend">
+            <span class="rt-legend__item"><span class="rt-dot" style="background:#2ee8a5"></span>Main API</span>
+            <span class="rt-legend__item"><span class="rt-dot" style="background:#34d399"></span>Auth Service</span>
+            <span class="rt-legend__item"><span class="rt-dot" style="background:#f97316"></span>AI Services</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 30-DAY UPTIME -->
+      <div class="uptime-card">
+        <div class="section-hdr">
+          <span class="section-label">30-Day Uptime</span>
+          <span class="sla-target">Target: 99.5%</span>
+        </div>
+        <div class="uptime-list">
+          <div *ngFor="let row of uptimeData" class="uptime-row">
+            <span class="uptime-row__name">{{ row.service }}</span>
+            <div class="uptime-track">
+              <span *ngFor="let d of row.days" class="uptime-sq" [ngClass]="'sq--' + d.status"></span>
+            </div>
+            <span class="uptime-row__pct" [class.uptime-row__pct--warn]="row.pct < 99.5">{{ row.pct }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFRASTRUCTURE METRICS -->
+      <div class="infra-card">
+        <div class="section-hdr">
+          <span class="section-label">Infrastructure</span>
+          <button class="view-logs-link">AWS Console →</button>
+        </div>
+        <div class="infra-grid">
+          <!-- CPU -->
+          <div class="infra-item">
+            <svg class="infra-donut" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="36" fill="none" [attr.stroke]="getDonutColor(cpuUsage)" stroke-width="6" opacity="0.1"/>
+              <circle cx="40" cy="40" r="36" fill="none" [attr.stroke]="getDonutColor(cpuUsage)" stroke-width="6"
+                      [attr.stroke-dasharray]="getDonutDash(cpuUsage)" stroke-dashoffset="56.5"
+                      stroke-linecap="round" transform="rotate(-90 40 40)"/>
+              <text x="40" y="38" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">{{ cpuUsage }}%</text>
+              <text x="40" y="50" text-anchor="middle" fill="rgba(255,255,255,.35)" font-size="8">CPU</text>
+            </svg>
+            <span class="infra-sub">4 vCPUs</span>
+          </div>
+          <!-- Memory -->
+          <div class="infra-item">
+            <svg class="infra-donut" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="36" fill="none" [attr.stroke]="getDonutColor(memoryPct)" stroke-width="6" opacity="0.1"/>
+              <circle cx="40" cy="40" r="36" fill="none" [attr.stroke]="getDonutColor(memoryPct)" stroke-width="6"
+                      [attr.stroke-dasharray]="getDonutDash(memoryPct)" stroke-dashoffset="56.5"
+                      stroke-linecap="round" transform="rotate(-90 40 40)"/>
+              <text x="40" y="38" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">{{ memoryPct }}%</text>
+              <text x="40" y="50" text-anchor="middle" fill="rgba(255,255,255,.35)" font-size="8">Memory</text>
+            </svg>
+            <span class="infra-sub">{{ memoryUsed }} / {{ memoryTotal }} GB</span>
+          </div>
+          <!-- DB Connections -->
+          <div class="infra-item infra-item--bar">
+            <span class="infra-bar-label">DB Connections</span>
+            <div class="infra-bar-track">
+              <div class="infra-bar-fill" [style.width.%]="dbConnPct" [class.infra-bar-fill--warn]="dbConnPct > 80"></div>
+            </div>
+            <span class="infra-bar-val">{{ dbConnections }} / {{ dbMaxConnections }}</span>
+          </div>
+          <!-- Storage -->
+          <div class="infra-item infra-item--bar">
+            <span class="infra-bar-label">Storage</span>
+            <div class="infra-bar-track">
+              <div class="infra-bar-fill" [style.width.%]="storagePct" [class.infra-bar-fill--warn]="storagePct > 80"></div>
+            </div>
+            <span class="infra-bar-val">{{ storageUsed }} GB / {{ storageTotal }} GB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEPLOYMENT INFO -->
+      <div class="deploy-card">
+        <div class="section-hdr">
+          <span class="section-label">Current Deployment</span>
+          <button class="view-logs-link">View Deploy History →</button>
+        </div>
+        <div class="deploy-grid">
+          <div *ngFor="let d of deployInfo" class="deploy-row">
+            <span class="deploy-row__label">{{ d.label }}</span>
+            <span class="deploy-row__value" [class.deploy-row__value--mono]="d.mono">
+              {{ d.value }}
+              <a *ngIf="d.link" [href]="d.link" target="_blank" class="deploy-link">View on GitHub →</a>
+            </span>
+          </div>
+        </div>
+        <div class="deploy-actions">
+          <button class="btn-danger-ghost" (click)="showRollbackModal = true">Trigger Rollback</button>
+          <button class="btn-ghost" (click)="showClearCacheModal = true">Clear Redis Cache</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ LOG DETAIL MODAL ═══════ -->
+<div class="modal-overlay" *ngIf="expandedLogId !== null" (click)="expandedLogId = null">
+  <div class="modal modal--lg" (click)="$event.stopPropagation()">
+    <ng-container *ngIf="expandedLogId !== null">
+      <ng-container *ngFor="let log of errorLogs">
+        <ng-container *ngIf="log.id === expandedLogId">
+          <div class="modal__header">
+            <div>
+              <h3 class="modal__title">{{ log.service }} — {{ log.level }}</h3>
+              <span class="modal__sub">{{ log.timestamp }}</span>
+            </div>
+            <button class="modal__close" (click)="expandedLogId = null">
+              <lucide-icon name="x" [size]="20"></lucide-icon>
+            </button>
+          </div>
+          <div class="modal__body">
+            <p class="log-msg-full">{{ log.message }}</p>
+            <div class="stack-block">
+              <button class="copy-btn" (click)="copyStackTrace(log.stackTrace)">Copy</button>
+              <pre class="stack-pre">{{ log.stackTrace }}</pre>
+            </div>
+            <button class="view-logs-link">Create Incident from This →</button>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<!-- ═══════ ROLLBACK MODAL ═══════ -->
+<div class="modal-overlay" *ngIf="showRollbackModal" (click)="showRollbackModal = false">
+  <div class="modal modal--sm" (click)="$event.stopPropagation()">
+    <div class="modal__header">
+      <h3 class="modal__title modal__title--danger">Trigger Rollback</h3>
+      <button class="modal__close" (click)="showRollbackModal = false">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+    </div>
+    <div class="modal__body">
+      <label class="form-label">Select version to rollback to:</label>
+      <select [(ngModel)]="rollbackVersion" class="form-select">
+        <option *ngFor="let v of rollbackVersions" [value]="v">{{ v }}</option>
+      </select>
+      <div class="rollback-warn">
+        <lucide-icon name="triangle-alert" [size]="16" color="#f87171"></lucide-icon>
+        <span>Rolling back may cause 1–3 minutes of downtime. Active user sessions will be interrupted.</span>
+      </div>
+      <label class="form-label">Type <strong>CONFIRM ROLLBACK</strong> to proceed:</label>
+      <input type="text" [(ngModel)]="rollbackConfirmText" class="form-input" placeholder="CONFIRM ROLLBACK" />
+      <div class="modal-actions">
+        <button class="btn-ghost" (click)="showRollbackModal = false">Cancel</button>
+        <button class="btn-danger" [disabled]="!canRollback">Rollback to {{ rollbackVersion }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ CLEAR CACHE MODAL ═══════ -->
+<div class="modal-overlay" *ngIf="showClearCacheModal" (click)="showClearCacheModal = false">
+  <div class="modal modal--sm" (click)="$event.stopPropagation()">
+    <div class="modal__header">
+      <h3 class="modal__title">Clear Redis Cache</h3>
+      <button class="modal__close" (click)="showClearCacheModal = false">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+    </div>
+    <div class="modal__body">
+      <p class="confirm-text">This will clear all cached sessions and force re-authentication for active users. Continue?</p>
+      <div class="modal-actions">
+        <button class="btn-ghost" (click)="showClearCacheModal = false">Cancel</button>
+        <button class="btn-danger" (click)="showClearCacheModal = false">Clear Cache</button>
+      </div>
+    </div>
+  </div>
+</div>

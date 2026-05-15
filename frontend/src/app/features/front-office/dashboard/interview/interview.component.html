@@ -1,0 +1,144 @@
+<div class="interview">
+  @if (activeSession()) {
+    <button class="resume-banner" type="button" (click)="resumeActiveSession()">
+      You have an unfinished session. Resume →
+    </button>
+  }
+
+  <div class="page-header">
+    <div class="page-header__left">
+      <h1 class="page-header__title">Interview Hub</h1>
+      <p class="page-header__subtitle">Train with realistic sessions and track your momentum.</p>
+    </div>
+    <button class="btn-primary btn-gradient" type="button" (click)="goToSetup()">
+      Start New Session +
+    </button>
+  </div>
+
+  <div class="streak-strip">
+    <div class="streak-strip__item">
+      <div class="streak-strip__main">
+        <span class="streak-strip__emoji">🔥</span>
+        <span class="streak-strip__value">{{ currentStreak }} day streak</span>
+      </div>
+      <span class="streak-strip__sub">Longest streak: {{ longestStreak }}</span>
+    </div>
+    <div class="streak-strip__divider"></div>
+    <div class="streak-strip__item">
+      <span class="streak-strip__label">AVERAGE SCORE (LAST 10)</span>
+      <div class="streak-strip__main">
+        <span class="streak-strip__value">
+          @if (averageScoreLastTen() === null) {
+            —
+          } @else {
+            {{ averageScoreLastTen()!.toFixed(1) }} / 10
+          }
+        </span>
+      </div>
+    </div>
+    <div class="streak-strip__divider"></div>
+    <div class="streak-strip__item">
+      <span class="streak-strip__label">TOTAL SESSIONS</span>
+      <div class="streak-strip__main">
+        <span class="streak-strip__value">{{ totalSessions }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-cards">
+    <div class="mode-card mode-card--practice">
+      <div class="mode-card__gradient-line mode-card__gradient-line--teal"></div>
+      <div class="mode-card__body">
+        <span class="mode-card__badge mode-card__badge--teal">Recommended</span>
+        <div class="mode-card__icon mode-card__icon--teal">💬</div>
+        <h3 class="mode-card__title">Practice Mode</h3>
+        <p class="mode-card__desc">AI feedback after every answer. Retry freely and sharpen structure over time.</p>
+        <div class="mode-card__divider"></div>
+        <ul class="mode-card__features">
+          <li class="mode-card__feature"><span class="feature-check feature-check--teal">✓</span> AI text feedback after every answer</li>
+          <li class="mode-card__feature"><span class="feature-check feature-check--teal">✓</span> Unlimited retries</li>
+          <li class="mode-card__feature"><span class="feature-check feature-check--teal">✓</span> Hints available</li>
+        </ul>
+        <button class="mode-card__btn mode-card__btn--teal" type="button" (click)="goToSetup('PRACTICE')">
+          Start Practice →
+        </button>
+      </div>
+    </div>
+
+    <div class="mode-card mode-card--test">
+      <div class="mode-card__gradient-line mode-card__gradient-line--orange"></div>
+      <div class="mode-card__body">
+        <div class="mode-card__icon mode-card__icon--orange">⏱</div>
+        <h3 class="mode-card__title">Test Mode</h3>
+        <p class="mode-card__desc">No feedback until the end. Timed pressure and final ranking.</p>
+        <div class="mode-card__divider"></div>
+        <ul class="mode-card__features">
+          <li class="mode-card__feature"><span class="feature-check feature-check--orange">✓</span> Timed per question</li>
+          <li class="mode-card__feature"><span class="feature-check feature-check--orange">✓</span> End-of-session score</li>
+          <li class="mode-card__feature"><span class="feature-check feature-check--orange">✓</span> Percentile ranking</li>
+        </ul>
+        <button class="mode-card__btn mode-card__btn--orange" type="button" (click)="goToSetup('TEST')">
+          Start Test →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-mode">
+    <span class="input-mode__label">INPUT MODE</span>
+    <div class="input-mode__pills">
+      <button class="input-pill input-pill--active" type="button">📝 Text Mode</button>
+      <button class="input-pill input-pill--disabled" type="button" disabled title="Coming soon">
+        🎙 Live Mode
+      </button>
+    </div>
+  </div>
+
+  <div class="past-sessions">
+    <div class="past-sessions__header">
+      <h2 class="past-sessions__title">Recent Sessions</h2>
+      <div class="past-sessions__header-actions">
+        <button class="past-sessions__link" type="button" (click)="openDiscover()">Discover Feed</button>
+        <button class="past-sessions__link" type="button" (click)="openBookmarks()">Bookmarks</button>
+        <button class="past-sessions__link" type="button" (click)="openHistory()">View All →</button>
+      </div>
+    </div>
+
+    @if (isLoading()) {
+      <div class="state-box">Loading interview history...</div>
+    } @else if (pastSessionRows().length === 0) {
+      <div class="state-box">No sessions found yet.</div>
+    } @else {
+      <div class="past-sessions__list">
+        @for (s of pastSessionRows(); track s.id) {
+          <div class="session-row">
+            <div class="session-row__left">
+              <div class="session-row__badges">
+                <span class="session-badge badge-role">{{ s.roleLabel }}</span>
+                <span class="session-badge" [class.mode-practice]="s.modeClass === 'mode-practice'" [class.mode-test]="s.modeClass === 'mode-test'">{{ s.modeLabel }}</span>
+                <span class="session-badge" [class]="getStatusClass(s.status)">{{ s.status }}</span>
+              </div>
+              <span class="session-row__date">{{ s.dateLabel }}</span>
+            </div>
+
+            <div class="session-row__right">
+              <span class="session-row__score">{{ s.scoreLabel }}</span>
+              <button class="session-row__report" type="button" [disabled]="!s.reportId" (click)="openReport(s.reportId)">
+                View Report
+              </button>
+              @if (s.status === 'IN_PROGRESS' || s.status === 'PAUSED') {
+                <button class="session-row__report" type="button" (click)="resumeSessionById(s.id)">
+                  Resume
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (loadError()) {
+    <p class="error-text">{{ loadError() }}</p>
+  }
+</div>

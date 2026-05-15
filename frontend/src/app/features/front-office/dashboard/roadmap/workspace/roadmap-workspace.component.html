@@ -1,0 +1,618 @@
+<div class="workspace-page">
+  <header class="workspace-header">
+    <div class="workspace-header__copy">
+      <a class="workspace-back" routerLink="/dashboard/roadmap">Back to roadmap</a>
+      <p class="workspace-eyebrow">Interactive Workspace</p>
+      <h1>{{ context()?.stepTitle || 'Roadmap Workspace' }}</h1>
+      <p class="workspace-sub">Step {{ context()?.stepOrder }} • {{ modeLabel(mode()) }}</p>
+    </div>
+
+    @if (context()) {
+      <div class="workspace-modes" role="tablist" aria-label="Workspace mode selector">
+        <a
+          class="workspace-mode"
+          role="tab"
+          [routerLink]="['/dashboard/roadmap/workspace']"
+          [queryParams]="buildModeQuery('course')"
+          [attr.aria-selected]="mode() === 'course'"
+          [class.workspace-mode--active]="mode() === 'course'">
+          Course
+        </a>
+        <a
+          class="workspace-mode"
+          role="tab"
+          [routerLink]="['/dashboard/roadmap/workspace']"
+          [queryParams]="buildModeQuery('lab')"
+          [attr.aria-selected]="mode() === 'lab'"
+          [class.workspace-mode--active]="mode() === 'lab'">
+          Lab
+        </a>
+        <a
+          class="workspace-mode"
+          role="tab"
+          [routerLink]="['/dashboard/roadmap/workspace']"
+          [queryParams]="buildModeQuery('challenge')"
+          [attr.aria-selected]="mode() === 'challenge'"
+          [class.workspace-mode--active]="mode() === 'challenge'">
+          Challenge
+        </a>
+      </div>
+    }
+  </header>
+
+  <p class="workspace-error" *ngIf="errorMessage() as error">{{ error }}</p>
+  <p class="workspace-info" *ngIf="infoMessage() as info">{{ info }}</p>
+
+  @if (mode() === 'course') {
+    <section class="workspace-shell" aria-label="Course workspace">
+      <aside class="workspace-sidebar">
+        <div class="workspace-sidebar__head">
+          <h2>Pages</h2>
+          <div class="workspace-sidebar__badges">
+            <span>{{ lessonCount() }}</span>
+            <small>{{ completedLessonCount() }} done</small>
+          </div>
+        </div>
+
+        @if (lessonCount() > 0) {
+          <div class="workspace-progress" aria-label="Course progress">
+            <div class="workspace-progress__track">
+              <span [style.width.%]="courseProgressPercent()"></span>
+            </div>
+            <small>{{ courseProgressPercent() }}% complete</small>
+          </div>
+        }
+
+        @if (courseLoading()) {
+          <p class="workspace-state">Loading pages...</p>
+        } @else if (lessonCount() === 0) {
+          <p class="workspace-state">No lesson pages yet. Generate a course module.</p>
+        } @else {
+          <div class="workspace-page-list">
+            @for (lesson of course()?.lessons || []; track lesson.sectionTitle + '-' + $index; let lessonIndex = $index) {
+              <button
+                type="button"
+                class="workspace-page-list__item"
+                [class.workspace-page-list__item--active]="lessonIndex === activeLessonIndex()"
+                (click)="openLesson(lessonIndex)">
+                <span>Page {{ lessonIndex + 1 }}</span>
+                <strong>{{ lesson.sectionTitle }}</strong>
+                <small>
+                  {{ lessonCompletionState()[lessonIndex] ? 'Completed' : 'In progress' }}
+                </small>
+              </button>
+            }
+          </div>
+        }
+      </aside>
+
+      <article class="workspace-content">
+        <div class="workspace-content__head">
+          <div>
+            <p class="workspace-content__eyebrow">Course Module</p>
+            <h2>{{ course()?.courseTitle || 'AI Course Module' }}</h2>
+            <p>{{ course()?.intro || 'Load or regenerate this node course to start paginated learning.' }}</p>
+            @if (lessonCount() > 0) {
+              <div class="workspace-chip-cloud workspace-chip-cloud--header">
+                <span>{{ completedLessonCount() }} / {{ lessonCount() }} pages done</span>
+                <span>{{ courseProgressPercent() }}% completion</span>
+              </div>
+            }
+          </div>
+          <div class="workspace-actions">
+            <button type="button" class="workspace-btn workspace-btn--ghost" (click)="reloadCourse(false)">
+              Open Saved
+            </button>
+            <button type="button" class="workspace-btn" (click)="reloadCourse(true)">
+              Regenerate
+            </button>
+          </div>
+        </div>
+
+        @if (courseLoading()) {
+          <p class="workspace-state">Loading course content...</p>
+        } @else {
+          @if (activeLesson(); as lesson) {
+            <div class="workspace-pager">
+              <button
+                type="button"
+                class="workspace-btn workspace-btn--ghost"
+                [disabled]="!canOpenPreviousLesson()"
+                (click)="openPreviousLesson()">
+                Previous Page
+              </button>
+              <strong>Page {{ activeLessonIndex() + 1 }} / {{ lessonCount() }}</strong>
+              <button
+                type="button"
+                class="workspace-btn workspace-btn--ghost"
+                [disabled]="!canOpenNextLesson()"
+                (click)="openNextLesson()">
+                Next Page
+              </button>
+            </div>
+
+            <div class="workspace-inline-tools">
+              <label class="workspace-inline-select">
+                <span>Jump to page</span>
+                <select
+                  [value]="activeLessonIndex()"
+                  (change)="jumpToLesson($any($event.target).value)">
+                  @for (lessonPage of course()?.lessons || []; track lessonPage.sectionTitle + '-' + $index; let index = $index) {
+                    <option [value]="index">Page {{ index + 1 }} - {{ lessonPage.sectionTitle }}</option>
+                  }
+                </select>
+              </label>
+
+              <div class="workspace-actions">
+                <button
+                  type="button"
+                  class="workspace-btn workspace-btn--ghost"
+                  [disabled]="!(lesson.codeSnippet || '').trim()"
+                  (click)="copyActiveLessonSnippet()">
+                  Copy Snippet
+                </button>
+                <button
+                  type="button"
+                  class="workspace-btn workspace-btn--success"
+                  (click)="toggleActiveLessonDone()">
+                  {{ activeLessonDone() ? 'Mark as Not Done' : 'Mark as Done' }}
+                </button>
+              </div>
+            </div>
+
+            <p class="workspace-shortcut">Tip: use Left/Right arrow keys to move between pages.</p>
+
+            <article class="workspace-lesson">
+              <h3>{{ lesson.sectionTitle }}</h3>
+              <p>{{ lesson.explanation }}</p>
+
+              @if (lesson.miniExample) {
+                <p class="workspace-lesson__example">{{ lesson.miniExample }}</p>
+              }
+
+              @if (lesson.codeSnippet) {
+                <pre>{{ lesson.codeSnippet }}</pre>
+              }
+
+              @if (lesson.commonPitfalls.length > 0) {
+                <div class="workspace-list-block">
+                  <p>Common pitfalls</p>
+                  <ul>
+                    @for (pitfall of lesson.commonPitfalls; track pitfall) {
+                      <li>{{ pitfall }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+
+              @if (lesson.practiceTasks.length > 0) {
+                <div class="workspace-list-block">
+                  <p>Practice tasks</p>
+                  <ul>
+                    @for (task of lesson.practiceTasks; track task) {
+                      <li>{{ task }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+            </article>
+
+            @if ((course()?.checkpoints?.length ?? 0) > 0) {
+              <div class="workspace-list-block">
+                <p>Quick checkpoints</p>
+                <ul>
+                  @for (checkpoint of course()?.checkpoints || []; track checkpoint.question) {
+                    <li>
+                      <strong>{{ checkpoint.question }}</strong>
+                      <span>{{ checkpoint.answerHint }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if ((course()?.cheatSheet?.length ?? 0) > 0) {
+              <div class="workspace-chip-cloud">
+                @for (chip of course()?.cheatSheet || []; track chip) {
+                  <span>{{ chip }}</span>
+                }
+              </div>
+            }
+
+            @if (course()?.nextNodeFocus) {
+              <p class="workspace-note">Next-node focus: {{ course()?.nextNodeFocus }}</p>
+            }
+          } @else {
+            <p class="workspace-state">No course content available for this node yet.</p>
+          }
+        }
+      </article>
+    </section>
+
+    @if (courseHistory().length > 1) {
+      <section class="workspace-trace" aria-label="Course version trace">
+        <p class="workspace-trace__title">Course trace</p>
+        <div class="workspace-trace__list">
+          @for (version of courseHistory(); track version.historyId || version.generatedAt || $index) {
+            <button
+              type="button"
+              class="workspace-trace__item"
+              [class.workspace-trace__item--active]="(course()?.historyId || course()?.generatedAt) === (version.historyId || version.generatedAt)"
+              (click)="selectCourseVersion(version)">
+              <strong>{{ version.generatedAt ? (version.generatedAt | date:'short') : 'Saved version' }}</strong>
+              <small>{{ version.aiGenerated ? 'AI' : 'Fallback' }}</small>
+            </button>
+          }
+        </div>
+      </section>
+    }
+  } @else if (mode() === 'lab') {
+    <section class="workspace-single" aria-label="Project lab workspace">
+      <div class="workspace-content__head">
+        <div>
+          <p class="workspace-content__eyebrow">Project Lab</p>
+          <h2>{{ projectLab()?.projectTitle || 'Node Project Lab' }}</h2>
+          <p>Practice this node in a dedicated lab and validate your code with AI feedback.</p>
+        </div>
+        <div class="workspace-actions">
+          <button type="button" class="workspace-btn workspace-btn--ghost" (click)="reloadProjectLab(false)">
+            Open Saved
+          </button>
+          <button type="button" class="workspace-btn" (click)="reloadProjectLab(true)">
+            Regenerate Lab
+          </button>
+        </div>
+      </div>
+
+      @if (labLoading()) {
+        <p class="workspace-state">Loading project lab...</p>
+      } @else {
+        @if (projectLab(); as projectLab) {
+          <article class="workspace-lab">
+            <div class="workspace-lab__chips">
+              <span>{{ projectLab.language }}</span>
+              <span>~{{ projectLab.estimatedHours }}h</span>
+              <span>{{ projectLab.aiGenerated ? 'AI-generated' : 'Fallback' }}</span>
+              @if (projectLab.generatedAt) {
+                <span>{{ projectLab.generatedAt | date:'medium' }}</span>
+              }
+            </div>
+
+            <p class="workspace-lab__scenario">{{ projectLab.scenario }}</p>
+
+            <div class="workspace-list-block">
+              <p>User stories</p>
+              <ul>
+                @for (story of projectLab.userStories; track story) {
+                  <li>{{ story }}</li>
+                }
+              </ul>
+            </div>
+
+            <div class="workspace-list-block">
+              <p>Acceptance checks</p>
+              <ul>
+                @for (criterion of projectLab.acceptanceCriteria; track criterion) {
+                  <li>{{ criterion }}</li>
+                }
+              </ul>
+            </div>
+
+            @if (projectLab.stretchGoals.length > 0) {
+              <div class="workspace-list-block">
+                <p>Stretch goals</p>
+                <ul>
+                  @for (goal of projectLab.stretchGoals; track goal) {
+                    <li>{{ goal }}</li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (projectLab.starterCode) {
+              <div class="workspace-list-block">
+                <p>Starter code</p>
+                <pre>{{ projectLab.starterCode }}</pre>
+              </div>
+            }
+
+            <label class="workspace-editor">
+              <span>Your solution</span>
+              <textarea
+                rows="12"
+                [value]="projectSolutionDraft()"
+                (input)="setProjectSolutionDraft($any($event.target).value)"></textarea>
+            </label>
+
+            <div class="workspace-actions">
+              <button
+                type="button"
+                class="workspace-btn workspace-btn--ghost"
+                [disabled]="!(projectLab.starterCode || '').trim()"
+                (click)="copyStarterCode()">
+                Copy Starter
+              </button>
+              <button
+                type="button"
+                class="workspace-btn workspace-btn--ghost"
+                [disabled]="!(projectLab.starterCode || '').trim()"
+                (click)="resetProjectSolutionToStarter()">
+                Reset To Starter
+              </button>
+              <button
+                type="button"
+                class="workspace-btn"
+                [disabled]="projectValidationLoading()"
+                (click)="validateProjectSolution()">
+                {{ projectValidationLoading() ? 'Validating...' : 'Validate With AI' }}
+              </button>
+            </div>
+
+            @if (projectValidation(); as validation) {
+              <section
+                class="workspace-validation"
+                [class.workspace-validation--pass]="validation.passed"
+                [class.workspace-validation--fail]="!validation.passed">
+                <div class="workspace-validation__head">
+                  <p>{{ validation.scorePercent }}%</p>
+                  <span>{{ validation.passed ? 'Checkpoint passed' : 'Checkpoint needs improvement' }}</span>
+                </div>
+                <p>{{ validation.summary }}</p>
+
+                @if (validation.strengths.length > 0) {
+                  <div class="workspace-list-block">
+                    <p>Strengths</p>
+                    <ul>
+                      @for (item of validation.strengths; track item) {
+                        <li>{{ item }}</li>
+                      }
+                    </ul>
+                  </div>
+                }
+
+                @if (validation.improvements.length > 0) {
+                  <div class="workspace-list-block">
+                    <p>Improvements</p>
+                    <ul>
+                      @for (item of validation.improvements; track item) {
+                        <li>{{ item }}</li>
+                      }
+                    </ul>
+                  </div>
+                }
+
+                @if (validation.nextSteps.length > 0) {
+                  <div class="workspace-list-block">
+                    <p>Next steps</p>
+                    <ul>
+                      @for (item of validation.nextSteps; track item) {
+                        <li>{{ item }}</li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </section>
+            }
+          </article>
+        } @else {
+          <p class="workspace-state">No project lab generated yet for this node.</p>
+        }
+      }
+    </section>
+
+    @if (projectLabHistory().length > 1) {
+      <section class="workspace-trace" aria-label="Project lab trace">
+        <p class="workspace-trace__title">Lab trace</p>
+        <div class="workspace-trace__list">
+          @for (version of projectLabHistory(); track version.historyId || version.generatedAt || $index) {
+            <button
+              type="button"
+              class="workspace-trace__item"
+              [class.workspace-trace__item--active]="(projectLab()?.historyId || projectLab()?.generatedAt) === (version.historyId || version.generatedAt)"
+              (click)="selectProjectLabFromHistory(version)">
+              <strong>{{ version.projectTitle }}</strong>
+              <small>
+                {{ version.generatedAt ? (version.generatedAt | date:'short') : 'Saved version' }}
+                • {{ version.aiGenerated ? 'AI' : 'Fallback' }}
+              </small>
+            </button>
+          }
+        </div>
+      </section>
+    }
+  } @else {
+    <section class="workspace-shell workspace-shell--challenge" aria-label="Challenge workspace">
+      <aside class="workspace-sidebar">
+        <div class="workspace-sidebar__head">
+          <h2>Challenge Trace</h2>
+          <div class="workspace-sidebar__badges">
+            <span>{{ challenges().length }}</span>
+            <small>{{ filteredChallenges().length }} visible</small>
+          </div>
+        </div>
+
+        <div class="workspace-actions workspace-actions--stacked">
+          <button type="button" class="workspace-btn workspace-btn--ghost" (click)="refreshChallenges()">
+            Refresh Trace
+          </button>
+          <button type="button" class="workspace-btn" (click)="generateNewChallenge()">
+            Generate New Challenge
+          </button>
+        </div>
+
+        <div class="workspace-filter-row" role="group" aria-label="Challenge difficulty filter">
+          <button
+            type="button"
+            class="workspace-filter"
+            [class.workspace-filter--active]="isChallengeFilterActive('all')"
+            (click)="setChallengeFilter('all')">
+            All
+          </button>
+          <button
+            type="button"
+            class="workspace-filter"
+            [class.workspace-filter--active]="isChallengeFilterActive('beginner')"
+            (click)="setChallengeFilter('beginner')">
+            Beginner
+          </button>
+          <button
+            type="button"
+            class="workspace-filter"
+            [class.workspace-filter--active]="isChallengeFilterActive('intermediate')"
+            (click)="setChallengeFilter('intermediate')">
+            Intermediate
+          </button>
+          <button
+            type="button"
+            class="workspace-filter"
+            [class.workspace-filter--active]="isChallengeFilterActive('advanced')"
+            (click)="setChallengeFilter('advanced')">
+            Advanced
+          </button>
+        </div>
+
+        @if (challengesLoading()) {
+          <p class="workspace-state">Loading challenge trace...</p>
+        } @else if (challenges().length === 0) {
+          <p class="workspace-state">No challenge found yet. Generate one for this node.</p>
+        } @else if (filteredChallenges().length === 0) {
+          <p class="workspace-state">No challenge matches the selected difficulty.</p>
+        } @else {
+          <div class="workspace-page-list">
+            @for (challenge of filteredChallenges(); track challenge.id) {
+              <button
+                type="button"
+                class="workspace-page-list__item"
+                [class.workspace-page-list__item--active]="challenge.id === activeChallengeId()"
+                (click)="selectChallenge(challenge.id)">
+                <span>{{ challenge.difficulty }} • ~{{ challenge.estimatedDays }}d</span>
+                <strong>{{ challenge.title }}</strong>
+                <small>
+                  {{ challenge.submission ? formatSubmissionStatus(challenge.submission.status) : 'Not submitted yet' }}
+                </small>
+              </button>
+            }
+          </div>
+        }
+      </aside>
+
+      <article class="workspace-content">
+        @if (activeChallenge(); as challenge) {
+          <div class="workspace-content__head">
+            <div>
+              <p class="workspace-content__eyebrow">Selected Challenge</p>
+              <h2>{{ challenge.title }}</h2>
+              <p>{{ challenge.description }}</p>
+              <div class="workspace-chip-cloud workspace-chip-cloud--header">
+                <span>{{ filteredChallenges().length }} of {{ challenges().length }} visible</span>
+                <span>
+                  {{ challengeFilter() === 'all' ? 'All difficulties' : (challengeFilter() | titlecase) + ' only' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="workspace-lab__chips">
+            <span>{{ challenge.difficulty }}</span>
+            <span>~{{ challenge.estimatedDays }}d</span>
+            @if (challenge.createdAt) {
+              <span>{{ challenge.createdAt | date:'short' }}</span>
+            }
+          </div>
+
+          @if (challenge.techStack.length > 0) {
+            <div class="workspace-chip-cloud">
+              @for (tech of challenge.techStack; track tech) {
+                <span>{{ tech }}</span>
+              }
+            </div>
+          }
+
+          @if (challenge.submission) {
+            <div class="workspace-lab__chips">
+              <span>{{ formatSubmissionStatus(challenge.submission.status) }}</span>
+              <span>Retry {{ challenge.submission.retryCount }}/{{ maxSubmissionRetries }}</span>
+              @if (challenge.submission.score !== null && challenge.submission.score !== undefined) {
+                <span>Overall {{ challenge.submission.score }}</span>
+              }
+              @if (challenge.submission.readmeScore !== null && challenge.submission.readmeScore !== undefined) {
+                <span>README {{ challenge.submission.readmeScore }}</span>
+              }
+              @if (challenge.submission.structureScore !== null && challenge.submission.structureScore !== undefined) {
+                <span>Structure {{ challenge.submission.structureScore }}</span>
+              }
+              @if (challenge.submission.testScore !== null && challenge.submission.testScore !== undefined) {
+                <span>Tests {{ challenge.submission.testScore }}</span>
+              }
+              @if (challenge.submission.ciScore !== null && challenge.submission.ciScore !== undefined) {
+                <span>CI {{ challenge.submission.ciScore }}</span>
+              }
+            </div>
+
+            @if (challenge.submission.submittedAt) {
+              <p class="workspace-note">Submitted {{ challenge.submission.submittedAt | date:'medium' }}</p>
+            }
+
+            @if ((challenge.submission.recommendations?.length ?? 0) > 0) {
+              <div class="workspace-chip-cloud">
+                @for (recommendation of challenge.submission.recommendations || []; track recommendation) {
+                  <span>{{ recommendation }}</span>
+                }
+              </div>
+            } @else if (!hasChallengeScores(challenge)) {
+              <p class="workspace-note">AI scoring and recommendations appear after review.</p>
+            }
+          }
+
+          <label class="workspace-editor">
+            <span>Repository URL</span>
+            <input
+              type="url"
+              placeholder="https://github.com/username/repo"
+              [value]="challenge.repoUrlDraft"
+              (input)="setActiveChallengeRepoUrl($any($event.target).value)" />
+          </label>
+
+          <div class="workspace-actions">
+            <button
+              type="button"
+              class="workspace-btn workspace-btn--ghost"
+              [disabled]="!activeChallengeRepoUrl()"
+              (click)="openActiveRepository()">
+              Open Repository
+            </button>
+            <button
+              type="button"
+              class="workspace-btn"
+              [disabled]="challenge.submitting || !canSubmitChallenge(challenge)"
+              (click)="submitActiveChallenge()">
+              {{
+                challenge.submitting
+                  ? 'Submitting...'
+                  : challenge.submission
+                    ? (canSubmitChallenge(challenge) ? 'Resubmit Project' : 'Retry Limit Reached')
+                    : 'Submit Project'
+              }}
+            </button>
+
+            @if (challenge.submission) {
+              <button
+                type="button"
+                class="workspace-btn workspace-btn--ghost"
+                [disabled]="challenge.reviewLoading"
+                (click)="loadActiveChallengeReview()">
+                {{ challenge.reviewLoading ? 'Loading Review...' : 'Get AI Review' }}
+              </button>
+            }
+          </div>
+
+          @if (challenge.reviewText) {
+            <p class="workspace-note">{{ challenge.reviewText }}</p>
+          }
+        } @else {
+          <p class="workspace-state">Select a challenge from the left trace to continue.</p>
+        }
+      </article>
+    </section>
+  }
+</div>

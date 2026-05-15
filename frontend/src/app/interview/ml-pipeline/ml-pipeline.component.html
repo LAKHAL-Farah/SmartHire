@@ -1,0 +1,112 @@
+<div class="ml-pipeline-screen" data-testid="ml-pipeline-panel">
+  <section class="left-panel">
+    <div class="interviewer-block">
+      <div class="avatar-wrap" aria-hidden="true">
+        <div class="pulse-ring"></div>
+        <div class="avatar-core">AI</div>
+      </div>
+      <p class="interviewer-label">AI Interviewer</p>
+    </div>
+
+    <div class="question-card">
+      <p class="question-label">Technical Interview Prompt</p>
+      <h2 class="question-text">{{ questionText || ('Question #' + questionId) }}</h2>
+    </div>
+
+    <div class="timer-card">
+      <p class="timer-label">Elapsed</p>
+      <p class="timer-clock">{{ toClock(elapsedSeconds) }}</p>
+    </div>
+
+    <div class="mic-panel">
+      <app-mic-button data-testid="mic-btn" [disabled]="isSubmitting || hasSubmittedForCurrentQuestion" (audioReady)="onAudioReady($event)"></app-mic-button>
+      <p class="mic-hint">Hold to record your spoken answer</p>
+    </div>
+
+    <mat-card class="answer-card" appearance="outlined">
+      <textarea
+        rows="7"
+        placeholder="Optional: type your answer draft"
+        [disabled]="isSubmitting || hasSubmittedForCurrentQuestion"
+        [value]="liveAnswerText"
+        (input)="liveAnswerText = $any($event.target).value"
+      ></textarea>
+      <button mat-flat-button color="primary" type="button" (click)="submitTypedAnswer()" [disabled]="isSubmitting || hasSubmittedForCurrentQuestion || !liveAnswerText.trim()">
+        Submit Typed Answer
+      </button>
+      @if (transcribingMessage) {
+        <p class="submission-message">{{ transcribingMessage }}</p>
+      }
+    </mat-card>
+
+    @if (followUpDisplay) {
+      <div class="follow-up-bubble" data-testid="follow-up-bubble">
+        <div class="follow-up-head">
+          <span>AI Follow-up</span>
+          <button mat-icon-button type="button" (click)="playFollowUpTts()" aria-label="Play follow-up with text to speech">
+            <mat-icon>volume_up</mat-icon>
+          </button>
+        </div>
+        <p>{{ followUpDisplay }}</p>
+      </div>
+    }
+  </section>
+
+  <section class="right-panel">
+    <header class="pipeline-header">
+      <p class="pipeline-title">ML Pipeline</p>
+      <p class="pipeline-subtitle">Arrange the stages · They highlight as you mention them</p>
+    </header>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="stages"
+      cdkDropListOrientation="vertical"
+      class="stages-list"
+      (cdkDropListDropped)="onStageDrop($event)"
+    >
+      @for (stage of stages; track stage.id; let i = $index; let last = $last) {
+        <article
+          class="stage-card"
+          [class.highlighted]="stage.highlighted"
+          data-testid="stage-card"
+          [attr.data-stage]="stage.id"
+          cdkDrag
+        >
+          <div class="stage-main">
+            <mat-icon class="stage-icon">{{ stage.icon }}</mat-icon>
+            <div class="stage-copy">
+              <h3>{{ stage.label }}</h3>
+              <mat-chip-set class="keyword-list" aria-label="keywords">
+                @for (keyword of stage.keywords; track keyword) {
+                  <mat-chip class="keyword-badge" [class.lit]="stage.highlighted">{{ keyword }}</mat-chip>
+                }
+              </mat-chip-set>
+            </div>
+          </div>
+
+          <div class="stage-right">
+            @if (stage.highlighted && latestMlAnswer?.mlScore !== null) {
+              <span class="score-chip">Score: {{ scoreLabel }} / 10</span>
+            }
+            <mat-icon class="drag-indicator">drag_indicator</mat-icon>
+          </div>
+        </article>
+
+        @if (!last) {
+          <div class="connector" [class.connector--highlighted]="getStageConnectorClass(i) === 'connector--highlighted'" [class.connector--default]="getStageConnectorClass(i) === 'connector--default'"></div>
+        }
+      }
+    </div>
+
+    <div class="stage-counter" data-testid="stage-counter">{{ mentionedCount }} / 7 stages mentioned</div>
+    <p class="extraction-message">{{ extractionMessage }}</p>
+
+    @if (latestMlAnswer?.mlFeedback) {
+      <mat-card class="feedback-card" appearance="outlined">
+        <h3>ML Feedback</h3>
+        <p>{{ latestMlAnswer?.mlFeedback }}</p>
+      </mat-card>
+    }
+  </section>
+</div>

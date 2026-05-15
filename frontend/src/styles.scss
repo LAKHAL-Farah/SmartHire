@@ -1,0 +1,726 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './styles/theme-tokens';
+
+/* ─── CSS Custom Properties ─── */
+:root {
+  /* Default fallback before ThemeService applies data attributes. */
+  --color-primary: #60a5fa;
+  --color-accent: #34d399;
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-text-p: #f8fafc;
+  --color-text-s: #94a3b8;
+  --color-border: #334155;
+
+  --color-primary-rgb: 96, 165, 250;
+  --color-accent-rgb: 52, 211, 153;
+  --color-bg-rgb: 15, 23, 42;
+  --color-surface-rgb: 30, 41, 59;
+  --color-text-p-rgb: 248, 250, 252;
+  --color-text-s-rgb: 148, 163, 184;
+  --color-border-rgb: 51, 65, 85;
+
+  /* Legacy aliases used by existing components across the app. */
+  --bg-primary: var(--color-bg);
+  --bg-secondary: color-mix(in srgb, var(--color-bg) 80%, var(--color-surface) 20%);
+  --bg-tertiary: color-mix(in srgb, var(--color-bg) 60%, var(--color-surface) 40%);
+  --bg-card: var(--color-surface);
+  --bg-card-hover: color-mix(in srgb, var(--color-surface) 85%, var(--color-bg) 15%);
+
+  --text-primary: var(--color-text-p);
+  --text-secondary: var(--color-text-s);
+  --text-muted: color-mix(in srgb, var(--color-text-s) 70%, var(--color-bg) 30%);
+
+  --accent-teal: var(--color-accent);
+  --accent-teal-dim: color-mix(in srgb, var(--color-accent) 65%, var(--color-bg) 35%);
+  --accent-blue: var(--color-primary);
+  --accent-purple: color-mix(in srgb, var(--color-primary) 65%, var(--color-accent) 35%);
+  --accent-pink: color-mix(in srgb, #ec4899 60%, var(--color-primary) 40%);
+
+  --gradient-teal: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+  --gradient-hero: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 50%, color-mix(in srgb, var(--color-primary) 60%, #8b5cf6 40%) 100%);
+  --gradient-glow: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--color-accent-rgb), 0.09), transparent 40%);
+
+  --border-subtle: rgba(var(--color-border-rgb), 0.45);
+  --border-hover: rgba(var(--color-primary-rgb), 0.4);
+
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--bg-primary) 24%, transparent);
+  --shadow-md: 0 8px 24px color-mix(in srgb, var(--bg-primary) 28%, transparent);
+  --shadow-lg: 0 16px 36px color-mix(in srgb, var(--bg-primary) 36%, transparent);
+  --shadow-xl: -28px 0 52px color-mix(in srgb, var(--bg-primary) 52%, transparent);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+/* ─── Global Resets ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: rgba(46, 232, 165, 0.2);
+  color: var(--accent-teal);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ─── Utility Classes ─── */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.gradient-text {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-card {
+  background: color-mix(in srgb, var(--bg-card) 88%, transparent 12%);
+  backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in srgb, var(--border-subtle) 88%, transparent 12%);
+  border-radius: var(--radius-lg);
+}
+
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: var(--gradient-hero);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+.glow-border:hover::before {
+  opacity: 1;
+}
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--bg-card);
+  z-index: -1;
+}
+
+/* ─── Shimmer animation ─── */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* ─── Float animation ─── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ─── Infinite scroll ─── */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ─── Pulse glow ─── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(46, 232, 165, 0.1); }
+  50% { box-shadow: 0 0 40px rgba(46, 232, 165, 0.25); }
+}
+
+/* ─── Button base styles ─── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--accent-teal);
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary:hover {
+  background: #3ffbb8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(46, 232, 165, 0.3);
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.btn-primary:hover::after {
+  transform: translateX(100%);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 15px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  border-color: var(--accent-teal);
+  color: var(--accent-teal);
+  transform: translateY(-2px);
+}
+
+/* Unified dropdown/select styling across admin and dashboard pages. */
+:where(.admin, .dashboard) :where(
+  select,
+  .form-select,
+  .filter-select,
+  .range-select,
+  .job-list__sort-select,
+  .toolbar__select,
+  .imp-select,
+  .log-filter,
+  .language-selector
+) {
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md) !important;
+  outline: none;
+  box-shadow: none;
+}
+
+:where(.admin, .dashboard) :where(
+  select,
+  .form-select,
+  .filter-select,
+  .range-select,
+  .job-list__sort-select,
+  .toolbar__select,
+  .imp-select,
+  .log-filter,
+  .language-selector
+):focus {
+  border-color: var(--border-hover) !important;
+  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.14) !important;
+}
+
+:where(.admin, .dashboard) :where(
+  select,
+  .form-select,
+  .filter-select,
+  .range-select,
+  .job-list__sort-select,
+  .toolbar__select,
+  .imp-select,
+  .log-filter,
+  .language-selector
+) option {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+:where(.admin, .dashboard) :where(
+  .dropdown,
+  .action-menu,
+  .tag-dropdown,
+  .multi-dropdown
+) {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 12px 32px rgba(var(--color-bg-rgb), 0.2) !important;
+}
+
+:where(.admin, .dashboard) :where(
+  .dropdown__header,
+  .dropdown__divider
+) {
+  border-color: var(--border-subtle) !important;
+}
+
+:where(.admin, .dashboard) :where(
+  .dropdown__title,
+  .dropdown__count,
+  .dropdown__name,
+  .dropdown__profile,
+  .action-menu__item,
+  .tag-dropdown__item,
+  .multi-option,
+  .dropdown__item-text,
+  .dropdown__link
+) {
+  color: var(--text-primary) !important;
+}
+
+:where(.admin, .dashboard) :where(
+  .dropdown__email,
+  .dropdown__item-time,
+  .multi-select__placeholder
+) {
+  color: var(--text-secondary) !important;
+}
+
+:where(.admin, .dashboard) :where(
+  .dropdown__item:hover,
+  .dropdown__link:hover,
+  .action-menu__item:hover,
+  .tag-dropdown__item:hover,
+  .multi-option:hover
+) {
+  background: color-mix(in srgb, var(--bg-tertiary) 84%, var(--color-primary) 16%) !important;
+}
+
+/* ─── GitHub-style scroll text reveal ─── */
+.scroll-text {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 64px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  max-width: 900px;
+}
+
+.scroll-text .word {
+  display: inline-block;
+  margin-right: 0.28em;
+  opacity: 0.4;
+  font-weight: 400;
+  transition: color 0.1s ease;
+  will-change: opacity, font-weight;
+}
+.scroll-text .word:last-child {
+  margin-right: 0;
+}
+
+/* Highlighted accent words inside scroll text */
+.scroll-text .word--accent {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Section spacer utility */
+.section-spacer {
+  padding: 140px 0;
+}
+.section-spacer--sm {
+  padding: 100px 0;
+}
+
+/* Horizontal divider line */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Global light-mode compatibility for legacy hardcoded dark components. */
+:root[data-mode='light'] {
+  --border-subtle: rgba(var(--color-border-rgb), 0.55);
+  --border-hover: rgba(var(--color-primary-rgb), 0.38);
+}
+
+:root[data-mode='light'] body {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+:root[data-mode='light'] :where(
+  input,
+  textarea,
+  select,
+  button,
+  [class*='input'],
+  [class*='textarea'],
+  [class*='select']
+) {
+  color: var(--text-primary);
+}
+
+:root[data-mode='light'] :where(input, textarea, select, [class*='input'], [class*='textarea'], [class*='select']) {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+:root[data-mode='light'] :where(
+  .glass-card,
+  .section-card,
+  [class*='chart-card'],
+  [class*='modal'],
+  [class*='panel'],
+  [class*='table-wrap'],
+  [class*='widget'],
+  [class*='tile'],
+  [class*='summary'],
+  [class*='card']:not([class*='badge']):not([class*='chip']):not([class*='avatar']):not([class*='bar'])
+) {
+  border-color: var(--border-subtle) !important;
+  background: color-mix(in srgb, var(--bg-card) 96%, #ffffff 4%) !important;
+}
+
+:root[data-mode='light'] :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  [class*='title'],
+  [class*='heading'],
+  [class*='value'],
+  [class*='amount'],
+  [class*='name']
+):not([class*='badge']):not([class*='chip']):not([class*='status']):not([class*='danger']) {
+  color: var(--text-primary) !important;
+}
+
+:root[data-mode='light'] :where(
+  p,
+  small,
+  [class*='sub'],
+  [class*='desc'],
+  [class*='label'],
+  [class*='hint'],
+  [class*='meta'],
+  [class*='info'],
+  [class*='muted']
+):not([class*='badge']):not([class*='chip']):not([class*='status']):not([class*='danger']):not([class*='success']) {
+  color: var(--text-secondary) !important;
+}
+
+:root[data-mode='light'] :where(.btn-primary, [class*='btn-primary']) {
+  color: var(--color-surface) !important;
+}
+
+:root[data-mode='light'] :where(.btn-ghost, [class*='btn-ghost']) {
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* Admin data table readability (light mode), excluding analytics heatmaps/cohort grids. */
+:root[data-mode='light'] .admin :where(.table-wrap, .perf-table-wrap) {
+  background: var(--bg-card);
+  border-color: var(--border-subtle) !important;
+}
+
+:root[data-mode='light'] .admin :where(
+  .table-wrap table,
+  .perf-table-wrap table,
+  .user-table,
+  .rec-table,
+  .job-table,
+  .data-table,
+  .perf-table,
+  .iq-table,
+  .gap-table
+):not(.heatmap):not(.cohort-table) {
+  color: var(--text-primary);
+}
+
+:root[data-mode='light'] .admin :where(
+  .table-wrap table,
+  .perf-table-wrap table,
+  .user-table,
+  .rec-table,
+  .job-table,
+  .data-table,
+  .perf-table,
+  .iq-table,
+  .gap-table
+):not(.heatmap):not(.cohort-table) thead tr {
+  background: color-mix(in srgb, var(--bg-tertiary) 88%, var(--color-primary) 12%) !important;
+}
+
+:root[data-mode='light'] .admin :where(
+  .table-wrap table,
+  .perf-table-wrap table,
+  .user-table,
+  .rec-table,
+  .job-table,
+  .data-table,
+  .perf-table,
+  .iq-table,
+  .gap-table
+):not(.heatmap):not(.cohort-table) th {
+  color: var(--text-secondary) !important;
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+:root[data-mode='light'] .admin :where(
+  .table-wrap table,
+  .perf-table-wrap table,
+  .user-table,
+  .rec-table,
+  .job-table,
+  .data-table,
+  .perf-table,
+  .iq-table,
+  .gap-table
+):not(.heatmap):not(.cohort-table) td {
+  color: var(--text-primary);
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+:root[data-mode='light'] .admin :where(
+  .table-wrap table,
+  .perf-table-wrap table,
+  .user-table,
+  .rec-table,
+  .job-table,
+  .data-table,
+  .perf-table,
+  .iq-table,
+  .gap-table
+):not(.heatmap):not(.cohort-table) tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--bg-card) 95%, var(--bg-tertiary) 5%) !important;
+}
+
+:root[data-mode='light'] .admin :where(
+  .table-wrap table,
+  .perf-table-wrap table,
+  .user-table,
+  .rec-table,
+  .job-table,
+  .data-table,
+  .perf-table,
+  .iq-table,
+  .gap-table
+):not(.heatmap):not(.cohort-table) tbody tr:hover {
+  background: color-mix(in srgb, var(--color-primary) 8%, var(--bg-tertiary) 92%) !important;
+}
+
+:root[data-mode='light'] .admin :where(
+  .text-main,
+  .perf-feature,
+  .iq-text,
+  .gap-skill
+) {
+  color: var(--text-primary) !important;
+}
+
+:root[data-mode='light'] .admin :where(
+  .text-dim,
+  .muted,
+  .empty-row,
+  .perf-calls,
+  .iq-empty
+) {
+  color: var(--text-secondary) !important;
+}
+
+/* Side popups/drawers readability in light mode (admin + dashboard). */
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .drawer,
+  .feedback-drawer,
+  .action-menu,
+  .multi-dropdown,
+  .tag-dropdown,
+  .dropdown
+) {
+  background: var(--bg-card) !important;
+  border-color: var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 12px 36px rgba(var(--color-bg-rgb), 0.14) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .drawer,
+  .feedback-drawer
+) {
+  scrollbar-color: rgba(var(--color-primary-rgb), 0.35) var(--bg-tertiary);
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .drawer::-webkit-scrollbar-thumb,
+  .feedback-drawer::-webkit-scrollbar-thumb,
+  .multi-dropdown::-webkit-scrollbar-thumb,
+  .tag-dropdown::-webkit-scrollbar-thumb
+) {
+  background: rgba(var(--color-primary-rgb), 0.35) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .drawer__close,
+  .modal__close,
+  .dots-btn
+) {
+  color: var(--text-secondary) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .drawer__close:hover,
+  .modal__close:hover,
+  .dots-btn:hover
+) {
+  color: var(--text-primary) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .drawer__name,
+  .drawer__title,
+  .score-badge,
+  .dropdown__title,
+  .dropdown__name,
+  .modal__title
+) {
+  color: var(--text-primary) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .drawer__email,
+  .drawer__company,
+  .drawer__label,
+  .drawer__text,
+  .drawer__reqs li,
+  .stat-box__lbl,
+  .flag-entry__date,
+  .flag-entry__detail,
+  .dropdown__email,
+  .dropdown__item-time,
+  .gauge-card span,
+  .feedback-block p,
+  .expected-list,
+  .timer-label
+) {
+  color: var(--text-secondary) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) .drawer .drawer__row {
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) .drawer .drawer__row span:first-child {
+  color: var(--text-secondary) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) .drawer .drawer__row span:last-child {
+  color: var(--text-primary) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .stat-box,
+  .gauge-card,
+  .feedback-block,
+  .ideal-answer
+) {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .action-menu__item,
+  .multi-option,
+  .tag-dropdown__item,
+  .dropdown__item-text,
+  .dropdown__link
+) {
+  color: var(--text-primary) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .action-menu__item:hover,
+  .multi-option:hover,
+  .tag-dropdown__item:hover,
+  .dropdown__item:hover,
+  .dropdown__link:hover,
+  .dots-btn:hover
+) {
+  background: color-mix(in srgb, var(--bg-tertiary) 86%, var(--color-primary) 14%) !important;
+}
+
+:root[data-mode='light'] :where(.admin, .dashboard) :where(
+  .multi-select,
+  .tag-input,
+  .modal__textarea,
+  .feedback-drawer .collapse-btn,
+  .feedback-drawer .reveal-btn,
+  .feedback-drawer .retry-btn
+) {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}

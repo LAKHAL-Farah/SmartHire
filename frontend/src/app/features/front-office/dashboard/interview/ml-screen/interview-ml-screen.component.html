@@ -1,0 +1,71 @@
+<div class="ml-room">
+  <header class="topbar">
+    <span class="topbar__title">AI Engineer Screen</span>
+    <span class="topbar__timer">{{ timerDisplay() }}</span>
+  </header>
+
+  <div class="progress-strip">
+    <span>Q{{ currentIndex() + 1 }} of {{ totalQuestions() }}</span>
+    <div class="progress-track"><div class="progress-fill" [style.width.%]="progressPercent()"></div></div>
+    <span class="mode-pill">{{ mode() }}</span>
+  </div>
+
+  <section class="scenario-card">
+    <div class="scenario-card__left-border"></div>
+    <div>
+      <p class="scenario-title">{{ question().domain }} · {{ question().category }}</p>
+      <h2>{{ question().questionText }}</h2>
+      <p class="dataset-hint">Dataset: structured tabular / text / images</p>
+    </div>
+  </section>
+
+  <div class="content-layout">
+    <section class="answer-section">
+      <textarea
+        rows="8"
+        placeholder="Describe your ML approach..."
+        [value]="answerText()"
+        (input)="updateAnswer($any($event.target).value)"
+      ></textarea>
+
+      <div class="answer-actions">
+        <button class="hint-btn" type="button" (click)="toggleHint()">Hint</button>
+        <button class="submit-btn" type="button" (click)="submitAnswer()">Submit</button>
+      </div>
+
+      <div class="live-placeholder">🎙 Live Mode placeholder (Phase 2)</div>
+
+      @if (hintOpen()) {
+        <div class="hint-panel">Hint: mention features, model choice rationale, metrics, and deployment lifecycle.</div>
+      }
+
+      @if (feedbackOpen() && mode() === 'PRACTICE') {
+        <div class="feedback-panel">
+          <h3>Feedback Panel</h3>
+          <p>Great structure. Add drift monitoring and retraining triggers for production readiness.</p>
+
+          <div class="concept-panel">
+            <h4>Extracted Concepts</h4>
+            <div class="concept-badges">
+              <span class="badge" [class.badge--missing]="!extractedModel()">Model: {{ extractedModel() ?? 'Missing' }}</span>
+              <span class="badge" [class.badge--missing]="!extractedMetrics()">Metrics: {{ extractedMetrics() ?? 'Missing' }}</span>
+              <span class="badge" [class.badge--missing]="!extractedDeployment()">Deployment: {{ extractedDeployment() ?? 'Missing' }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </section>
+
+    <aside class="pipeline-panel">
+      <h3>ML Pipeline</h3>
+      <div class="pipeline-flow">
+        @for (stage of stages; track stage.key; let last = $last) {
+          <div class="stage-box" [class.stage-box--active]="isStageHighlighted(stage.key)">{{ stage.label }}</div>
+          @if (!last) {
+            <div class="arrow">↓</div>
+          }
+        }
+      </div>
+    </aside>
+  </div>
+</div>

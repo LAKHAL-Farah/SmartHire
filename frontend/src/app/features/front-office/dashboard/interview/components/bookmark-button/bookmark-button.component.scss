@@ -1,0 +1,161 @@
+:host {
+  display: block;
+}
+
+.bookmark-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bookmark-toggle {
+  border: 1px solid rgba(46, 232, 165, 0.35);
+  background: rgba(46, 232, 165, 0.1);
+  color: #9df7d6;
+  border-radius: var(--radius-full);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.bookmark-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(46, 232, 165, 0.2);
+}
+
+.bookmark-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.bookmark-toggle--active {
+  background: rgba(46, 232, 165, 0.2);
+  color: #d8ffef;
+}
+
+.bookmark-toggle--flash-save {
+  animation: bookmark-pop 0.45s ease;
+}
+
+.bookmark-toggle--flash-remove {
+  animation: bookmark-shake 0.45s ease;
+}
+
+.bookmark-state {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.bookmark-state--ok {
+  color: #86efac;
+}
+
+.bookmark-state--error {
+  color: #fca5a5;
+}
+
+.bookmark-panel {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bookmark-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.68);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bookmark-panel textarea,
+.bookmark-panel input {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: rgba(8, 10, 14, 0.7);
+  color: #f8fafc;
+  padding: 8px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+}
+
+.bookmark-panel textarea {
+  resize: vertical;
+}
+
+.bookmark-panel input:disabled {
+  opacity: 0.6;
+}
+
+.bookmark-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-save,
+.btn-remove {
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-save {
+  background: var(--accent-teal);
+  color: #072015;
+}
+
+.btn-remove {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fecaca;
+}
+
+.btn-save:disabled,
+.btn-remove:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes bookmark-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bookmark-shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

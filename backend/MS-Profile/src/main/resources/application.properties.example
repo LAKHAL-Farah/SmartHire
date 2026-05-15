@@ -1,0 +1,11 @@
+## Example application properties for MS-Profile (DO NOT COMMIT real secrets)
+
+spring.application.name=MS_PROFILE
+server.port=8086
+
+spring.datasource.url=jdbc:mysql://localhost:3306/profile_ms_db?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=${MYSQL_PASSWORD:change_me}
+
+## NVIDIA API key (set in environment)
+app.nvidia.api-key=${NVIDIA_NIM_API_KEY:}

@@ -1,0 +1,1889 @@
+{
+    "scannedFileCount":  176,
+    "inventory":  [
+                      {
+                          "path":  "src/app/app.component.html",
+                          "lines":  3,
+                          "nonEmpty":  1,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/app.component.scss",
+                          "lines":  0,
+                          "nonEmpty":  0,
+                          "status":  "empty",
+                          "reason":  "No content"
+                      },
+                      {
+                          "path":  "src/app/app.component.spec.ts",
+                          "lines":  30,
+                          "nonEmpty":  25,
+                          "status":  "partial",
+                          "reason":  "Scaffold/minimal spec"
+                      },
+                      {
+                          "path":  "src/app/app.component.ts",
+                          "lines":  14,
+                          "nonEmpty":  12,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/app.config.ts",
+                          "lines":  17,
+                          "nonEmpty":  14,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/app.routes.ts",
+                          "lines":  221,
+                          "nonEmpty":  216,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/core/guards/admin.guard.ts",
+                          "lines":  22,
+                          "nonEmpty":  20,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/core/guards/auth.guard.ts",
+                          "lines":  20,
+                          "nonEmpty":  16,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/core/guards/no-auth.guard.ts",
+                          "lines":  27,
+                          "nonEmpty":  23,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/core/guards/onboarding.guard.ts",
+                          "lines":  49,
+                          "nonEmpty":  44,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/core/guards/role.guard.ts",
+                          "lines":  34,
+                          "nonEmpty":  28,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.html",
+                          "lines":  222,
+                          "nonEmpty":  202,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.scss",
+                          "lines":  243,
+                          "nonEmpty":  196,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.ts",
+                          "lines":  183,
+                          "nonEmpty":  163,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/analytics/analytics.component.html",
+                          "lines":  181,
+                          "nonEmpty":  169,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/analytics/analytics.component.scss",
+                          "lines":  199,
+                          "nonEmpty":  188,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/analytics/analytics.component.ts",
+                          "lines":  150,
+                          "nonEmpty":  134,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/career-paths/career-paths.component.html",
+                          "lines":  589,
+                          "nonEmpty":  550,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/career-paths/career-paths.component.scss",
+                          "lines":  616,
+                          "nonEmpty":  540,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/career-paths/career-paths.component.ts",
+                          "lines":  629,
+                          "nonEmpty":  586,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.html",
+                          "lines":  62,
+                          "nonEmpty":  56,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.scss",
+                          "lines":  144,
+                          "nonEmpty":  127,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.ts",
+                          "lines":  50,
+                          "nonEmpty":  42,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.html",
+                          "lines":  59,
+                          "nonEmpty":  55,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.scss",
+                          "lines":  250,
+                          "nonEmpty":  215,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.ts",
+                          "lines":  53,
+                          "nonEmpty":  44,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.html",
+                          "lines":  180,
+                          "nonEmpty":  172,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.scss",
+                          "lines":  124,
+                          "nonEmpty":  112,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.ts",
+                          "lines":  153,
+                          "nonEmpty":  135,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/jobs/job-management.component.html",
+                          "lines":  195,
+                          "nonEmpty":  181,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/jobs/job-management.component.scss",
+                          "lines":  207,
+                          "nonEmpty":  187,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/jobs/job-management.component.ts",
+                          "lines":  157,
+                          "nonEmpty":  139,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/layout/admin-layout.component.html",
+                          "lines":  8,
+                          "nonEmpty":  7,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/layout/admin-layout.component.scss",
+                          "lines":  13,
+                          "nonEmpty":  10,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/layout/admin-layout.component.ts",
+                          "lines":  15,
+                          "nonEmpty":  13,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/questions/question-management.component.html",
+                          "lines":  295,
+                          "nonEmpty":  264,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/questions/question-management.component.scss",
+                          "lines":  376,
+                          "nonEmpty":  328,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/questions/question-management.component.ts",
+                          "lines":  254,
+                          "nonEmpty":  229,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.html",
+                          "lines":  189,
+                          "nonEmpty":  175,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.scss",
+                          "lines":  215,
+                          "nonEmpty":  193,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.ts",
+                          "lines":  162,
+                          "nonEmpty":  145,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/settings/settings.component.html",
+                          "lines":  311,
+                          "nonEmpty":  277,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/settings/settings.component.scss",
+                          "lines":  380,
+                          "nonEmpty":  315,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/settings/settings.component.ts",
+                          "lines":  288,
+                          "nonEmpty":  248,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.html",
+                          "lines":  223,
+                          "nonEmpty":  211,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.scss",
+                          "lines":  526,
+                          "nonEmpty":  448,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.ts",
+                          "lines":  312,
+                          "nonEmpty":  281,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/system-health/system-health.component.html",
+                          "lines":  466,
+                          "nonEmpty":  442,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/system-health/system-health.component.scss",
+                          "lines":  465,
+                          "nonEmpty":  396,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/system-health/system-health.component.ts",
+                          "lines":  477,
+                          "nonEmpty":  429,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.html",
+                          "lines":  103,
+                          "nonEmpty":  95,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.scss",
+                          "lines":  598,
+                          "nonEmpty":  518,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.ts",
+                          "lines":  86,
+                          "nonEmpty":  74,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/users/user-management.component.html",
+                          "lines":  248,
+                          "nonEmpty":  235,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/users/user-management.component.scss",
+                          "lines":  939,
+                          "nonEmpty":  807,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/back-office/admin/users/user-management.component.ts",
+                          "lines":  317,
+                          "nonEmpty":  271,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/service/assessment-admin-api.service.ts",
+                          "lines":  133,
+                          "nonEmpty":  115,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/service/user-management.service.spec.ts",
+                          "lines":  20,
+                          "nonEmpty":  15,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/back-office/service/user-management.service.ts",
+                          "lines":  163,
+                          "nonEmpty":  138,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/auth.service.ts",
+                          "lines":  91,
+                          "nonEmpty":  79,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/authe.service.spec.ts",
+                          "lines":  0,
+                          "nonEmpty":  0,
+                          "status":  "empty",
+                          "reason":  "No content"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/authe.service.ts",
+                          "lines":  58,
+                          "nonEmpty":  49,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.html",
+                          "lines":  69,
+                          "nonEmpty":  64,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.scss",
+                          "lines":  205,
+                          "nonEmpty":  182,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.ts",
+                          "lines":  36,
+                          "nonEmpty":  33,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/interceptors/auth.interceptor.spec.ts",
+                          "lines":  18,
+                          "nonEmpty":  13,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/interceptors/auth.interceptor.ts",
+                          "lines":  31,
+                          "nonEmpty":  26,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/login/login.component.html",
+                          "lines":  129,
+                          "nonEmpty":  119,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/login/login.component.scss",
+                          "lines":  312,
+                          "nonEmpty":  279,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/login/login.component.ts",
+                          "lines":  70,
+                          "nonEmpty":  59,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/register/register.component.html",
+                          "lines":  350,
+                          "nonEmpty":  308,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/register/register.component.scss",
+                          "lines":  440,
+                          "nonEmpty":  396,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/register/register.component.ts",
+                          "lines":  179,
+                          "nonEmpty":  164,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/user.service.spec.ts",
+                          "lines":  20,
+                          "nonEmpty":  15,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/auth/user.service.ts",
+                          "lines":  91,
+                          "nonEmpty":  71,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.html",
+                          "lines":  64,
+                          "nonEmpty":  59,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.scss",
+                          "lines":  141,
+                          "nonEmpty":  127,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.ts",
+                          "lines":  44,
+                          "nonEmpty":  37,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.html",
+                          "lines":  73,
+                          "nonEmpty":  66,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.scss",
+                          "lines":  233,
+                          "nonEmpty":  218,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.ts",
+                          "lines":  76,
+                          "nonEmpty":  64,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.html",
+                          "lines":  159,
+                          "nonEmpty":  151,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.scss",
+                          "lines":  405,
+                          "nonEmpty":  381,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.ts",
+                          "lines":  96,
+                          "nonEmpty":  84,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/dashboard-home.component.html",
+                          "lines":  165,
+                          "nonEmpty":  158,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/dashboard-home.component.scss",
+                          "lines":  314,
+                          "nonEmpty":  303,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/dashboard-home.component.ts",
+                          "lines":  90,
+                          "nonEmpty":  82,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/dashboard-layout.component.html",
+                          "lines":  8,
+                          "nonEmpty":  7,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/dashboard-layout.component.scss",
+                          "lines":  13,
+                          "nonEmpty":  10,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/dashboard-layout.component.ts",
+                          "lines":  26,
+                          "nonEmpty":  21,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/interview.component.html",
+                          "lines":  228,
+                          "nonEmpty":  216,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/interview.component.scss",
+                          "lines":  685,
+                          "nonEmpty":  579,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/interview.component.ts",
+                          "lines":  122,
+                          "nonEmpty":  102,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.html",
+                          "lines":  184,
+                          "nonEmpty":  169,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.scss",
+                          "lines":  542,
+                          "nonEmpty":  461,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.ts",
+                          "lines":  253,
+                          "nonEmpty":  236,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.html",
+                          "lines":  218,
+                          "nonEmpty":  196,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.scss",
+                          "lines":  669,
+                          "nonEmpty":  571,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.ts",
+                          "lines":  199,
+                          "nonEmpty":  170,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/jobs/jobs.component.html",
+                          "lines":  323,
+                          "nonEmpty":  304,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/jobs/jobs.component.scss",
+                          "lines":  725,
+                          "nonEmpty":  696,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/jobs/jobs.component.ts",
+                          "lines":  333,
+                          "nonEmpty":  303,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/profile/profile.component.html",
+                          "lines":  289,
+                          "nonEmpty":  274,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/profile/profile.component.scss",
+                          "lines":  576,
+                          "nonEmpty":  546,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/profile/profile.component.ts",
+                          "lines":  229,
+                          "nonEmpty":  203,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.html",
+                          "lines":  194,
+                          "nonEmpty":  185,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.scss",
+                          "lines":  533,
+                          "nonEmpty":  505,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.ts",
+                          "lines":  194,
+                          "nonEmpty":  177,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/settings/settings.component.html",
+                          "lines":  239,
+                          "nonEmpty":  226,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/settings/settings.component.scss",
+                          "lines":  413,
+                          "nonEmpty":  396,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/dashboard/settings/settings.component.ts",
+                          "lines":  113,
+                          "nonEmpty":  101,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/landing-page.component.html",
+                          "lines":  15,
+                          "nonEmpty":  14,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/landing-page.component.scss",
+                          "lines":  8,
+                          "nonEmpty":  7,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/landing-page.component.ts",
+                          "lines":  52,
+                          "nonEmpty":  47,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/cta/cta.component.html",
+                          "lines":  29,
+                          "nonEmpty":  27,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/cta/cta.component.scss",
+                          "lines":  58,
+                          "nonEmpty":  51,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/cta/cta.component.ts",
+                          "lines":  24,
+                          "nonEmpty":  20,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/features/features-grid.component.html",
+                          "lines":  36,
+                          "nonEmpty":  33,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/features/features-grid.component.scss",
+                          "lines":  64,
+                          "nonEmpty":  53,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/features/features-grid.component.ts",
+                          "lines":  32,
+                          "nonEmpty":  27,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/hero/hero.component.html",
+                          "lines":  248,
+                          "nonEmpty":  231,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/hero/hero.component.scss",
+                          "lines":  446,
+                          "nonEmpty":  421,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/hero/hero.component.ts",
+                          "lines":  237,
+                          "nonEmpty":  212,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.html",
+                          "lines":  43,
+                          "nonEmpty":  40,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.scss",
+                          "lines":  86,
+                          "nonEmpty":  75,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.ts",
+                          "lines":  30,
+                          "nonEmpty":  25,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/pricing/pricing.component.html",
+                          "lines":  50,
+                          "nonEmpty":  47,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/pricing/pricing.component.scss",
+                          "lines":  187,
+                          "nonEmpty":  171,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/pricing/pricing.component.ts",
+                          "lines":  73,
+                          "nonEmpty":  67,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/problem/problem.component.html",
+                          "lines":  37,
+                          "nonEmpty":  34,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/problem/problem.component.scss",
+                          "lines":  63,
+                          "nonEmpty":  53,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/problem/problem.component.ts",
+                          "lines":  31,
+                          "nonEmpty":  26,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/solution/solution.component.html",
+                          "lines":  101,
+                          "nonEmpty":  96,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/solution/solution.component.scss",
+                          "lines":  311,
+                          "nonEmpty":  294,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/solution/solution.component.ts",
+                          "lines":  72,
+                          "nonEmpty":  62,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/stats/stats.component.html",
+                          "lines":  13,
+                          "nonEmpty":  12,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/stats/stats.component.scss",
+                          "lines":  47,
+                          "nonEmpty":  40,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/stats/stats.component.ts",
+                          "lines":  41,
+                          "nonEmpty":  36,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.html",
+                          "lines":  43,
+                          "nonEmpty":  40,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.scss",
+                          "lines":  91,
+                          "nonEmpty":  79,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.ts",
+                          "lines":  36,
+                          "nonEmpty":  30,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.html",
+                          "lines":  13,
+                          "nonEmpty":  12,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.scss",
+                          "lines":  47,
+                          "nonEmpty":  41,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.ts",
+                          "lines":  30,
+                          "nonEmpty":  24,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/landing/services/scroll-animation.service.ts",
+                          "lines":  192,
+                          "nonEmpty":  173,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/onboarding.component.html",
+                          "lines":  116,
+                          "nonEmpty":  107,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/onboarding.component.scss",
+                          "lines":  269,
+                          "nonEmpty":  243,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/onboarding.component.ts",
+                          "lines":  107,
+                          "nonEmpty":  92,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/onboarding-skills.util.ts",
+                          "lines":  42,
+                          "nonEmpty":  38,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.html",
+                          "lines":  23,
+                          "nonEmpty":  21,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.scss",
+                          "lines":  122,
+                          "nonEmpty":  107,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.ts",
+                          "lines":  28,
+                          "nonEmpty":  24,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-results.component.html",
+                          "lines":  148,
+                          "nonEmpty":  135,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-results.component.scss",
+                          "lines":  268,
+                          "nonEmpty":  234,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-results.component.ts",
+                          "lines":  88,
+                          "nonEmpty":  77,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-situation.component.html",
+                          "lines":  23,
+                          "nonEmpty":  21,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-situation.component.scss",
+                          "lines":  96,
+                          "nonEmpty":  84,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-situation.component.ts",
+                          "lines":  26,
+                          "nonEmpty":  22,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.html",
+                          "lines":  51,
+                          "nonEmpty":  46,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.scss",
+                          "lines":  168,
+                          "nonEmpty":  150,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.ts",
+                          "lines":  85,
+                          "nonEmpty":  80,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/profile/profile-api.service.ts",
+                          "lines":  163,
+                          "nonEmpty":  148,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/front-office/profile/profile-user-id.ts",
+                          "lines":  30,
+                          "nonEmpty":  24,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/not-found/access-denied.component.ts",
+                          "lines":  41,
+                          "nonEmpty":  36,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/not-found/not-found.component.html",
+                          "lines":  67,
+                          "nonEmpty":  61,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/not-found/not-found.component.scss",
+                          "lines":  208,
+                          "nonEmpty":  192,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/features/not-found/not-found.component.ts",
+                          "lines":  14,
+                          "nonEmpty":  12,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/shared/footer/footer.component.html",
+                          "lines":  44,
+                          "nonEmpty":  40,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/shared/footer/footer.component.scss",
+                          "lines":  134,
+                          "nonEmpty":  122,
+                          "status":  "partial",
+                          "reason":  "Contains TODO/placeholder markers"
+                      },
+                      {
+                          "path":  "src/app/shared/footer/footer.component.ts",
+                          "lines":  34,
+                          "nonEmpty":  31,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/shared/lucide-icons.ts",
+                          "lines":  118,
+                          "nonEmpty":  115,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/shared/navbar/navbar.component.html",
+                          "lines":  53,
+                          "nonEmpty":  48,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/shared/navbar/navbar.component.scss",
+                          "lines":  32,
+                          "nonEmpty":  27,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/app/shared/navbar/navbar.component.ts",
+                          "lines":  25,
+                          "nonEmpty":  21,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/environments/environment.prod.ts",
+                          "lines":  10,
+                          "nonEmpty":  9,
+                          "status":  "implemented",
+                          "reason":  ""
+                      },
+                      {
+                          "path":  "src/environments/environment.ts",
+                          "lines":  24,
+                          "nonEmpty":  18,
+                          "status":  "implemented",
+                          "reason":  ""
+                      }
+                  ],
+    "services":  [
+                     {
+                         "path":  "src/app/features/back-office/service/assessment-admin-api.service.ts",
+                         "className":  "AssessmentAdminApiService",
+                         "methods":  [
+                                         "base",
+                                         "adminHeaders",
+                                         "listCategories",
+                                         "createCategory",
+                                         "updateCategory",
+                                         "deleteCategory",
+                                         "listQuestions",
+                                         "createQuestion",
+                                         "updateQuestion",
+                                         "deleteQuestion",
+                                         "createChoice",
+                                         "updateChoice",
+                                         "deleteChoice"
+                                     ],
+                         "usesHttpClient":  true,
+                         "usesEnvironment":  true,
+                         "appearsMockBased":  false
+                     },
+                     {
+                         "path":  "src/app/features/back-office/service/user-management.service.ts",
+                         "className":  "UserManagementService",
+                         "methods":  [
+                                         "getAllUsers",
+                                         "catchError",
+                                         "getUserById",
+                                         "transformToDisplayUser",
+                                         "updateUser",
+                                         "deleteUser",
+                                         "handleError"
+                                     ],
+                         "usesHttpClient":  true,
+                         "usesEnvironment":  false,
+                         "appearsMockBased":  false
+                     },
+                     {
+                         "path":  "src/app/features/front-office/auth/auth.service.ts",
+                         "className":  "AuthService",
+                         "methods":  [
+                                         "login",
+                                         "setTimeout",
+                                         "setProfileUserUuid",
+                                         "setLocalDemoMode",
+                                         "resolve",
+                                         "logout",
+                                         "getUser",
+                                         "getUserId",
+                                         "isAuthenticated",
+                                         "loadSession"
+                                     ],
+                         "usesHttpClient":  true,
+                         "usesEnvironment":  true,
+                         "appearsMockBased":  false
+                     },
+                     {
+                         "path":  "src/app/features/front-office/auth/authe.service.ts",
+                         "className":  "AutheService",
+                         "methods":  [
+                                         "login",
+                                         "tap",
+                                         "getToken",
+                                         "logout",
+                                         "isLoggedIn",
+                                         "redirectAfterLogin",
+                                         "getRole"
+                                     ],
+                         "usesHttpClient":  true,
+                         "usesEnvironment":  false,
+                         "appearsMockBased":  false
+                     },
+                     {
+                         "path":  "src/app/features/front-office/auth/user.service.ts",
+                         "className":  "UserService",
+                         "methods":  [
+                                         "getAllUsers",
+                                         "retry",
+                                         "catchError",
+                                         "getUserById",
+                                         "getUserByEmail",
+                                         "createUser",
+                                         "getAvatarUrl",
+                                         "handleError"
+                                     ],
+                         "usesHttpClient":  true,
+                         "usesEnvironment":  false,
+                         "appearsMockBased":  false
+                     },
+                     {
+                         "path":  "src/app/features/front-office/landing/services/scroll-animation.service.ts",
+                         "className":  "ScrollAnimationService",
+                         "methods":  [
+                                         "initLenis",
+                                         "scrollTextReveal",
+                                         "animateFadeUp",
+                                         "animateStagger",
+                                         "pinSection",
+                                         "animateCounter",
+                                         "animateScaleIn",
+                                         "refreshScrollTrigger",
+                                         "ngOnDestroy",
+                                         "killAll"
+                                     ],
+                         "usesHttpClient":  false,
+                         "usesEnvironment":  false,
+                         "appearsMockBased":  false
+                     },
+                     {
+                         "path":  "src/app/features/front-office/profile/profile-api.service.ts",
+                         "className":  "ProfileApiService",
+                         "methods":  [
+                                         "getProfile",
+                                         "catchError",
+                                         "completeOnboarding",
+                                         "setLocalDemoMode",
+                                         "getUserByEmail",
+                                         "createUserWithProfile",
+                                         "hasLocalProfileFor",
+                                         "return",
+                                         "readLocalProfile",
+                                         "writeLocalProfile",
+                                         "persistLocalOnboarding"
+                                     ],
+                         "usesHttpClient":  true,
+                         "usesEnvironment":  true,
+                         "appearsMockBased":  true
+                     }
+                 ],
+    "components":  [
+                       {
+                           "path":  "src/app/app.component.ts",
+                           "className":  "AppComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/ai-monitor/ai-monitor.component.ts",
+                           "className":  "AiMonitorComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/analytics/analytics.component.ts",
+                           "className":  "AnalyticsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/career-paths/career-paths.component.ts",
+                           "className":  "CareerPathsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/components/admin-sidebar/admin-sidebar.component.ts",
+                           "className":  "AdminSidebarComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/components/admin-topbar/admin-topbar.component.ts",
+                           "className":  "AdminTopbarComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "AutheService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/dashboard/admin-dashboard.component.ts",
+                           "className":  "AdminDashboardComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/jobs/job-management.component.ts",
+                           "className":  "JobManagementComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/layout/admin-layout.component.ts",
+                           "className":  "AdminLayoutComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/questions/question-management.component.ts",
+                           "className":  "QuestionManagementComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/recruiters/recruiter-management.component.ts",
+                           "className":  "RecruiterManagementComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/settings/settings.component.ts",
+                           "className":  "SettingsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/skill-assessments/skill-assessment-admin.component.ts",
+                           "className":  "SkillAssessmentAdminComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "AssessmentAdminApiService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/system-health/system-health.component.ts",
+                           "className":  "SystemHealthComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/users/edit-user-modal/edit-user-modal.component.ts",
+                           "className":  "EditUserModalComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "UserManagementService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/back-office/admin/users/user-management.component.ts",
+                           "className":  "UserManagementComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "UserManagementService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/auth/auth-left-panel/auth-left-panel.component.ts",
+                           "className":  "AuthLeftPanelComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/auth/login/login.component.ts",
+                           "className":  "LoginComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "AuthService",
+                                                    "AutheService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/auth/register/register.component.ts",
+                           "className":  "RegisterComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ProfileApiService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/components/sidebar/sidebar.component.ts",
+                           "className":  "SidebarComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "AuthService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/components/topbar/topbar.component.ts",
+                           "className":  "TopbarComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/cv-optimizer/cv-optimizer.component.ts",
+                           "className":  "CvOptimizerComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/dashboard-home.component.ts",
+                           "className":  "DashboardHomeComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/dashboard-layout.component.ts",
+                           "className":  "DashboardLayoutComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/interview/interview.component.ts",
+                           "className":  "InterviewComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/interview/report/interview-report.component.ts",
+                           "className":  "InterviewReportComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/interview/session/interview-session.component.ts",
+                           "className":  "InterviewSessionComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/jobs/jobs.component.ts",
+                           "className":  "JobsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/profile/profile.component.ts",
+                           "className":  "ProfileComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ProfileApiService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/roadmap/roadmap.component.ts",
+                           "className":  "RoadmapComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/dashboard/settings/settings.component.ts",
+                           "className":  "SettingsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/landing-page.component.ts",
+                           "className":  "LandingPageComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/cta/cta.component.ts",
+                           "className":  "CtaComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/features/features-grid.component.ts",
+                           "className":  "FeaturesGridComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/hero/hero.component.ts",
+                           "className":  "HeroComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/how-it-works/how-it-works.component.ts",
+                           "className":  "HowItWorksComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/pricing/pricing.component.ts",
+                           "className":  "PricingComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/problem/problem.component.ts",
+                           "className":  "ProblemComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/solution/solution.component.ts",
+                           "className":  "SolutionComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/stats/stats.component.ts",
+                           "className":  "StatsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/testimonials/testimonials.component.ts",
+                           "className":  "TestimonialsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "likely-mock-or-local-data"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/landing/sections/trust-bar/trust-bar.component.ts",
+                           "className":  "TrustBarComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ScrollAnimationService"
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/onboarding/onboarding.component.ts",
+                           "className":  "OnboardingComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+                                                    "ProfileApiService"
+                                                ],
+                           "usesHttpBackedService":  true,
+                           "classification":  "real-api-or-service"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/onboarding/steps/step-career-goal.component.ts",
+                           "className":  "StepCareerGoalComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/onboarding/steps/step-results.component.ts",
+                           "className":  "StepResultsComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/onboarding/steps/step-situation.component.ts",
+                           "className":  "StepSituationComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/front-office/onboarding/steps/step-skill-check.component.ts",
+                           "className":  "StepSkillCheckComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/not-found/access-denied.component.ts",
+                           "className":  "AccessDeniedComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/features/not-found/not-found.component.ts",
+                           "className":  "NotFoundComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/shared/footer/footer.component.ts",
+                           "className":  "FooterComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       },
+                       {
+                           "path":  "src/app/shared/navbar/navbar.component.ts",
+                           "className":  "NavbarComponent",
+                           "directHttpClient":  false,
+                           "injectedServices":  [
+
+                                                ],
+                           "usesHttpBackedService":  false,
+                           "classification":  "ui-only-or-unknown"
+                       }
+                   ],
+    "httpBackedServices":  [
+                               "AssessmentAdminApiService",
+                               "AutheService",
+                               "AuthService",
+                               "ProfileApiService",
+                               "UserManagementService",
+                               "UserService"
+                           ]
+}

@@ -1,0 +1,17 @@
+# Alternative requirements for Windows development
+# Note: This doesn't include dlib/face-recognition compilation
+# Use Docker instead for production face recognition
+
+Flask==2.3.3
+flask-cors==4.0.0
+Pillow==10.0.0
+numpy==1.24.3
+requests==2.31.0
+python-dotenv==1.0.0
+Werkzeug==2.3.7
+
+# For local testing without face recognition:
+# python -m flask run
+
+# For production with face recognition features:
+# Use: docker-compose up -d

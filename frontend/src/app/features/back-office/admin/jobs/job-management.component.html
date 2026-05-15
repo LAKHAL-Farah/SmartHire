@@ -1,0 +1,194 @@
+<div class="jm">
+  <!-- ═══════ FLAGGED ALERT ═══════ -->
+  @if (flaggedCount > 0) {
+    <div class="flagged-alert">
+      <div class="flagged-alert__left">
+        <lucide-icon name="flag" [size]="18"></lucide-icon>
+        <span class="flagged-alert__text">{{ flaggedCount }} job offer{{ flaggedCount === 1 ? '' : 's' }} flagged for review</span>
+      </div>
+      <button class="btn btn--danger-solid btn--sm" (click)="showFlagged()">Review Flagged</button>
+    </div>
+  }
+
+  <!-- ═══════ TOOLBAR ═══════ -->
+  <div class="toolbar">
+    <div class="toolbar__left">
+      <div class="search-box">
+        <lucide-icon name="search" [size]="15"></lucide-icon>
+        <input type="text" placeholder="Search jobs or companies..." [(ngModel)]="searchQuery" class="search-input" />
+      </div>
+
+      <select [(ngModel)]="statusFilter" class="filter-select">
+        @for (s of statuses; track s) { <option [value]="s">{{ s === 'All' ? 'All Status' : s }}</option> }
+      </select>
+      <select [(ngModel)]="categoryFilter" class="filter-select">
+        @for (c of categories; track c) { <option [value]="c">{{ c === 'All' ? 'All Categories' : c }}</option> }
+      </select>
+      <select [(ngModel)]="dateFilter" class="filter-select">
+        @for (d of dateRanges; track d) { <option [value]="d">{{ d === 'All' ? 'All Dates' : d }}</option> }
+      </select>
+    </div>
+
+    <div class="toolbar__right">
+      <button class="btn btn--outline">
+        <lucide-icon name="download" [size]="15"></lucide-icon>
+        Export CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════ TABLE ═══════ -->
+  <div class="table-wrap">
+    <table class="job-table">
+      <thead>
+        <tr>
+          <th class="col-check"><input type="checkbox" [checked]="allChecked" (change)="toggleAll()" /></th>
+          <th>Job</th>
+          <th>Category</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Applications</th>
+          <th>Posted</th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (job of paginatedJobs; track job.id) {
+          <tr [class.row-selected]="isSelected(job.id)" [class.row-flagged]="job.status === 'Flagged'" (click)="openDrawer(job)">
+            <td class="col-check" (click)="$event.stopPropagation()"><input type="checkbox" [checked]="isSelected(job.id)" (change)="toggleRow(job.id)" /></td>
+            <td>
+              <div class="job-cell">
+                <span class="logo-sm" [style.background]="logoGradient(job.companyLogo)">{{ job.companyLogo }}</span>
+                <div class="job-info">
+                  <span class="job-title">{{ job.title }}</span>
+                  <span class="job-company">{{ job.company }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-dim">{{ job.category }}</td>
+            <td><span class="lbadge" [ngClass]="getLocationClass(job.locationType)">{{ job.locationType }}</span></td>
+            <td><span class="sbadge" [ngClass]="getStatusClass(job.status)">{{ job.status }}</span></td>
+            <td class="text-center">
+              <span class="app-count">{{ job.applications }}</span>
+            </td>
+            <td class="text-dim">{{ job.posted }}</td>
+            <td class="col-actions" (click)="$event.stopPropagation()">
+              <div class="actions-wrap">
+                <button class="dots-btn" (click)="toggleMenu(job.id, $event)">
+                  <lucide-icon name="ellipsis-vertical" [size]="16"></lucide-icon>
+                </button>
+                @if (openMenuId === job.id) {
+                  <div class="action-menu">
+                    <button class="action-menu__item" (click)="openDrawer(job)">View Full Offer</button>
+                    @if (job.status === 'Flagged') {
+                      <button class="action-menu__item action-menu__item--teal" (click)="unflagJob(job); $event.stopPropagation()">Approve &amp; Unflag</button>
+                      <button class="action-menu__item action-menu__item--danger" (click)="removeJob(job); $event.stopPropagation()">Remove Listing</button>
+                    }
+                    @if (job.status === 'Open') {
+                      <button class="action-menu__item">Close Listing</button>
+                    }
+                    <button class="action-menu__item action-menu__item--danger">Delete</button>
+                  </div>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════ PAGINATION ═══════ -->
+  <div class="pagination">
+    <span class="pagination__info">Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredJobs.length ? filteredJobs.length : currentPage * pageSize }} of {{ filteredJobs.length }}</span>
+    <div class="pagination__btns">
+      <button class="pg-btn" [disabled]="currentPage === 1" (click)="goPage(currentPage - 1)">←</button>
+      @for (p of pageNumbers; track p) {
+        <button class="pg-btn" [class.pg-active]="p === currentPage" (click)="goPage(p)">{{ p }}</button>
+      }
+      <button class="pg-btn" [disabled]="currentPage === totalPages" (click)="goPage(currentPage + 1)">→</button>
+    </div>
+  </div>
+
+  <!-- ═══════ BULK ACTION BAR ═══════ -->
+  @if (selectedIds.size > 0) {
+    <div class="bulk-bar">
+      <span class="bulk-bar__count">{{ selectedIds.size }} job{{ selectedIds.size === 1 ? '' : 's' }} selected</span>
+      <div class="bulk-bar__actions">
+        <button class="btn btn--outline btn--sm">Export Selected</button>
+        <button class="btn btn--outline btn--sm">Close Selected</button>
+        <button class="btn btn--danger btn--sm">Remove Selected</button>
+        <button class="btn btn--ghost btn--sm" (click)="clearSelection()">Clear</button>
+      </div>
+    </div>
+  }
+
+  <!-- ═══════ JOB DETAILS DRAWER ═══════ -->
+  @if (drawerOpen && drawerJob) {
+    <div class="drawer-overlay" (click)="closeDrawer()"></div>
+    <aside class="drawer">
+      <button class="drawer__close" (click)="closeDrawer()">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+
+      <div class="drawer__header">
+        <span class="logo-lg" [style.background]="logoGradient(drawerJob.companyLogo)">{{ drawerJob.companyLogo }}</span>
+        <h2 class="drawer__title">{{ drawerJob.title }}</h2>
+        <span class="drawer__company">{{ drawerJob.company }}</span>
+        <div class="drawer__pills">
+          <span class="sbadge" [ngClass]="getStatusClass(drawerJob.status)">{{ drawerJob.status }}</span>
+          <span class="lbadge" [ngClass]="getLocationClass(drawerJob.locationType)">{{ drawerJob.locationType }}</span>
+        </div>
+      </div>
+
+      <div class="drawer__section">
+        <h4 class="drawer__label">Details</h4>
+        <div class="drawer__row"><span>Category</span><span>{{ drawerJob.category }}</span></div>
+        <div class="drawer__row"><span>Salary</span><span>{{ drawerJob.salary }}</span></div>
+        <div class="drawer__row"><span>Applications</span><span>{{ drawerJob.applications }}</span></div>
+        <div class="drawer__row"><span>Posted</span><span>{{ drawerJob.posted }}</span></div>
+      </div>
+
+      <div class="drawer__section">
+        <h4 class="drawer__label">Description</h4>
+        <p class="drawer__text">{{ drawerJob.description }}</p>
+      </div>
+
+      <div class="drawer__section">
+        <h4 class="drawer__label">Requirements</h4>
+        <ul class="drawer__reqs">
+          @for (req of drawerJob.requirements; track req) {
+            <li>{{ req }}</li>
+          }
+        </ul>
+      </div>
+
+      <!-- Flag History -->
+      @if (drawerJob.flagHistory && drawerJob.flagHistory.length > 0) {
+        <div class="drawer__section drawer__flags">
+          <h4 class="drawer__label drawer__label--red">Flag History</h4>
+          @for (flag of drawerJob.flagHistory; track flag.date) {
+            <div class="flag-entry">
+              <div class="flag-entry__top">
+                <span class="flag-entry__reason">{{ flag.reason }}</span>
+                <span class="flag-entry__source" [class.flag-entry__source--ai]="flag.source === 'AI System'">{{ flag.source }}</span>
+              </div>
+              <span class="flag-entry__date">{{ flag.date }}</span>
+              <p class="flag-entry__detail">{{ flag.detail }}</p>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="drawer__actions">
+        @if (drawerJob.status === 'Flagged') {
+          <button class="btn btn--primary btn--full" (click)="unflagJob(drawerJob)">Approve &amp; Unflag</button>
+          <button class="btn btn--danger btn--full" (click)="removeJob(drawerJob)">Remove Listing &amp; Notify Recruiter</button>
+        }
+        @if (drawerJob.status === 'Open') {
+          <button class="btn btn--outline btn--full">Close Listing</button>
+        }
+      </div>
+    </aside>
+  }
+</div>

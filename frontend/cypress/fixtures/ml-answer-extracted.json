@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "answerId": 1,
+  "modelChosen": "XGBoost",
+  "features": ["encoding", "normalization"],
+  "metrics": ["F1", "AUC"],
+  "deployment": "FastAPI",
+  "dataPreprocessing": "normalization",
+  "evaluationStrategy": "cross-validation",
+  "mlScore": 8.5,
+  "mlFeedback": "Good coverage of the pipeline.",
+  "followUpGenerated": "Why did you choose XGBoost over a neural network?"
+}

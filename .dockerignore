@@ -1,0 +1,25 @@
+# Global dockerignore for repo root (applies when building from repo root)
+node_modules/
+dist/
+.angular/
+target/
+*.class
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.env
+.env.*
+*.env
+.git/
+.gitignore
+.idea/
+.vscode/
+*.log
+*.tmp
+models/
+*.joblib
+*.pt
+*.ckpt

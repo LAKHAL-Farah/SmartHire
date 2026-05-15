@@ -1,0 +1,157 @@
+$po-surface-base: var(--po-surface-base);
+$po-surface-raised: var(--po-surface-raised);
+$po-surface-overlay: var(--po-surface-overlay);
+$po-surface-glass: var(--po-surface-glass);
+$po-border: var(--po-border);
+$po-border-strong: var(--po-border-strong);
+
+$po-gradient-primary: var(--po-gradient-primary);
+$po-gradient-success: var(--po-gradient-success);
+$po-gradient-amber: var(--po-gradient-amber);
+$po-gradient-danger: var(--po-gradient-danger);
+$po-gradient-blue: var(--po-gradient-blue);
+$po-gradient-card-glow: var(--po-gradient-card-glow);
+
+$po-text-primary: var(--po-text-primary);
+$po-text-secondary: var(--po-text-secondary);
+$po-text-muted: var(--po-text-muted);
+
+$po-score-high: var(--po-score-high);
+$po-score-mid: var(--po-score-mid);
+$po-score-low: var(--po-score-low);
+
+$po-shadow-card: var(--po-shadow-card);
+$po-shadow-glow: var(--po-shadow-glow);
+$po-shadow-panel: var(--po-shadow-panel);
+
+:root {
+  --po-surface-base: var(--bg-primary, #0f1117);
+  --po-surface-raised: var(--bg-card, #1a1d2e);
+  --po-surface-overlay: var(--bg-card-hover, #22263a);
+  --po-surface-glass: rgba(255, 255, 255, 0.05);
+  --po-border: var(--border-subtle, rgba(255, 255, 255, 0.08));
+  --po-border-strong: var(--border-hover, rgba(255, 255, 255, 0.15));
+
+  --po-gradient-primary: var(--gradient-hero, linear-gradient(135deg, #8b5cf6 0%, #3b82f6 48%, #f59e0b 100%));
+  --po-gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --po-gradient-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --po-gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  --po-gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --po-gradient-orange: linear-gradient(135deg, #f59e0b 0%, #fb923c 100%);
+  --po-gradient-card-glow: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.18) 0%,
+    rgba(59, 130, 246, 0.12) 48%,
+    rgba(245, 158, 11, 0.16) 100%
+  );
+
+  --po-text-primary: var(--text-primary, #f1f5f9);
+  --po-text-secondary: var(--text-secondary, #94a3b8);
+  --po-text-muted: var(--text-muted, #64748b);
+
+  --po-accent-teal: var(--accent-teal, #2ee8a5);
+  --po-accent-blue: var(--accent-blue, #3b82f6);
+  --po-accent-purple: var(--accent-purple, #8b5cf6);
+  --po-accent-orange: #fb923c;
+
+  --po-theme-0: #6366f1;
+  --po-theme-1: #3b82f6;
+  --po-theme-2: #10b981;
+  --po-theme-3: #f59e0b;
+  --po-theme-4: #f43f5e;
+  --po-theme-5: #8b5cf6;
+
+  --po-score-high: #10b981;
+  --po-score-mid: #f59e0b;
+  --po-score-low: #ef4444;
+
+  --po-shadow-card: var(--shadow-md, 0 4px 24px rgba(0, 0, 0, 0.4));
+  --po-shadow-glow: 0 0 44px rgba(139, 92, 246, 0.25), 0 0 24px rgba(59, 130, 246, 0.18), 0 0 24px rgba(245, 158, 11, 0.12);
+  --po-shadow-panel: var(--shadow-xl, -8px 0 40px rgba(0, 0, 0, 0.6));
+
+  --po-overlay-backdrop: rgba(0, 0, 0, 0.5);
+  --po-spinner-track: color-mix(in srgb, #ffffff 40%, transparent);
+  --po-spinner-head: #ffffff;
+
+  --po-text-xs: 11px;
+  --po-text-sm: 13px;
+  --po-text-base: 14px;
+  --po-text-md: 16px;
+  --po-text-lg: 20px;
+  --po-text-xl: 26px;
+  --po-text-2xl: 32px;
+}
+
+@mixin po-card {
+  /* Fallback layer for environments where color-mix support is partial */
+  background: $po-surface-raised;
+  background:
+    radial-gradient(130% 90% at 100% -16%, color-mix(in srgb, var(--po-accent-blue) 18%, transparent), transparent 58%),
+    linear-gradient(160deg, color-mix(in srgb, $po-surface-raised 88%, var(--po-accent-purple) 12%), $po-surface-raised);
+  border: 1px solid $po-border;
+  border: 1px solid color-mix(in srgb, $po-border-strong 72%, transparent);
+  border-radius: 16px;
+  box-shadow: $po-shadow-card;
+  box-shadow:
+    0 18px 44px color-mix(in srgb, #000000 48%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--po-text-primary) 8%, transparent);
+  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+
+@mixin po-card-hover {
+  background: $po-surface-overlay;
+  background:
+    radial-gradient(130% 90% at 100% -16%, color-mix(in srgb, var(--po-accent-blue) 24%, transparent), transparent 60%),
+    linear-gradient(160deg, color-mix(in srgb, $po-surface-overlay 84%, var(--po-accent-purple) 16%), $po-surface-overlay);
+  border-color: $po-border-strong;
+  border-color: color-mix(in srgb, $po-border-strong 90%, transparent);
+  box-shadow: $po-shadow-glow;
+  box-shadow:
+    0 20px 48px color-mix(in srgb, #000000 54%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--po-accent-blue) 20%, transparent),
+    $po-shadow-glow;
+  transform: translateY(-2px);
+}
+
+@mixin po-glass {
+  background: $po-surface-glass;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, $po-surface-glass 72%, var(--po-accent-blue) 28%), color-mix(in srgb, $po-surface-glass 88%, transparent));
+  border: 1px solid $po-border;
+  border-radius: 16px;
+  backdrop-filter: blur(14px);
+}
+
+@mixin po-gradient-text($gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin po-score-ring($size) {
+  --po-ring-size: #{$size};
+  --po-ring-progress: 0;
+  --po-ring-angle: calc(var(--po-ring-progress) * 3.6deg);
+  width: var(--po-ring-size);
+  height: var(--po-ring-size);
+  border-radius: 999px;
+  background: conic-gradient(var(--po-ring-color, var(--po-score-high)) var(--po-ring-angle), color-mix(in srgb, var(--po-text-primary) 10%, transparent) 0deg);
+  transition: --po-ring-progress 900ms ease-out;
+}
+
+@mixin po-shimmer {
+  background: linear-gradient(
+    90deg,
+    $po-surface-raised 25%,
+    $po-surface-overlay 50%,
+    $po-surface-raised 75%
+  );
+  background-size: 200% 100%;
+  animation: po-shimmer 1.5s infinite;
+}
+
+@keyframes po-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

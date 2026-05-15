@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(command -v python)",
+      "Bash(command -v py)",
+      "Bash(/c/Users/MSI/AppData/Local/Programs/Python/Python313/python parse_inventory.py)"
+    ]
+  }
+}

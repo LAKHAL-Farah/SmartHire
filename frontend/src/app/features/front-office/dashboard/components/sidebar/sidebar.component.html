@@ -1,0 +1,64 @@
+<aside class="sidebar" [class.sidebar--disabled]="disabled">
+  <a routerLink="/" class="sidebar__logo">SmartHire</a>
+
+  <nav class="sidebar__nav">
+    <span class="sidebar__section-label">Main</span>
+    <div class="sidebar__group">
+      @for (item of mainItems; track item.label) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__item--active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+          class="sidebar__item"
+        >
+          <span class="sidebar__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+          <span class="sidebar__label">{{ item.label }}</span>
+        </a>
+      }
+    </div>
+
+    <span class="sidebar__section-label">Prepare</span>
+    <div class="sidebar__group">
+      @for (item of prepareItems; track item.label) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__item--active"
+          [ngClass]="item.className || ''"
+          class="sidebar__item"
+        >
+          <span class="sidebar__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+          <span class="sidebar__label">{{ item.label }}</span>
+        </a>
+      }
+    </div>
+
+    <span class="sidebar__section-label">Recruit</span>
+    <div class="sidebar__group">
+      @for (item of recruitItems; track item.label) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__item--active"
+          class="sidebar__item"
+        >
+          <span class="sidebar__icon"><lucide-icon [name]="item.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></span>
+          <span class="sidebar__label">{{ item.label }}</span>
+        </a>
+      }
+    </div>
+  </nav>
+
+  <div class="sidebar__bottom">
+    <a routerLink="/dashboard/settings" routerLinkActive="sidebar__item--active" class="sidebar__item">
+      <span class="sidebar__icon">
+        <lucide-icon name="settings" [size]="20" [strokeWidth]="1.8"></lucide-icon>
+      </span>
+      <span class="sidebar__label">Settings</span>
+    </a>
+    <button class="sidebar__item sidebar__item--logout" (click)="logout()">
+      <span class="sidebar__icon">
+        <lucide-icon name="log-out" [size]="20" [strokeWidth]="1.8"></lucide-icon>
+      </span>
+      <span class="sidebar__label">Logout</span>
+    </button>
+  </div>
+</aside>

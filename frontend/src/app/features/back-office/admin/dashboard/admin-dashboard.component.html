@@ -1,0 +1,179 @@
+<div class="admin-dash">
+  <!-- ═══════ KPI STRIP ═══════ -->
+  <div class="kpi-strip">
+    @for (kpi of kpis; track kpi.label) {
+      <div class="kpi-card">
+        <span class="kpi-card__value">{{ kpi.value }}</span>
+        <span class="kpi-card__label">{{ kpi.label }}</span>
+        @if (kpi.sub) {
+          <span class="kpi-card__sub">{{ kpi.sub }}</span>
+        }
+        <div class="kpi-card__footer">
+          <svg class="kpi-sparkline" viewBox="0 0 80 24" preserveAspectRatio="none">
+            <path [attr.d]="getSparklinePath(kpi.sparkline)" fill="none" [attr.stroke]="kpi.trendUp ? 'var(--accent-teal)' : '#ef4444'" stroke-width="1.5"/>
+          </svg>
+          <span class="kpi-card__trend" [class.trend-up]="kpi.trendUp" [class.trend-down]="!kpi.trendUp">
+            {{ kpi.trendUp ? '↑' : '↓' }} {{ kpi.trend }}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- ═══════ THREE COLUMN LAYOUT ═══════ -->
+  <div class="dash-grid">
+    <!-- LEFT COLUMN (40%) -->
+    <div class="dash-col dash-col--left">
+      <!-- User Growth Chart -->
+      <div class="card">
+        <h3 class="card__title">User Growth</h3>
+        <svg class="growth-chart" viewBox="0 0 460 160" preserveAspectRatio="none">
+          <!-- Grid lines -->
+          <line x1="0" y1="40" x2="460" y2="40" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <line x1="0" y1="80" x2="460" y2="80" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <line x1="0" y1="120" x2="460" y2="120" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <!-- Candidate line -->
+          <path [attr.d]="getChartPath(candidateData, 60, 460, 150)" fill="none" stroke="var(--accent-teal)" stroke-width="2"/>
+          <!-- Recruiter line -->
+          <path [attr.d]="getChartPath(recruiterData, 60, 460, 150)" fill="none" stroke="#10b981" stroke-width="2"/>
+          <!-- Dots - candidates -->
+          @for (dot of getChartDots(candidateData, 60, 460, 150); track $index) {
+            @if ($index % 5 === 0) {
+              <circle [attr.cx]="dot.x" [attr.cy]="dot.y" r="3" fill="var(--accent-teal)"/>
+            }
+          }
+          <!-- Dots - recruiters -->
+          @for (dot of getChartDots(recruiterData, 60, 460, 150); track $index) {
+            @if ($index % 5 === 0) {
+              <circle [attr.cx]="dot.x" [attr.cy]="dot.y" r="3" fill="#10b981"/>
+            }
+          }
+        </svg>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:var(--accent-teal)"></span> Candidates</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span> Recruiters</span>
+        </div>
+      </div>
+
+      <!-- Conversion Funnel -->
+      <div class="card">
+        <h3 class="card__title">Conversion Funnel</h3>
+        <div class="funnel">
+          @for (row of funnel; track row.label) {
+            <div class="funnel-row">
+              <span class="funnel-row__label">{{ row.label }}</span>
+              <span class="funnel-row__count">{{ row.count | number }}</span>
+              @if (row.dropoff) {
+                <span class="funnel-row__drop">{{ row.dropoff }}</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- MIDDLE COLUMN (35%) -->
+    <div class="dash-col dash-col--mid">
+      <!-- Activity Feed -->
+      <div class="card card--scroll">
+        <h3 class="card__title">Recent Activity Feed</h3>
+        <div class="activity-feed">
+          @for (ev of activities; track ev.text) {
+            <div class="activity-item">
+              <span class="activity-dot" [style.background]="getEventColor(ev.type)"></span>
+              <div class="activity-body">
+                <span class="activity-text">{{ ev.text }}</span>
+                <span class="activity-time">{{ ev.time }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Pending Actions -->
+      <div class="card">
+        <h3 class="card__title">Pending Actions</h3>
+        <div class="pending-list">
+          @for (pa of pendingActions; track pa.text) {
+            <div class="pending-card">
+              <span class="pending-card__text">{{ pa.text }}</span>
+              <button class="pending-card__btn">{{ pa.action }}</button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN (25%) -->
+    <div class="dash-col dash-col--right">
+      <!-- System Health -->
+      <div class="card">
+        <h3 class="card__title">System Health</h3>
+        <div class="health-list">
+          @for (s of systemStatus; track s.label) {
+            <div class="health-row">
+              <div class="health-row__top">
+                <span class="health-dot" [class.health-dot--ok]="s.ok"></span>
+                <span class="health-row__label">{{ s.label }}</span>
+              </div>
+              <span class="health-row__status">{{ s.status }}</span>
+              <span class="health-row__detail">{{ s.detail }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Revenue Today -->
+      <div class="card">
+        <h3 class="card__title">Revenue Today</h3>
+        <div class="revenue-top">
+          <span class="revenue-big">{{ revenueToday }}</span>
+          <span class="revenue-mrr">MRR: {{ mrr }}</span>
+        </div>
+        <div class="donut-wrap">
+          <svg viewBox="0 0 80 80" class="donut-svg">
+            @for (plan of planBreakdown; track plan.label; let i = $index) {
+              <circle
+                cx="40" cy="40" r="36"
+                fill="none"
+                [attr.stroke]="plan.color"
+                stroke-width="7"
+                [attr.stroke-dasharray]="getDonutStroke(i)"
+                [attr.stroke-dashoffset]="getDonutOffset(i)"
+                transform="rotate(-90 40 40)"
+              />
+            }
+          </svg>
+          <div class="donut-legend">
+            @for (plan of planBreakdown; track plan.label) {
+              <span class="legend-item"><span class="legend-dot" [style.background]="plan.color"></span>{{ plan.label }} {{ plan.pct }}%</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <h3 class="card__title">Quick Actions</h3>
+        <div class="quick-actions">
+          <button class="qa-btn">
+            <lucide-icon name="download" [size]="15"></lucide-icon>
+            <span>Export Users CSV</span>
+          </button>
+          <button class="qa-btn">
+            <lucide-icon name="send" [size]="15"></lucide-icon>
+            <span>Send Announcement</span>
+          </button>
+          <button class="qa-btn">
+            <lucide-icon name="refresh-cw" [size]="15"></lucide-icon>
+            <span>Clear Cache</span>
+          </button>
+          <button class="qa-btn">
+            <lucide-icon name="file" [size]="15"></lucide-icon>
+            <span>View Error Logs</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

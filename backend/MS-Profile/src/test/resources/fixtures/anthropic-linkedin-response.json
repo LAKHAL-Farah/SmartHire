@@ -1,0 +1,14 @@
+{
+  "id": "msg_test_123",
+  "model": "claude-3",
+  "content": [
+    {
+      "type": "text",
+      "text": "Optimized headline and summary generated successfully."
+    }
+  ],
+  "usage": {
+    "input_tokens": 320,
+    "output_tokens": 180
+  }
+}

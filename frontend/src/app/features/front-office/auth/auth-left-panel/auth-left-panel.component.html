@@ -1,0 +1,68 @@
+<div class="panel">
+  <!-- Background layers -->
+  <div class="panel__bg">
+    <div class="panel__orb panel__orb--1"></div>
+    <div class="panel__orb panel__orb--2"></div>
+    <div class="panel__grid"></div>
+  </div>
+
+  <div class="panel__content">
+    <!-- Logo -->
+    <a routerLink="/" class="panel__logo">
+      <div class="panel__logo-icon">S</div>
+      <span class="panel__logo-text">SmartHire</span>
+    </a>
+
+    <!-- Quote -->
+    <div class="panel__quote-block">
+      <svg class="panel__quote-mark" width="40" height="32" viewBox="0 0 40 32" fill="none">
+        <path d="M0 20.8C0 12.267 5.333 5.6 16 0.8L18 4C10.667 8 7.333 12.267 8 16.8H16V32H0V20.8ZM22 20.8C22 12.267 27.333 5.6 38 0.8L40 4C32.667 8 29.333 12.267 30 16.8H38V32H22V20.8Z" fill="url(#quoteGrad)"/>
+        <defs>
+          <linearGradient id="quoteGrad" x1="0" y1="0" x2="40" y2="32">
+            <stop stop-color="#2ee8a5"/>
+            <stop offset="1" stop-color="#3b82f6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <blockquote class="panel__quote">
+        {{ quotes[activeQuote].text }}
+      </blockquote>
+      <div class="panel__quote-author">
+        <div class="panel__avatar">{{ quotes[activeQuote].initials }}</div>
+        <div>
+          <p class="panel__author-name">{{ quotes[activeQuote].name }}</p>
+          <p class="panel__author-role">{{ quotes[activeQuote].role }}</p>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="panel__dots">
+        @for (q of quotes; track q.name; let i = $index) {
+          <button
+            class="panel__dot"
+            [class.panel__dot--active]="i === activeQuote"
+            (click)="activeQuote = i"
+          ></button>
+        }
+      </div>
+    </div>
+
+    <!-- Bottom stats -->
+    <div class="panel__stats">
+      <div class="panel__stat">
+        <span class="panel__stat-num">2,400+</span>
+        <span class="panel__stat-label">Students joined</span>
+      </div>
+      <div class="panel__stat-divider"></div>
+      <div class="panel__stat">
+        <span class="panel__stat-num">89%</span>
+        <span class="panel__stat-label">Got interviews</span>
+      </div>
+      <div class="panel__stat-divider"></div>
+      <div class="panel__stat">
+        <span class="panel__stat-num">4.9★</span>
+        <span class="panel__stat-label">Average rating</span>
+      </div>
+    </div>
+  </div>
+</div>

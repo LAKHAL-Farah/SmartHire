@@ -1,0 +1,12 @@
+{
+  "type": "LIVE_FEEDBACK",
+  "payload": {
+    "answerId": 10,
+    "audioUrl": "/audio/feedback.wav",
+    "feedbackText": "Let me stop you there. Your answer was missing a measurable result. Would you like to retry?",
+    "score": 4.5,
+    "aiFeedback": "Include a measurable outcome.",
+    "currentQuestionIndex": 0,
+    "totalQuestions": 5
+  }
+}

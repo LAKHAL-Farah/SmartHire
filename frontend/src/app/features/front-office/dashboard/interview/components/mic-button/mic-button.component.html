@@ -1,0 +1,25 @@
+<div class="mic-container">
+  <button
+    class="mic-btn"
+    [class.recording]="isRecording"
+    [class.preparing]="isPreparing"
+    [disabled]="isPreparing || disabled"
+    type="button"
+    (click)="toggleRecording()"
+  >
+    <svg *ngIf="!isRecording && !isPreparing" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+      <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+    </svg>
+
+    <div *ngIf="isRecording" class="waveform" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div *ngIf="isPreparing" class="spinner" aria-hidden="true"></div>
+  </button>
+
+  <span class="mic-label" *ngIf="!isRecording && !isPreparing">Click to speak</span>
+  <span class="mic-label recording-label" *ngIf="isRecording">Recording {{ formattedDuration }} - click to stop</span>
+  <span class="mic-label" *ngIf="isPreparing">Starting mic...</span>
+</div>

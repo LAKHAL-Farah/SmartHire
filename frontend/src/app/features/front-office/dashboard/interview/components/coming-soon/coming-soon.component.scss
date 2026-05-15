@@ -1,0 +1,147 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.coming-soon-shell {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  background: #0d0d14;
+  padding: 20px;
+}
+
+.coming-soon-card {
+  width: min(480px, 100%);
+  background: #111127;
+  border-radius: 24px;
+  padding: 48px 40px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-icon {
+  font-size: 80px;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.hero-icon--cloud {
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero-icon--ai {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.title {
+  color: #fff;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.role-badge {
+  padding: 6px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.role-badge--cloud {
+  background: rgba(104, 211, 145, 0.15);
+  color: #68d391;
+  border: 1px solid #68d391;
+}
+
+.role-badge--ai {
+  background: rgba(183, 148, 244, 0.15);
+  color: #b794f4;
+  border: 1px solid #b794f4;
+}
+
+.feature-text {
+  color: #a0aec0;
+  font-size: 16px;
+  margin: 0 0 24px;
+}
+
+.progress-wrap {
+  width: 280px;
+  margin: 0 auto 32px;
+}
+
+.progress-label {
+  margin: 0 0 8px;
+  color: #718096;
+  font-size: 12px;
+}
+
+.progress-track {
+  height: 6px;
+  background: #1a1a2e;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  width: 0;
+  transition: width 1.5s ease;
+}
+
+.progress-fill--cloud {
+  background: #68d391;
+}
+
+.progress-fill--ai {
+  background: #b794f4;
+}
+
+.preview-list {
+  display: grid;
+  gap: 8px;
+}
+
+.preview-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #e2e8f0;
+  font-size: 14px;
+  text-align: left;
+}
+
+.bottom-text {
+  color: #718096;
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 20px rgba(183, 148, 244, 0.5));
+  }
+}

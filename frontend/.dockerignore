@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.angular/
+.env
+.env.*
+*.env
+.git/
+.idea/
+.vscode/
+*.log
+*.tmp

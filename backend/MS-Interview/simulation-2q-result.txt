@@ -1,0 +1,82 @@
+STEP 0 - FIND QUESTION IDS
+Q1_ID = 1
+Q2_ID = 2
+
+STEP 1 - START SESSION
+SESSION_ID = 1
+Session status = IN_PROGRESS
+
+STEP 2 - ANSWER QUESTION 1
+Current question (step 2) = Tell me about yourself.
+A1_ID = 1
+
+STEP 3 - WAIT FOR EVALUATION A1
+contentScore = 8
+clarityScore = 8
+technicalScore = 7
+overallScore = 7.75
+aiFeedback = The candidate could improve by providing more specific details about their projects and experiences, and also by highlighting more clearly how their skills align with the company's goals. Additionally, they could benefit from practicing their tone and pace to sound more natural and confident. The candidate should also be prepared to answer more technical questions and provide examples of their problem-solving skills.
+followUpGenerated = Can you walk me through your design process for the real-time notification service using Kafka and how you handled any scalability or performance challenges?
+
+STEP 4 - ANSWER QUESTION 2
+Current question (step 4) = Tell me about a challenge you faced and how you overcame it.
+A2_ID = 2
+
+STEP 5 - WAIT FOR EVALUATION A2
+contentScore = 9
+clarityScore = 8.5
+technicalScore = 9
+overallScore = 8.7
+aiFeedback = The candidate effectively used the STAR method to clearly describe the challenge and their solution, demonstrating personal initiative and quantifying the outcome by mentioning the successful presentation and the professor's positive feedback.
+followUpGenerated = Can you walk me through how you decided to add a named volume to persist the database, and what other potential solutions you considered before implementing that fix?
+
+STEP 6 - COMPLETE SESSION
+Session completed. status = COMPLETED
+
+STEP 7 - GENERATE REPORT
+finalScore = 8.23
+contentAvg = 8.38
+strengths = Effective use of the STAR method, clear description of challenges and solutions, demonstration of personal initiative, ability to quantify outcomes
+weaknesses = Lack of specific details about projects and experiences, unclear alignment of skills with company goals, unnatural tone and pace, need for improvement in problem-solving skills
+recommendations = Practice answering technical questions, prepare examples of problem-solving skills, work on providing more specific details about projects and experiences
+recruiterVerdict = Candidate shows promise but needs significant improvement in technical skills and interview presentation to be considered for the role
+
+STEP 8 - FINAL READABLE SUMMARY
+
+══════════════════════════════════════════
+ SMARTHIRE AI - INTERVIEW SIMULATION RESULT
+══════════════════════════════════════════
+
+SESSION ID   : 1
+ROLE         : ALL (Behavioral)
+MODE         : PRACTICE
+QUESTIONS    : 2
+
+──────────────────────────────────────────
+Q1: Tell me about yourself.
+──────────────────────────────────────────
+Content Score    : 8/10
+Clarity Score    : 8/10
+Overall Score    : 7.75/10
+AI Feedback      : The candidate could improve by providing more specific details about their projects and experiences, and also by highlighting more clearly how their skills align with the company's goals. Additionally, they could benefit from practicing their tone and pace to sound more natural and confident. The candidate should also be prepared to answer more technical questions and provide examples of their problem-solving skills.
+Follow-up asked  : Can you walk me through your design process for the real-time notification service using Kafka and how you handled any scalability or performance challenges?
+
+──────────────────────────────────────────
+Q2: Tell me about a challenge you faced.
+──────────────────────────────────────────
+Content Score    : 9/10
+Clarity Score    : 8.5/10
+Overall Score    : 8.7/10
+AI Feedback      : The candidate effectively used the STAR method to clearly describe the challenge and their solution, demonstrating personal initiative and quantifying the outcome by mentioning the successful presentation and the professor's positive feedback.
+Follow-up asked  : Can you walk me through how you decided to add a named volume to persist the database, and what other potential solutions you considered before implementing that fix?
+
+──────────────────────────────────────────
+FINAL REPORT
+──────────────────────────────────────────
+Final Score      : 8.23/10
+Strengths        : Effective use of the STAR method, clear description of challenges and solutions, demonstration of personal initiative, ability to quantify outcomes
+Weaknesses       : Lack of specific details about projects and experiences, unclear alignment of skills with company goals, unnatural tone and pace, need for improvement in problem-solving skills
+Recommendations  : Practice answering technical questions, prepare examples of problem-solving skills, work on providing more specific details about projects and experiences
+Recruiter Verdict: Candidate shows promise but needs significant improvement in technical skills and interview presentation to be considered for the role
+
+══════════════════════════════════════════

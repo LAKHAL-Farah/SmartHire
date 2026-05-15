@@ -1,0 +1,188 @@
+@if (loading) {
+  <section class="state-banner">Loading dashboard insights from roadmap service...</section>
+}
+
+@if (!loading && errorMessage) {
+  <section class="state-banner state-banner--error">{{ errorMessage }}</section>
+}
+
+<!-- ════════ READINESS SCORE ════════ -->
+<section class="readiness">
+  <div class="readiness__ring-wrap">
+    <svg class="readiness__ring" width="110" height="110" viewBox="0 0 110 110">
+      <defs>
+        <linearGradient id="readGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2ee8a5"/>
+          <stop offset="100%" stop-color="#14b8a6"/>
+        </linearGradient>
+      </defs>
+      <circle cx="55" cy="55" r="50" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+      <circle cx="55" cy="55" r="50" fill="none" stroke="url(#readGrad)" stroke-width="8"
+        stroke-linecap="round"
+        [attr.stroke-dasharray]="circumference"
+        [attr.stroke-dashoffset]="dashOffset"
+        style="transform: rotate(-90deg); transform-origin: center;"
+      />
+    </svg>
+    <span class="readiness__pct">{{ readinessScore }}%</span>
+  </div>
+  <div class="readiness__info">
+    <h2 class="readiness__title">Career Readiness Score</h2>
+    <p class="readiness__ai">Based on your roadmap progress, streak, and live activity, you are <strong>{{ readinessBand }}</strong> for your target role.</p>
+    <div class="readiness__links">
+      <a class="readiness__link" href="javascript:void(0)">View full report</a>
+      <a class="readiness__link" href="javascript:void(0)">Improve score</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ STAT CARDS ════════ -->
+<section class="stats">
+  @for (s of statCards; track s.label) {
+    <div class="stat-card">
+      <div class="stat-card__icon"><lucide-icon [name]="s.icon" [size]="20" [strokeWidth]="1.8"></lucide-icon></div>
+      <div class="stat-card__body">
+        <span class="stat-card__value">{{ s.value }}</span>
+        <span class="stat-card__label">{{ s.label }}</span>
+      </div>
+      <span class="stat-card__trend" [class.stat-card__trend--up]="s.up" [class.stat-card__trend--down]="!s.up">
+        {{ s.up ? '&#9650;' : '&#9660;' }} {{ s.trend }}
+      </span>
+    </div>
+  }
+</section>
+
+<!-- ════════ TWO-COLUMN LAYOUT ════════ -->
+<section class="columns">
+  <!-- LEFT (60 %) -->
+  <div class="col-left">
+    <!-- AI Recommendations -->
+    <div class="card">
+      <div class="card__header">
+        <h3 class="card__title">
+          <lucide-icon name="layers" [size]="18" class="card__title-icon" color="#2ee8a5"></lucide-icon>
+          AI Recommendations
+        </h3>
+        <button class="card__header-btn">View All</button>
+      </div>
+      <div class="recs">
+        @if (recommendations.length === 0) {
+          <p class="empty-message">No recommendation events available yet.</p>
+        } @else {
+          @for (r of recommendations; track r.title + r.time) {
+            <div class="rec">
+              <span class="rec__badge" [style.background]="r.badgeColor">{{ r.priority }}</span>
+              <div class="rec__body">
+                <span class="rec__title">{{ r.title }}</span>
+                <span class="rec__desc">{{ r.desc }}</span>
+              </div>
+              <span class="rec__time">{{ r.time }}</span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Skill Gap Summary -->
+    <div class="card">
+      <div class="card__header">
+        <h3 class="card__title">
+          <lucide-icon name="activity" [size]="18" class="card__title-icon" color="#8b5cf6"></lucide-icon>
+          Skill Gap Summary
+        </h3>
+      </div>
+      <div class="skills">
+        @if (skills.length === 0) {
+          <p class="empty-message">No technology mapping found in current roadmap steps.</p>
+        } @else {
+          @for (sk of skills; track sk.name) {
+            <div class="skill-row">
+              <div class="skill-row__meta">
+                <span class="skill-row__name">{{ sk.name }}</span>
+                <span class="skill-row__pct">{{ sk.pct }}%</span>
+              </div>
+              <div class="skill-row__track">
+                <div class="skill-row__fill" [style.width.%]="sk.pct" [style.background]="sk.color"></div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT (40 %) -->
+  <div class="col-right">
+    <!-- Upcoming Steps -->
+    <div class="card">
+      <div class="card__header">
+        <h3 class="card__title">
+          <lucide-icon name="calendar" [size]="18" class="card__title-icon" color="#f59e0b"></lucide-icon>
+          Upcoming Steps
+        </h3>
+      </div>
+      <div class="steps">
+        @if (upcomingSteps.length === 0) {
+          <p class="empty-message">No roadmap steps available yet.</p>
+        } @else {
+          @for (st of upcomingSteps; track st.id) {
+            <label class="step-item">
+              <input type="checkbox" [checked]="st.done" disabled />
+              <span class="step-item__check"></span>
+              <div class="step-item__body">
+                <span class="step-item__text" [class.step-item__text--done]="st.done">{{ st.text }}</span>
+                <span class="step-item__due">{{ st.due }}</span>
+              </div>
+            </label>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Streak Tracker -->
+    <div class="card">
+      <div class="card__header">
+        <h3 class="card__title">
+          <span class="streak-flame">&#x1F525;</span>
+          Streak Tracker
+        </h3>
+        <span class="streak-count">{{ streakDays }}-day streak</span>
+      </div>
+      <div class="streak-days">
+        @for (d of weekDays; track d.day) {
+          <div class="streak-day" [class.streak-day--active]="d.active" [class.streak-day--today]="d.today">
+            <span class="streak-day__label">{{ d.day }}</span>
+            <div class="streak-day__circle">
+              @if (d.active) {
+                <lucide-icon name="check" [size]="14"></lucide-icon>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+      <div class="card__header">
+        <h3 class="card__title">
+          <lucide-icon name="clock" [size]="18" class="card__title-icon" color="#6366f1"></lucide-icon>
+          Recent Activity
+        </h3>
+      </div>
+      <div class="activity">
+        @if (activities.length === 0) {
+          <p class="empty-message">No activity events received yet.</p>
+        } @else {
+          @for (a of activities; track a.text + a.time) {
+            <div class="activity-row">
+              <span class="activity-row__dot" [style.background]="a.color"></span>
+              <span class="activity-row__text">{{ a.text }}</span>
+              <span class="activity-row__time">{{ a.time }}</span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</section>

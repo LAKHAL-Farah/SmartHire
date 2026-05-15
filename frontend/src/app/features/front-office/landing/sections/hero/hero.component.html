@@ -1,0 +1,247 @@
+<!-- ═══ Fixed AI Brain — follows viewport on scroll ═══ -->
+<div class="ai-brain-fixed" #aiBrain>
+  <div class="ai-brain__inner" #brainInner>
+    <svg class="ai-brain__svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="nodeGlow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="6" result="blur1"/>
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2"/>
+          <feMerge><feMergeNode in="blur1"/><feMergeNode in="blur2"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="coreGlow" x="-150%" y="-150%" width="400%" height="400%">
+          <feGaussianBlur stdDeviation="20"/>
+        </filter>
+        <filter id="connGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3" result="lineBlur"/>
+          <feMerge><feMergeNode in="lineBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="outerHaloGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="30"/>
+        </filter>
+        <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#2ee8a5" stop-opacity="0.22"/>
+          <stop offset="25%" stop-color="#8b5cf6" stop-opacity="0.08"/>
+          <stop offset="50%" stop-color="#1E3A5F" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="innerHaloGrad" cx="50%" cy="50%" r="35%">
+          <stop offset="0%" stop-color="#2ee8a5" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Outer atmospheric halo -->
+      <circle cx="200" cy="200" r="190" fill="url(#haloGrad)"/>
+      <circle cx="200" cy="200" r="160" fill="#2ee8a5" opacity="0.03" filter="url(#outerHaloGlow)"/>
+      <circle cx="200" cy="200" r="120" fill="url(#innerHaloGrad)"/>
+      <!-- Soft core glow (stronger) -->
+      <circle cx="200" cy="200" r="65" fill="#2ee8a5" opacity="0.08" filter="url(#coreGlow)"/>
+      <circle cx="200" cy="200" r="40" fill="#8b5cf6" opacity="0.04" filter="url(#coreGlow)"/>
+
+      <!-- Orbital rings (wrapped for initial rotation offset) -->
+      <g style="transform-origin: 200px 200px">
+        <ellipse class="ai-brain__ring ai-brain__ring--1" cx="200" cy="200" rx="140" ry="48"/>
+      </g>
+      <g style="transform: rotate(40deg); transform-origin: 200px 200px">
+        <ellipse class="ai-brain__ring ai-brain__ring--2" cx="200" cy="200" rx="115" ry="42"/>
+      </g>
+      <g style="transform: rotate(80deg); transform-origin: 200px 200px">
+        <ellipse class="ai-brain__ring ai-brain__ring--3" cx="200" cy="200" rx="88" ry="34"/>
+      </g>
+
+      <!-- Neural connection lines -->
+      <g class="ai-brain__conns" filter="url(#connGlow)">
+        <!-- Center → inner -->
+        <line x1="200" y1="200" x2="200" y2="135" class="conn conn--a"/>
+        <line x1="200" y1="200" x2="256" y2="168" class="conn conn--b"/>
+        <line x1="200" y1="200" x2="256" y2="232" class="conn conn--a"/>
+        <line x1="200" y1="200" x2="200" y2="265" class="conn conn--b"/>
+        <line x1="200" y1="200" x2="144" y2="232" class="conn conn--a"/>
+        <line x1="200" y1="200" x2="144" y2="168" class="conn conn--b"/>
+        <!-- Inner ring adjacents -->
+        <line x1="200" y1="135" x2="256" y2="168" class="conn conn--c"/>
+        <line x1="256" y1="168" x2="256" y2="232" class="conn conn--a"/>
+        <line x1="256" y1="232" x2="200" y2="265" class="conn conn--c"/>
+        <line x1="200" y1="265" x2="144" y2="232" class="conn conn--a"/>
+        <line x1="144" y1="232" x2="144" y2="168" class="conn conn--c"/>
+        <line x1="144" y1="168" x2="200" y2="135" class="conn conn--a"/>
+        <!-- Inner → outer radial -->
+        <line x1="200" y1="135" x2="200" y2="80"  class="conn conn--b"/>
+        <line x1="256" y1="168" x2="305" y2="142" class="conn conn--a"/>
+        <line x1="256" y1="232" x2="305" y2="258" class="conn conn--b"/>
+        <line x1="200" y1="265" x2="200" y2="320" class="conn conn--a"/>
+        <line x1="144" y1="232" x2="95"  y2="258" class="conn conn--b"/>
+        <line x1="144" y1="168" x2="95"  y2="142" class="conn conn--a"/>
+      </g>
+
+      <!-- Outer nodes -->
+      <g filter="url(#nodeGlow)">
+        <circle cx="200" cy="80"  r="4"   fill="#2E86AB" class="node nd--1"/>
+        <circle cx="305" cy="142" r="3.5" fill="#2ee8a5" class="node nd--2"/>
+        <circle cx="305" cy="258" r="3"   fill="#8b5cf6" class="node nd--3"/>
+        <circle cx="200" cy="320" r="4"   fill="#2E86AB" class="node nd--4"/>
+        <circle cx="95"  cy="258" r="3.5" fill="#2ee8a5" class="node nd--5"/>
+        <circle cx="95"  cy="142" r="3"   fill="#8b5cf6" class="node nd--6"/>
+      </g>
+
+      <!-- Inner nodes -->
+      <g filter="url(#nodeGlow)">
+        <circle cx="200" cy="135" r="5.5" fill="#2ee8a5" class="node nd--7"/>
+        <circle cx="256" cy="168" r="5"   fill="#2E86AB" class="node nd--8"/>
+        <circle cx="256" cy="232" r="5.5" fill="#8b5cf6" class="node nd--9"/>
+        <circle cx="200" cy="265" r="5"   fill="#2ee8a5" class="node nd--10"/>
+        <circle cx="144" cy="232" r="5.5" fill="#2E86AB" class="node nd--11"/>
+        <circle cx="144" cy="168" r="5"   fill="#8b5cf6" class="node nd--12"/>
+      </g>
+
+      <!-- Central core — multi-layer glow -->
+      <circle cx="200" cy="200" r="28" fill="#2ee8a5" opacity="0.06" filter="url(#coreGlow)"/>
+      <circle cx="200" cy="200" r="20" fill="rgba(10,10,15,0.85)"
+              stroke="#2ee8a5" stroke-width="2" class="ai-brain__core-ring"/>
+      <circle cx="200" cy="200" r="20" fill="none"
+              stroke="#8b5cf6" stroke-width="0.5" opacity="0.3" class="ai-brain__core-ring2"/>
+      <circle cx="200" cy="200" r="10" fill="#2ee8a5" opacity="0.85"
+              filter="url(#nodeGlow)" class="ai-brain__core"/>
+      <circle cx="200" cy="200" r="6" fill="white" opacity="0.15"
+              class="ai-brain__core"/>
+
+      <!-- ★ AI Star at center (bigger, brighter) -->
+      <path class="ai-brain__star"
+            d="M200,178 L206,194 L222,200 L206,206 L200,222 L194,206 L178,200 L194,194 Z"
+            fill="#2ee8a5" opacity="0.95" filter="url(#nodeGlow)"/>
+      <path class="ai-brain__star ai-brain__star--inner"
+            d="M200,188 L203,197 L212,200 L203,203 L200,212 L197,203 L188,200 L197,197 Z"
+            fill="white" opacity="0.4"/>
+
+      <!-- Micro-particles -->
+      <circle cx="168" cy="102" r="1.5" fill="#2ee8a5" opacity="0.3"  class="particle p--1"/>
+      <circle cx="292" cy="188" r="1"   fill="#8b5cf6" opacity="0.25" class="particle p--2"/>
+      <circle cx="118" cy="278" r="1.5" fill="#2E86AB" opacity="0.3"  class="particle p--3"/>
+      <circle cx="272" cy="298" r="1"   fill="#2ee8a5" opacity="0.2"  class="particle p--4"/>
+      <circle cx="108" cy="118" r="1"   fill="#8b5cf6" opacity="0.25" class="particle p--5"/>
+      <circle cx="322" cy="200" r="1.5" fill="#2ee8a5" opacity="0.3"  class="particle p--6"/>
+      <circle cx="78"  cy="200" r="1"   fill="#2E86AB" opacity="0.2"  class="particle p--7"/>
+      <circle cx="248" cy="92"  r="1"   fill="#8b5cf6" opacity="0.25" class="particle p--8"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══ Hero Section ═══ -->
+<section class="hero" #heroSection>
+  <!-- tsParticles Network Background -->
+  <div class="hero__particles-wrap">
+    <ngx-particles
+      id="hero-particles"
+      [options]="particlesOptions"
+      (particlesLoaded)="onParticlesLoaded($event)"
+    />
+  </div>
+
+  <!-- Radial gradient overlays -->
+  <div class="hero__gradient-orb hero__gradient-orb--teal"></div>
+  <div class="hero__gradient-orb hero__gradient-orb--purple"></div>
+  <div class="hero__gradient-orb hero__gradient-orb--navy"></div>
+
+  <div class="hero__content">
+    <!-- Eyebrow badge -->
+    <div class="hero__eyebrow">
+      <span class="hero__eyebrow-icon">✦</span>
+      <span>Powered by GPT-4o</span>
+      <span class="hero__eyebrow-shimmer"></span>
+    </div>
+
+    <!-- Headline — word-by-word GSAP animation -->
+    <h1 class="hero__title">
+      <span class="hero__title-line">
+        <span class="hero__word">From</span>
+        <span class="hero__word">Student</span>
+        <span class="hero__word">to</span>
+        <span class="hero__word">Engineer</span>
+        <span class="hero__word">—</span>
+      </span>
+      <span class="hero__title-line">
+        <span class="hero__word gradient-text">AI-Guided,</span>
+        <span class="hero__word gradient-text">Every</span>
+        <span class="hero__word gradient-text">Step</span>
+      </span>
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="hero__subtitle">
+      SmartHire analyzes your skills, builds your roadmap, coaches your
+      interviews, and matches you with jobs. All in one platform.
+    </p>
+
+    <!-- CTAs -->
+    <div class="hero__actions">
+      <button class="btn-primary btn-lg">
+        Start Free — No Card Needed
+        <lucide-icon name="chevron-right" [size]="16"></lucide-icon>
+      </button>
+      <button class="btn-ghost btn-lg">
+        <lucide-icon name="circle-play" [size]="18"></lucide-icon>
+        See How It Works
+      </button>
+    </div>
+
+    <!-- Social Proof -->
+    <div class="hero__proof">
+      <div class="hero__avatars">
+        @for (i of avatarColors; track i) {
+          <div class="hero__avatar" [style.background]="i"></div>
+        }
+      </div>
+      <span class="hero__proof-text">
+        Joined by <strong>2,400+</strong> engineering students
+      </span>
+    </div>
+  </div>
+
+  <!-- Dashboard Mockup -->
+  <div class="hero__mockup-wrapper" #mockupWrapper>
+    <div
+      class="hero__mockup"
+      #mockup
+      [style.transform]="'perspective(1000px) rotateX(' + rotateX() + 'deg) rotateY(' + rotateY() + 'deg)'"
+    >
+      <div class="hero__mockup-browser">
+        <div class="hero__browser-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="hero__browser-url">
+          <span>smarthire.ai/dashboard</span>
+        </div>
+      </div>
+      <div class="hero__mockup-screen">
+        <div class="mock-dash">
+          <div class="mock-dash__sidebar">
+            <div class="mock-item mock-item--active"></div>
+            <div class="mock-item"></div>
+            <div class="mock-item"></div>
+            <div class="mock-item"></div>
+            <div class="mock-item"></div>
+          </div>
+          <div class="mock-dash__main">
+            <div class="mock-header"></div>
+            <div class="mock-cards">
+              <div class="mock-card mock-card--chart">
+                <div class="mock-chart-line"></div>
+              </div>
+              <div class="mock-card mock-card--stats">
+                <div class="mock-stat"></div>
+                <div class="mock-stat"></div>
+                <div class="mock-stat"></div>
+              </div>
+            </div>
+            <div class="mock-table">
+              <div class="mock-row"></div>
+              <div class="mock-row"></div>
+              <div class="mock-row"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__mockup-glow"></div>
+    </div>
+  </div>
+</section>

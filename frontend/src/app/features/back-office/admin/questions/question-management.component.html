@@ -1,0 +1,294 @@
+<!-- ═══════ INTERVIEW QUESTIONS — TWO-COLUMN LAYOUT ═══════ -->
+<div class="qm-page">
+
+  <!-- ╌╌╌ Page Header ╌╌╌ -->
+  <header class="page-hdr">
+    <div>
+      <h1 class="page-hdr__title">Interview Questions</h1>
+      <p class="page-hdr__sub">Manage the global question bank for interview practice</p>
+    </div>
+    <div class="page-hdr__stats">
+      <span class="stat-pill stat-pill--teal">
+        <lucide-icon name="circle-question-mark" [size]="15"></lucide-icon>
+        {{ totalActive }} Active
+      </span>
+      <span class="stat-pill stat-pill--gray">
+        <lucide-icon name="archive" [size]="15"></lucide-icon>
+        {{ totalArchived }} Archived
+      </span>
+      <ng-container *ngFor="let c of categoryBreakdown">
+        <span class="stat-pill stat-pill--dim">{{ c.label }}: {{ c.count }}</span>
+      </ng-container>
+    </div>
+  </header>
+
+  <!-- ╌╌╌ Two-Column Body ╌╌╌ -->
+  <div class="qm-body">
+
+    <!-- ══════════ LEFT COLUMN (65%) — Table ══════════ -->
+    <section class="qm-left">
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar__search">
+          <lucide-icon name="search" [size]="15"></lucide-icon>
+          <input type="text" [(ngModel)]="searchQuery" placeholder="Search questions or tags..." class="toolbar__input" (ngModelChange)="currentPage = 1" />
+        </div>
+
+        <select [(ngModel)]="categoryFilter" class="toolbar__select" (ngModelChange)="currentPage = 1">
+          <option *ngFor="let c of categories" [value]="c">{{ c === 'All' ? 'All Categories' : c }}</option>
+        </select>
+
+        <select [(ngModel)]="difficultyFilter" class="toolbar__select" (ngModelChange)="currentPage = 1">
+          <option *ngFor="let d of difficulties" [value]="d">{{ d === 'All' ? 'All Difficulties' : d }}</option>
+        </select>
+
+        <select [(ngModel)]="careerPathFilter" class="toolbar__select" (ngModelChange)="currentPage = 1">
+          <option *ngFor="let cp of careerPaths" [value]="cp">{{ cp === 'All' ? 'All Career Paths' : cp }}</option>
+        </select>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="col-question">Question</th>
+              <th class="col-category">Category</th>
+              <th class="col-diff">Difficulty</th>
+              <th class="col-career">Career Path</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let q of paginatedQuestions" class="data-row">
+              <!-- Question text (truncated) -->
+              <td class="col-question">
+                <span class="q-text" [title]="q.text">{{ q.text }}</span>
+                <span class="q-tags">
+                  <span *ngFor="let t of q.tags.slice(0, 3)" class="q-tag">{{ t }}</span>
+                  <span *ngIf="q.tags.length > 3" class="q-tag q-tag--more">+{{ q.tags.length - 3 }}</span>
+                </span>
+              </td>
+
+              <!-- Category badge -->
+              <td class="col-category">
+                <span class="cbadge" [ngClass]="getCategoryClass(q.category)">{{ q.category }}</span>
+              </td>
+
+              <!-- Difficulty badge -->
+              <td class="col-diff">
+                <span class="dbadge" [ngClass]="getDifficultyClass(q.difficulty)">{{ q.difficulty }}</span>
+              </td>
+
+              <!-- Career Path -->
+              <td class="col-career">
+                <span class="career-tag">{{ q.careerPath }}</span>
+              </td>
+
+              <!-- Actions -->
+              <td class="col-actions">
+                <div class="action-group">
+                  <button class="action-btn action-btn--edit" (click)="editQuestion(q)" title="Edit">
+                    <lucide-icon name="square-pen" [size]="14"></lucide-icon>
+                  </button>
+                  <button class="action-btn action-btn--archive" (click)="archiveQuestion(q)" title="Archive">
+                    <lucide-icon name="archive" [size]="14"></lucide-icon>
+                  </button>
+                  <button class="action-btn action-btn--preview" (click)="openPreview(q)" title="Preview">
+                    <lucide-icon name="eye" [size]="14"></lucide-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="paginatedQuestions.length === 0">
+              <td colspan="5" class="empty-row">No questions match your filters.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button class="pg-btn" (click)="goPage(currentPage - 1)" [disabled]="currentPage === 1">
+          <lucide-icon name="chevron-left" [size]="16"></lucide-icon>
+        </button>
+        <ng-container *ngFor="let p of pageNumbers">
+          <button class="pg-btn" [class.pg-btn--active]="p === currentPage" (click)="goPage(p)">{{ p }}</button>
+        </ng-container>
+        <button class="pg-btn" (click)="goPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          <lucide-icon name="chevron-right" [size]="16"></lucide-icon>
+        </button>
+        <span class="pg-info">{{ filteredQuestions.length }} questions</span>
+      </div>
+    </section>
+
+    <!-- ══════════ RIGHT COLUMN (35%) — Form ══════════ -->
+    <aside class="qm-right">
+      <div class="form-panel">
+        <div class="form-panel__header">
+          <h2 class="form-panel__title">{{ editingId ? 'Edit Question' : 'Add New Question' }}</h2>
+          <span *ngIf="editingId" class="form-panel__editing">
+            <lucide-icon name="square-pen" [size]="14"></lucide-icon>
+            Editing #{{ editingId }}
+          </span>
+        </div>
+
+        <!-- Question Text -->
+        <div class="form-field">
+          <label class="form-label">Question Text</label>
+          <textarea [(ngModel)]="formText" class="form-textarea" rows="4" placeholder="Type the interview question..."></textarea>
+        </div>
+
+        <!-- Category -->
+        <div class="form-field">
+          <label class="form-label">Category</label>
+          <select [(ngModel)]="formCategory" class="form-select">
+            <option value="Technical">Technical</option>
+            <option value="Behavioral">Behavioral</option>
+            <option value="System Design">System Design</option>
+          </select>
+        </div>
+
+        <!-- Difficulty -->
+        <div class="form-field">
+          <label class="form-label">Difficulty</label>
+          <select [(ngModel)]="formDifficulty" class="form-select">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </div>
+
+        <!-- Career Path Multi-Select -->
+        <div class="form-field">
+          <label class="form-label">Career Path</label>
+          <div class="multi-select" (click)="toggleCareerPathDropdown()">
+            <div class="multi-select__display">
+              <span *ngIf="formCareerPaths.length === 0" class="multi-select__placeholder">Select career paths...</span>
+              <span *ngFor="let cp of formCareerPaths" class="multi-chip">
+                {{ cp }}
+                <button class="multi-chip__x" (click)="removeCareerPath(cp); $event.stopPropagation()">×</button>
+              </span>
+            </div>
+            <lucide-icon name="chevron-down" [size]="14"></lucide-icon>
+          </div>
+          <div class="multi-dropdown" *ngIf="careerPathDropdownOpen">
+            <label *ngFor="let cp of careerPaths.slice(1)" class="multi-option" (click)="toggleCareerPath(cp); $event.stopPropagation()">
+              <span class="multi-check" [class.multi-check--active]="isCareerPathSelected(cp)">
+                <lucide-icon *ngIf="isCareerPathSelected(cp)" name="check" [size]="12"></lucide-icon>
+              </span>
+              {{ cp }}
+            </label>
+          </div>
+        </div>
+
+        <!-- Tags Multi-Select -->
+        <div class="form-field">
+          <label class="form-label">Tags</label>
+          <div class="multi-select" (click)="toggleTagDropdown()">
+            <div class="multi-select__display">
+              <span *ngIf="formTags.length === 0" class="multi-select__placeholder">Select tags...</span>
+              <span *ngFor="let t of formTags" class="multi-chip multi-chip--tag">
+                {{ t }}
+                <button class="multi-chip__x" (click)="removeTag(t); $event.stopPropagation()">×</button>
+              </span>
+            </div>
+            <lucide-icon name="chevron-down" [size]="14"></lucide-icon>
+          </div>
+          <div class="multi-dropdown" *ngIf="tagDropdownOpen">
+            <label *ngFor="let t of allTags" class="multi-option" (click)="toggleTag(t); $event.stopPropagation()">
+              <span class="multi-check" [class.multi-check--active]="isTagSelected(t)">
+                <lucide-icon *ngIf="isTagSelected(t)" name="check" [size]="12"></lucide-icon>
+              </span>
+              {{ t }}
+            </label>
+          </div>
+        </div>
+
+        <!-- Sample Answer -->
+        <div class="form-field">
+          <div class="form-label-row">
+            <label class="form-label">Sample Answer</label>
+            <button class="ai-btn" (click)="generateSampleAnswer()" [disabled]="aiGenerating || !formText.trim()">
+              <lucide-icon *ngIf="!aiGenerating" name="lightbulb" [size]="14"></lucide-icon>
+              <span *ngIf="aiGenerating" class="ai-spinner"></span>
+              {{ aiGenerating ? 'Generating...' : 'AI Generate' }}
+            </button>
+          </div>
+          <textarea [(ngModel)]="formSampleAnswer" class="form-textarea form-textarea--tall" rows="6" placeholder="Enter the expected sample answer..."></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button class="btn btn--save" (click)="saveForm()" [disabled]="!formText.trim()">
+            <lucide-icon name="check" [size]="16"></lucide-icon>
+            {{ editingId ? 'Update Question' : 'Add Question' }}
+          </button>
+          <button class="btn btn--cancel" (click)="resetForm()">Cancel</button>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ═══════ PREVIEW MODAL ═══════ -->
+<div class="modal-overlay" *ngIf="previewOpen" (click)="closePreview()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal__header">
+      <h3 class="modal__title">Question Preview</h3>
+      <span class="modal__subtitle">As seen by candidates</span>
+      <button class="modal__close" (click)="closePreview()">
+        <lucide-icon name="x" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="modal__body" *ngIf="previewQuestion">
+      <!-- Meta badges -->
+      <div class="preview-meta">
+        <span class="cbadge" [ngClass]="getCategoryClass(previewQuestion.category)">{{ previewQuestion.category }}</span>
+        <span class="dbadge" [ngClass]="getDifficultyClass(previewQuestion.difficulty)">{{ previewQuestion.difficulty }}</span>
+        <span class="career-tag">{{ previewQuestion.careerPath }}</span>
+      </div>
+
+      <!-- Question block (candidate view) -->
+      <div class="preview-question">
+        <div class="preview-question__icon">
+          <lucide-icon name="circle-question-mark" [size]="22"></lucide-icon>
+        </div>
+        <p class="preview-question__text">{{ previewQuestion.text }}</p>
+      </div>
+
+      <!-- Tags -->
+      <div class="preview-tags">
+        <span *ngFor="let t of previewQuestion.tags" class="q-tag q-tag--preview">{{ t }}</span>
+      </div>
+
+      <!-- Divider -->
+      <div class="preview-divider">
+        <lucide-icon name="lightbulb" [size]="16"></lucide-icon>
+        Sample Answer
+      </div>
+
+      <!-- Sample answer -->
+      <div class="preview-answer">
+        <p>{{ previewQuestion.sampleAnswer }}</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="preview-stats">
+        <span class="preview-stat">
+          <lucide-icon name="user" [size]="14"></lucide-icon>
+          Used {{ previewQuestion.usageCount }} times
+        </span>
+        <span class="preview-stat">
+          <lucide-icon name="calendar" [size]="14"></lucide-icon>
+          Added {{ previewQuestion.createdAt }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
